@@ -20,6 +20,7 @@ RUN apk update && \
 ## Dependency Installation
 RUN apk add \
         gettext \
+        gettext-lang \
         perl-path-class \
         perl-ldap \
         perl-mime-base64 \
@@ -50,7 +51,7 @@ RUN mkdir -p /usr/src/smarty /usr/src/smarty-gettext /usr/share/php/smarty3 && \
     mkdir -p /usr/share/php/smarty3/plugins && \
     cp -R /usr/src/smarty-gettext/block.t.php /usr/share/php/smarty3/plugins/ && \
     cp -R /usr/src/smarty-gettext/tsmarty2c.php /usr/sbin && \
-    chmod 750 /usr/sbin/smarty-gettext/tsmarty2c.php
+    chmod 750 /usr/sbin/tsmarty2c.php
 
 ## Install Schema2LDIF
 RUN curl https://codeload.github.com/fusiondirectory/schema2ldif/tar.gz/${SCHEMA2LDIF_VERSION} | tar xvfz - --strip 1 -C /usr && \
