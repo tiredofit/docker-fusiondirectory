@@ -28,7 +28,10 @@ RUN apk add \
         perl-file-copy-recursive \
         perl-term-readkey \
         perl-xml-twig \
-        php7-gettext 
+        php7-gettext \
+        php7-imagick \
+        php7-imap 
+        
 
   RUN ln -s /usr/bin/perl /usr/local/bin/perl && \
       curl -L http://cpanmin.us -o /usr/bin/cpanm && \
