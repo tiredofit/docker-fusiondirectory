@@ -5,7 +5,7 @@
 This will build a container for [Fusion Directory](https://www.fusiondirectory.org/) a Directory Manager frontend for LDAP.
 
 **Currently Not Functioning Correctly**
-This Container uses Alpine:3.5 as a base.
+This Container uses Alpine:3.6 as a base.
 Additional Components Inside are Nginx, PHP7 w/ APC, OPCache, LDAP extensions
 
 

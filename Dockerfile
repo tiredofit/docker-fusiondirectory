@@ -1,10 +1,10 @@
-FROM tiredofit/nginx-php-fpm:7.0-latest
+FROM tiredofit/nginx-php-fpm:7.1-latest
 MAINTAINER Dave Conroy <dave at tiredofit dot ca>
 
 ## Set Environment Varialbes
 ENV FUSIONDIRECTORY_VERSION=1.2 \
     SCHEMA2LDIF_VERSION=1.3 \
-    SMARTY_VERSION=3.1.30 \
+    SMARTY_VERSION=3.1.31 \
     SMARTYGETTEXT_VERSION=1.5.1 \
     INSTANCE=default
 
@@ -43,10 +43,10 @@ RUN apk add \
   # Cleanup
       rm -rf /root/.cpanm && \
       apk del build-deps && \
-      rm -rf /tmp/* /var/cache/apk/* 
+      rm -rf /tmp/* /var/cache/apk/* && \
 
 ## Install Smarty3
-RUN mkdir -p /usr/src/smarty /usr/src/smarty-gettext /usr/share/php/smarty3 && \
+    mkdir -p /usr/src/smarty /usr/src/smarty-gettext /usr/share/php/smarty3 && \
     curl https://codeload.github.com/smarty-php/smarty/tar.gz/v${SMARTY_VERSION} | tar xvfz - --strip 1 -C /usr/src/smarty && \
     cp -r /usr/src/smarty/libs/* /usr/share/php/smarty3 && \
     ln -s /usr/share/php/smarty3/Smarty.class.php /usr/share/php/smarty3/smarty.class.php && \
@@ -54,20 +54,20 @@ RUN mkdir -p /usr/src/smarty /usr/src/smarty-gettext /usr/share/php/smarty3 && \
     mkdir -p /usr/share/php/smarty3/plugins && \
     cp -R /usr/src/smarty-gettext/block.t.php /usr/share/php/smarty3/plugins/ && \
     cp -R /usr/src/smarty-gettext/tsmarty2c.php /usr/sbin && \
-    chmod 750 /usr/sbin/tsmarty2c.php
+    chmod 750 /usr/sbin/tsmarty2c.php && \
 
 ## Install Schema2LDIF
-RUN curl https://codeload.github.com/fusiondirectory/schema2ldif/tar.gz/${SCHEMA2LDIF_VERSION} | tar xvfz - --strip 1 -C /usr && \
+    curl https://codeload.github.com/fusiondirectory/schema2ldif/tar.gz/${SCHEMA2LDIF_VERSION} | tar xvfz - --strip 1 -C /usr && \
     rm -rf /usr/CHANGELOG && \
     rm -rf /usr/LICENSE && \
 
-## Install FusionDirextory
+## Install FusionDirectory
     mkdir -p /usr/src/fusiondirectory /usr/src/fusiondirectory-plugins && \
     curl https://codeload.github.com/fusiondirectory/fusiondirectory/tar.gz/fusiondirectory-${FUSIONDIRECTORY_VERSION} | tar xvfz - --strip 1 -C /usr/src/fusiondirectory && \
-    curl https://codeload.github.com/fusiondirectory/fusiondirectory-plugins/tar.gz/fusiondirectory-${FUSIONDIRECTORY_VERSION} | tar xvfz - --strip 1 -C /usr/src/fusiondirectory-plugins
+    curl https://codeload.github.com/fusiondirectory/fusiondirectory-plugins/tar.gz/fusiondirectory-${FUSIONDIRECTORY_VERSION} | tar xvfz - --strip 1 -C /usr/src/fusiondirectory-plugins && \
 
 ## Configure FusionDirectory
-RUN mkdir -p /usr/src/javascript && \
+    mkdir -p /usr/src/javascript && \
     cd /usr/src/javascript && \
     curl -O http://ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js && \
     curl -O http://script.aculo.us/dist/scriptaculous-js-1.9.0.zip && \
@@ -80,8 +80,7 @@ RUN mkdir -p /usr/src/javascript && \
     cp -R scriptaculous-js-1.9.0/src/effects.js /usr/src/fusiondirectory/html/include && \
     chmod 750 /usr/src/fusiondirectory/contrib/bin/* && \
     cp -R /usr/src/fusiondirectory/contrib/bin/* /usr/sbin/ && \
-    cp /usr/src/fusiondirectory/contrib/smarty/plugins/function.msgPool.php /usr/share/php/smarty3/plugins/function.msgPool.php && \
-    cp /usr/src/fusiondirectory/contrib/smarty/plugins/function.filePath.php /usr/share/php/smarty3/plugins/function.filePath.php && \
+    cp -R /usr/src/fusiondirectory/contrib/smarty/plugins/* /usr/share/php/smarty3/plugins/ && \
     mkdir -p /var/spool/fusiondirectory/ && \
     mkdir -p /var/cache/fusiondirectory/ && \
     mkdir -p /var/cache/fusiondirectory/fai && \
@@ -90,14 +89,18 @@ RUN mkdir -p /usr/src/javascript && \
     mkdir -p /var/cache/fusiondirectory/template && \
     mkdir -p /var/cache/fusiondirectory/tmp && \
     mkdir -p /etc/fusiondirectory && \
+    cp -R /usr/src/fusiondirectory/contrib/fusiondirectory.conf /var/cache/fusiondirectory/template/fusiondirectory.conf && \
 
     cp -R /usr/src/fusiondirectory /www && \
     fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --write-vars && \
     fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --set-fd_smarty_dir="/usr/share/php/smarty3/Smarty.class.php" --write-vars && \
     touch /etc/debian_version && \
     yes Yes | fusiondirectory-setup --set-fd_home=/www/fusiondirectory --check-directories --update-cache && \
-    fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --update-locales --update-cache 
-    
+    fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --update-locales --update-cache && \
+
+### PHP Setup
+    sed -i -e "s/expose_php = On/expose_php = Off/g" /etc/php7/php.ini    
+
 ### S6 Setup
   ADD install/s6 /etc/s6
 
