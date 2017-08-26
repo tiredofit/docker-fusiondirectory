@@ -1,4 +1,4 @@
-FROM tiredofit/nginx-php-fpm:7.1-latest
+FROM tiredofit/nginx-php-fpm:7.1
 MAINTAINER Dave Conroy <dave at tiredofit dot ca>
 
 ## Set Environment Varialbes
@@ -148,6 +148,8 @@ RUN apk update && \
 
 ### S6 Setup
   ADD install/s6 /etc/s6
+  ADD install/cont-init.d /etc/cont-init.d
+  RUN chmod +x /etc/cont-init.d/*.sh
 
 ### Nginx Setup
   ADD install/nginx /etc/nginx
