@@ -61,11 +61,11 @@ if [ ! -f /tmp/state/10-nginx ]; then
   PLUGIN_WEBLINK=${PLUGIN_WEBLINK:-false}
   PLUGIN_WEBSERVICE=${PLUGIN_WEBSERVICE:-false}
 
-  #### Plugin Dependencies Override
-  ### Admin Plugins
+#### Plugin Dependencies Override
+ ### Admin Plugins
   ## Audit
   if [ "$PLUGIN_AUDIT" != "FALSE" ] || [ "$PLUGIN_AUDIT" != "false" ];  then
-    PLUGIN_ARGONAUT=TRUE
+    export PLUGIN_ARGONAUT=TRUE
   fi
 
   ## LDAP Dump
@@ -80,7 +80,7 @@ if [ ! -f /tmp/state/10-nginx ]; then
 
   ## User Reminder
   if [ "$PLUGIN_USER_REMINDER" != "FALSE" ] || [ "$PLUGIN_USER_REMINDER" != "false" ];  then
-    PLUGIN_ARGONAUT=TRUE
+    export PLUGIN_ARGONAUT=TRUE
   fi
 
   ## Webservice
@@ -88,46 +88,46 @@ if [ ! -f /tmp/state/10-nginx ]; then
     :
   fi
 
-  ### Mail Plugins
+ ### Mail Plugins
   ## Cyrus
   if [ "$PLUGIN_CYRUS" != "FALSE" ] || [ "$PLUGIN_CYRUS" != "false" ];  then
-    PLUGIN_MAIL=TRUE
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Dovecot
   if [ "$PLUGIN_DOVECOT" != "FALSE" ] || [ "$PLUGIN_DOVECOT" != "false" ];  then
-    PLUGIN_MAIL=TRUE
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Postfix
   if [ "$PLUGIN_POSTFIX" != "FALSE" ] || [ "$PLUGIN_POSTFIX" != "false" ];  then
-    PLUGIN_MAIL=TRUE
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Sogo
   if [ "$PLUGIN_SOGO" != "FALSE" ] || [ "$PLUGIN_SOGO" != "false" ];  then
-    PLUGIN_MAIL=TRUE
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Sympa
   if [ "$PLUGIN_SYMPA" != "FALSE" ] || [ "$PLUGIN_SYMPA" != "false" ];  then
-    PLUGIN_ALIAS=TRUE
+    export PLUGIN_ALIAS=TRUE
   fi
 
   ## SpamAssassin
   if [ "$PLUGIN_SPAMASSASSIN" != "FALSE" ] || [ "$PLUGIN_SPAMASSASSIN" != "false" ];  then
-    PLUGIN_MAIL=TRUE
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
-  ### Services Plugins
+ ### Services Plugins
   ## AutoFS
   if [ "$PLUGIN_AUTOFS" != "FALSE" ] || [ "$PLUGIN_AUTOFS" != "false" ];  then
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## DSA
@@ -137,7 +137,7 @@ if [ ! -f /tmp/state/10-nginx ]; then
 
   ## DHCP
   if [ "$PLUGIN_DHCP" != "FALSE" ] || [ "$PLUGIN_DHCP" != "false" ];  then
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## DNS
@@ -152,17 +152,17 @@ if [ ! -f /tmp/state/10-nginx ]; then
 
   ## FusionInventory
   if [ "$PLUGIN_FUSIONINVENTORY" != "FALSE" ] || [ "$PLUGIN_FUSIONINVENTORY" != "false" ];  then
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## GPG
   if [ "$PLUGIN_GPG" != "FALSE" ] || [ "$PLUGIN_GPG" != "false" ];  then
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## IPMI
   if [ "$PLUGIN_IPMI" != "FALSE" ] || [ "$PLUGIN_IPMI" != "false" ];  then
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## NetGroups
@@ -177,17 +177,12 @@ if [ ! -f /tmp/state/10-nginx ]; then
 
   ## Quota
   if [ "$PLUGIN_QUOTA" != "FALSE" ] || [ "$PLUGIN_QUOTA" != "false" ];  then
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Repository
   if [ "$PLUGIN_REPOSITORY" != "FALSE" ] || [ "$PLUGIN_REPOSITORY" != "false" ];  then
-    PLUGIN_SYSTEMS=TRUE
-  fi
-
-  ## Samba
-  if [ "$PLUGIN_SAMBA" != "FALSE" ] || [ "$PLUGIN_SAMBA" != "false" ];  then
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Squid
@@ -205,7 +200,7 @@ if [ ! -f /tmp/state/10-nginx ]; then
     :
   fi
 
-  ### Deployment Plugins
+ ### Deployment Plugins
   ## Debconf
   if [ "$PLUGIN_DEBCONF" != "FALSE" ] || [ "$PLUGIN_DEBCONF" != "false" ];  then
     :
@@ -213,16 +208,16 @@ if [ ! -f /tmp/state/10-nginx ]; then
 
   ## FAI
   if [ "$PLUGIN_FAI" != "FALSE" ] || [ "$PLUGIN_FAI" != "false" ];  then
-    PLUGIN_ARGONAUT=TRUE
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_ARGONAUT=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## OPSI
   if [ "$PLUGIN_OPSI" != "FALSE" ] || [ "$PLUGIN_OPSI" != "false" ];  then
-    PLUGIN_ARGONAUT=TRUE
-    PLUGIN_DNS=TRUE
-    PLUGIN_SAMBA=TRUE
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_ARGONAUT=TRUE
+    export PLUGIN_DNS=TRUE
+    export PLUGIN_SAMBA=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Puppet
@@ -230,23 +225,23 @@ if [ ! -f /tmp/state/10-nginx ]; then
     :
   fi
 
-  ### System Management Plugins
+ ### System Management Plugins
   ## Argonaut
   if [ "$PLUGIN_ARGONAUT" != "FALSE" ] || [ "$PLUGIN_SYSTEMS" != "false" ];  then
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Systems
   if [ "$PLUGIN_SYSTEMS" != "FALSE" ] || [ "$PLUGIN_SYSTEMS" != "false" ];  then
-    PLUGIN_ARGONAUT=TRUE
+    export PLUGIN_ARGONAUT=TRUE
   fi
 
   ## Samba
   if [ "$PLUGIN_SAMBA" != "FALSE" ] || [ "$PLUGIN_SAMBA" != "false" ];  then
-    PLUGIN_SAMBA=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
-  ### User Management Plugins
+ ### User Management Plugins
   ## Certificates
   if [ "$PLUGIN_CERTIFICATES" != "FALSE" ] || [ "$PLUGIN_CERTIFICATES" != "false" ];  then
     :
@@ -284,7 +279,7 @@ if [ ! -f /tmp/state/10-nginx ]; then
 
   ## Quota
   if [ "$PLUGIN_QUOTA" != "FALSE" ] || [ "$PLUGIN_QUOTA" != "false" ];  then
-    PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Subcontracting
@@ -297,7 +292,7 @@ if [ ! -f /tmp/state/10-nginx ]; then
     :
   fi
 
-  PLUGINS_ENABLED=`printenv | grep PLUGIN | grep TRUE |sed -e 's/PLUGIN_//g' | sed -e 's/=TRUE//g' | awk -vRS="" -vOFS=', ' '$1=$1' | tr A-Z a-z`
+  PLUGINS_ENABLED=`printenv | sort | grep PLUGIN | grep TRUE |sed -e 's/PLUGIN_//g' | sed -e 's/=TRUE//g' | awk -vRS="" -vOFS=', ' '$1=$1' | tr A-Z a-z`
 
 
 ### Create Plugins Archive
@@ -390,7 +385,7 @@ if [ ! -f /tmp/state/10-nginx ]; then
 
   
 ### Write Fusiondirectory Configuration
-cat <<EOF > /etc/fusiondirectory/fusiondirectory.conf
+  cat <<EOF > /etc/fusiondirectory/fusiondirectory.conf
 <?xml version="1.0"?>
 <conf>
   <!-- Main section **********************************************************
@@ -435,7 +430,7 @@ EOF
 ### Force Reset Permissions for Security
   chown -R nginx:www-data /www/fusiondirectory
 
-## Start nginx
+### Start nginx
   mkdir -p /www/logs/nginx
   mkdir -p /www/logs/smtp
   mkdir -p /tmp/nginx

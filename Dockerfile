@@ -2,7 +2,8 @@ FROM tiredofit/nginx-php-fpm:7.1-latest
 MAINTAINER Dave Conroy <dave at tiredofit dot ca>
 
 ## Set Environment Varialbes
-ENV FUSIONDIRECTORY_VERSION=1.2 \
+ENV ARGONAUT_VERSION=1.2 \
+    FUSIONDIRECTORY_VERSION=1.2 \
     SCHEMA2LDIF_VERSION=1.3 \
     SMARTY_VERSION=3.1.31 \
     SMARTYGETTEXT_VERSION=1.5.1 \
@@ -15,31 +16,59 @@ RUN apk update && \
             coreutils \
             build-base \
             make \
-            perl-dev
-          
-## Dependency Installation
-RUN apk add \
+            perl-dev \
+            && \
+
+## Run Dependencies Installation
+    apk add --virtual run-deps \
         gettext \
         gettext-lang \
-        perl-path-class \
+        openldap \
+        perl-config-inifiles \
+        perl-datetime \
         perl-ldap \
         perl-mime-base64 \
         perl-crypt-cbc \
         perl-file-copy-recursive \
+        perl-io-socket-ssl \
+        perl-json \
+        perl-net-ldap \
+        perl-path-class \
         perl-term-readkey \
         perl-xml-twig \
         php7-gettext \
         php7-imagick \
-        php7-imap 
+        php7-imap  \
+        && \
         
-
-  RUN ln -s /usr/bin/perl /usr/local/bin/perl && \
+### Install Perl Dependencies that aren't available as packages
+      ln -s /usr/bin/perl /usr/local/bin/perl && \
       curl -L http://cpanmin.us -o /usr/bin/cpanm && \
       chmod +x /usr/bin/cpanm && \
       cpanm -n \
-      Archive::Extract && \
+      App::Daemon \
+      Archive::Extract \
+      HTTP::Daemon \
+      JSON::Any \
+      JSON::RPC \
+      Log::Handler \
+      Module::Pluggable \
+      POE \
+      POE::Component::Schedule \
+      POE::Component::Server::SimpleHTTP \
+      POE::Component::Pool::Thread \
+      POE::Component::SSLify \
+      XML::SAX::Expat \
+      && \
       cp -R /usr/local/share/perl5/site_perl/* /usr/share/perl5/vendor_perl/ && \
-  
+      mkdir -p /usr/src/perl/poe-component-server-jsonrpc && \
+      curl http://www.cpan.org/authors/id/M/MC/MCMIC/POE-Component-Server-JSONRPC-0.05-bis.tar.gz | tar xvfz - --strip 1 -C /usr/src/perl/poe-component-server-jsonrpc && \
+      cd /usr/src/perl/poe-component-server-jsonrpc && \
+      sed -i -e "s/requires 'JSON::Client::RPC';/#requires 'JSON::Client::RPC';/g" Makefile.PL && \
+      perl Makefile.PL && \
+      make && \
+      make install && \
+
   # Cleanup
       rm -rf /root/.cpanm && \
       apk del build-deps && \
@@ -61,10 +90,23 @@ RUN apk add \
     rm -rf /usr/CHANGELOG && \
     rm -rf /usr/LICENSE && \
 
+## Install Argonaut
+    mkdir -p /usr/src/argonaut /etc/argonaut && \
+    curl https://codeload.github.com/fusiondirectory/argonaut/tar.gz/argonaut-${ARGONAUT_VERSION} | tar xvfz - --strip 1 -C /usr/src/argonaut && \    
+    chmod +x /usr/src/argonaut/*/bin/* && \
+    cp -R /usr/src/argonaut/argonaut-common/Argonaut /usr/share/perl5/vendor_perl/ && \
+    cp -R /usr/src/argonaut/argonaut-common/XML /usr/share/perl5/vendor_perl/ && \
+    cp -R /usr/src/argonaut/argonaut-common/argonaut.conf /etc/argonaut && \
+    cp -R /usr/src/argonaut/argonaut-fusiondirectory/bin/* /usr/sbin && \
+    cp -R /usr/src/argonaut/argonaut-fusioninventory/bin/* /usr/sbin && \
+    cp -R /usr/src/argonaut/argonaut-server/bin/argonaut-server /usr/sbin && \
+    cp -R /usr/src/argonaut/argonaut-server/Argonaut /usr/share/perl5/vendor_perl/ && \
+    cp -R /usr/src/argonaut/*/Argonaut/ /usr/share/perl5/vendor_perl && \
+    
 ## Install FusionDirectory
-    mkdir -p /usr/src/fusiondirectory /usr/src/fusiondirectory-plugins && \
+    mkdir -p /usr/src/fusiondirectory /assets/fusiondirectory-plugins && \
     curl https://codeload.github.com/fusiondirectory/fusiondirectory/tar.gz/fusiondirectory-${FUSIONDIRECTORY_VERSION} | tar xvfz - --strip 1 -C /usr/src/fusiondirectory && \
-    curl https://codeload.github.com/fusiondirectory/fusiondirectory-plugins/tar.gz/fusiondirectory-${FUSIONDIRECTORY_VERSION} | tar xvfz - --strip 1 -C /usr/src/fusiondirectory-plugins && \
+    curl https://codeload.github.com/fusiondirectory/fusiondirectory-plugins/tar.gz/fusiondirectory-${FUSIONDIRECTORY_VERSION} | tar xvfz - --strip 1 -C /assets/fusiondirectory-plugins && \
 
 ## Configure FusionDirectory
     mkdir -p /usr/src/javascript && \
@@ -99,7 +141,10 @@ RUN apk add \
     fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --update-locales --update-cache && \
 
 ### PHP Setup
-    sed -i -e "s/expose_php = On/expose_php = Off/g" /etc/php7/php.ini    
+    sed -i -e "s/expose_php = On/expose_php = Off/g" /etc/php7/php.ini && \
+
+### Cleanup
+    rm -rf /usr/src/*
 
 ### S6 Setup
   ADD install/s6 /etc/s6

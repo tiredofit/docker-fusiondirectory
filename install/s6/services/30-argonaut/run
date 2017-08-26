@@ -1,0 +1,10 @@
+#!/usr/bin/with-contenv bash
+
+if [ ! -f /tmp/state/30-argonaut ]; then
+
+  echo 'Initialization Complete' >/tmp/state/30-argonaut
+fi
+
+echo '**'
+echo '** Starting Argonaut Server'
+exec nginx
