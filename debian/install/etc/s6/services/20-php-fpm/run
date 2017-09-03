@@ -1,0 +1,17 @@
+#!/usr/bin/with-contenv bash
+
+while [ ! -f /tmp/state/10-nginx ]
+do
+  sleep 1
+done
+
+if [ ! -f /tmp/state/20-php-fpm ]; then
+### Start php-fpm
+	mkdir -p /www/logs/php-fpm
+	chown -R www-data /www/logs/php-fpm
+	echo 'Initialization Complete' >/tmp/state/20-php-fpm
+fi
+
+echo ''
+echo '** Starting php-fpm..'
+exec s6-setuidgid www-data php-fpm7.0 --fpm-config /etc/php/7.0/fpm/php-fpm.conf -F;

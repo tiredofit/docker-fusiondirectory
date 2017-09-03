@@ -1,0 +1,77 @@
+#!/usr/bin/with-contenv bash
+
+
+### Set Defaults
+  APC_SHM_SIZE=${APC_SHM_SIZE:-"128M"}
+  OPCACHE_MEM_SIZE=${OPCODE_MEM_SIZE:-"128"}
+  PHP_LOG_LEVEL=${PHP_LOG_LEVEL:-"notice"}
+  PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT:-"128M"}
+  PHP_TIMEOUT=${PHP_TIMEOUT:-"180"}
+  UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-"2G"}
+    
+### Adjust PHP Runtime Variables
+  sed -i -e "s/<APC_SHM_SIZE>/$APC_SHM_SIZE/g" /etc/php/7.0/fpm/conf.d/apcu.ini
+  sed -i -e "s/<OPCACHE_MEM_SIZE>/$OPCACHE_MEM_SIZE/g" /etc/php/7.0/fpm/conf.d/10_opcache.ini
+  sed -i -e "s/<PHP_MEMORY_LIMIT>/$PHP_MEMORY_LIMIT/g" /etc/php/7.0/fpm/php-fpm.conf
+  sed -i -e "s/<PHP_MEMORY_LIMIT>/$PHP_MEMORY_LIMIT/g" /etc/php/7.0/fpm/php.ini
+  sed -i -e "s/<PHP_TIMEOUT>/$PHP_TIMEOUT/g" /etc/php/7.0/fpm/php.ini
+  sed -i -e "s/<UPLOAD_MAX_SIZE>/$UPLOAD_MAX_SIZE/g" /etc/php/7.0/fpm/php-fpm.conf
+  sed -i -e "s/<UPLOAD_MAX_SIZE>/$UPLOAD_MAX_SIZE/g" /etc/php/7.0/fpm/php.ini
+
+### Disable Modules
+  if [ "$OPCACHE_MEM_SIZE" = "0" ]; then
+  sed -i -e "s/opcache.enable=1/opcache.enable=0/g" /etc/php/7.0/fpm/conf.d/10_opcache.ini
+  sed -i -e "s/opcache.enable_cli=1/opcache.enable_cli=0/g" /etc/php/7.0/fpm/conf.d/10_opcache.ini
+  fi
+
+### Timezone Config
+  echo 'date.timezone='$TIMEZONE >> /etc/php/7.0/fpm/conf.d/timezone.ini
+
+
+### Debug Mode
+  if [ "$DEBUG_MODE" = "TRUE" ] || [ "$DEBUG_MODE" = "true" ];  then
+    PHP_XDEBUG_PROFILER_DIR=${PHP_XDEBUG_PROFILER_DIR:-"/www/logs/xdebug/"}
+    PHP_XDEBUG_PROFILER_ENABLE=${PHP_XDEBUG_PROFILER_ENABLE:-"0"}
+    PHP_XDEBUG_PROFILER_ENABLE_TRIGGER=${PHP_XDEBUG_PROFILER_ENABLE_TRIGGER:-"0"}
+    PHP_XDEBUG_REMOTE_AUTOSTART=${PHP_XDEBUG_REMOTE_AUTOSTART:-"1"}
+    PHP_XDEBUG_REMOTE_CONNECT_BACK=${PHP_XDEBUG_REMOTE_CONNECT_BACK:-"0"}  
+    PHP_XDEBUG_REMOTE_ENABLE=${PHP_XDEBUG_REMOTE_ENABLE:-"1"}
+    PHP_XDEBUG_REMOTE_HANDLER=${PHP_XDEBUG_REMOTE_HANDLER:-"dbgp"}
+    PHP_XDEBUG_REMOTE_HOST=${PHP_XDEBUG_REMOTE_HOST:-"127.0.0.1"}
+    PHP_XDEBUG_REMOTE_PORT=${PHP_XDEBUG_REMOTE_PORT:-"9090"}
+
+    echo "xdebug.default_enable = 1" >> /etc/php/7.0/fpm/conf.d/xdebug.ini
+    echo "xdebug.profiler_enable= "$PHP_XDEBUG_PROFILER_ENABLE >> /etc/php/7.0/fpm/conf.d/xdebug.ini
+    echo "xdebug.profiler_enable_trigger="$PHP_XDEBUG_PROFILER_ENABLE_TRIGGER >> /etc/php/7.0/fpm/conf.d/xdebug.ini
+    echo 'xdebug.profiler_output_dir="'$PHP_XDEBUG_PROFILER_DIR'"' >> /usr/local/etc/php/conf.d/xdebug.ini
+    echo "xdebug.remote_autostart = "$PHP_XDEBUG_REMOTE_AUTOSTART >> /etc/php/7.0/fpm/conf.d/xdebug.ini
+    echo "xdebug.remote_connect_back = "$PHP_XDEBUG_REMOTE_CONNECT_BACK >> /etc/php/7.0/fpm/conf.d/xdebug.ini
+    echo "xdebug.remote_enable = "$PHP_XDEBUG_REMOTE_ENABLE >> /etc/php/7.0/fpm/conf.d/xdebug.ini
+    echo "xdebug.remote_handler = "$PHP_XDEBUG_REMOTE_HANDLER >> /etc/php/7.0/fpm/conf.d/xdebug.ini
+    echo "xdebug.remote_host = "$PHP_XDEBUG_REMOTE_HOST >> /etc/php/7.0/fpm/conf.d/xdebug.ini
+    echo "xdebug.remote_port = "$PHP_XDEBUG_REMOTE_PORT >> /etc/php/7.0/fpm/conf.d/xdebug.ini
+    PHP_LOG_LEVEL=debug
+    echo '**** DEBUGGING MODE ACTIVATED: Please use your IDE to connect to: '{$PHP_XDEBUG_REMOTE_HOST}':'{$PHP_XDEBUG_REMOTE_PORT}
+    if [ "$PHP_XDEBUG_PROFILER_ENABLE" = "1" ]; then
+      echo '**** PROFILING MODE ACTIVATED: Please find the profiler logs at: '$PHP_XDEBUG_PROFILER_DIR
+      mkdir -p $PHP_XDEBUG_PROFILER_DIR
+      chown -R nginx $PHP_XDEBUG_PROFILER_DIR
+    fi
+    sed -i -e "s/zend_extension=xdebug.so/;zend_extension=xdebug.so/g" /etc/php/7.0/fpm/conf.d/xdebug.ini
+  fi
+
+ #### Disable Extensions
+
+ if [ "$DEBUG_SMTP" = "TRUE" ] || [ "DEBUG_SMTP" = "true" ] || [ "DEBUG_MODE" = "true" ] || [ "DEBUG_MODE" = "TRUE" ];  then
+    ENABLE_SMTP=FALSE
+    echo 'sendmail_path="/usr/local/bin/mhsendmail"' > /etc/php/7.0/fpm/conf.d/smtp.ini
+ fi
+ 
+### SMTP Config
+  if [ "$ENABLE_SMTP" = "TRUE" ] || [ "$ENABLE_SMTP" = "true" ];  then
+    echo 'sendmail_path="/usr/bin/msmtp -C /etc/msmtp -t "' > /etc/php/7.0/fpm/conf.d/smtp.ini
+  fi
+
+  sed -i -e "s/<PHP_LOG_LEVEL>/$PHP_LOG_LEVEL/g" /etc/php/7.0/fpm/php-fpm.conf
+  mkdir -p /tmp/state
+  touch /tmp/state/20-php-fpm-init
