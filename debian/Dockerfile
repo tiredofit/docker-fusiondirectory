@@ -1,5 +1,5 @@
 FROM tiredofit/debian:stretch
-MAINTAINER Dave Conroy <daveconroy@selfdesign.org>
+LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ### Set Environment Variables
   ENV FUSIONDIRECTORY_VERSION=1.2
