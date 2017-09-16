@@ -1,12 +1,18 @@
 #!/usr/bin/with-contenv bash
 
+  ## Set Debug Mode
+  if [ "$DEBUG_MODE" = "TRUE" ] || [ "$DEBUG_MODE" = "true" ];  then
+    set -x
+  fi
+
+
   ### Adjust NGINX Runtime Variables
   UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:="2G"}
   sed -i -e "s/<UPLOAD_MAX_SIZE>/$UPLOAD_MAX_SIZE/g" /etc/nginx/nginx.conf
   
   ### FusionDirectory
   ### Sanity Test, Set Default Environment Variables
-  ENABLE_ARGONAUT=${ENABLE_ARGONAUT-"false"}
+  ENABLE_ARGONAUT=${ENABLE_ARGONAUT-"FALSE"}
   LDAP_ADMIN_PASSWORD=${LDAP_ENV_LDAP_ADMIN_PASSWORD:-${LDAP_ADMIN_PASSWORD}}
   LDAP_COMM_PORT=${LDAP_COMM_PORT:-389}
   LDAP_DOMAIN=${LDAP_ENV_LDAP_DOMAIN:-${LDAP_DOMAIN}}
@@ -14,212 +20,212 @@
   LDAP_SCHEME=${LDAP_SCHEME:-"ldap"}
   LDAP_TLS=${LDAP_TLS:-"false"}
   LDAP_TLS=${LDAP_ENV_LDAP_TLS:-${LDAP_TLS}}
-  PLUGIN_ALIAS=${PLUGIN_ALIAS:-false}
-  PLUGIN_APPLICATIONS=${PLUGIN_APPLICATIONS:-false}
-  PLUGIN_ARGONAUT=${PLUGIN_ALIAS:-false}
-  PLUGIN_AUDIT=${PLUGIN_ALIAS:-false}
-  PLUGIN_AUTOFS=${PLUGIN_ALIAS:-false}
-  PLUGIN_CERTIFICATES=${PLUGIN_ALIAS:-false}
-  PLUGIN_COMMUNITY=${PLUGIN_ALIAS:-false}
-  PLUGIN_CYRUS=${PLUGIN_CYRUS:-false}
-  PLUGIN_DEBCONF=${PLUGIN_DEBCONF:-false}
-  PLUGIN_DEVELOPERS=${PLUGIN_DEVELOPERS:-false}
-  PLUGIN_DHCP=${PLUGIN_DHCP:-false}
-  PLUGIN_DNS=${PLUGIN_DNS:-false}
-  PLUGIN_DOVECOT=${PLUGIN_DOVECOT:-false}
-  PLUGIN_DSA=${PLUGIN_DSA:-false}
-  PLUGIN_EJBCA=${PLUGIN_EJBCA:-false}
-  PLUGIN_FAI=${PLUGIN_FAI:-false}
-  PLUGIN_FREERADIUS=${PLUGIN_FREERADIUS:-false}
-  PLUGIN_FUSIONINVENTORY=${PLUGIN_FUSIONINVENTORY:-false}
-  PLUGIN_GPG=${PLUGIN_GPG:-false}
-  PLUGIN_IPMI=${PLUGIN_IPMI:-false}
-  PLUGIN_LDAPDUMP=${PLUGIN_LDAPDUMP:-false}
-  PLUGIN_LDAPMANAGER=${PLUGIN_LDAPMANAGER:-false}
-  PLUGIN_MAIL=${PLUGIN_MAIL:-false}
-  PLUGIN_MIXEDGROUPS=${PLUGIN_MIXEDGROUPS:-false}
-  PLUGIN_NAGIOS=${PLUGIN_NAGIOS:-false}
-  PLUGIN_NETGROUPS=${PLUGIN_NETGROUPS:-false}
-  PLUGIN_NEWSLETTER=${PLUGIN_NEWSLETTER:-false}
-  PLUGIN_OPSI=${PLUGIN_OPSI:-false}
-  PLUGIN_PERSONAL=${PLUGIN_PERSONAL:-false}
-  PLUGIN_POSIX=${PLUGIN_POSIX:-false}
-  PLUGIN_POSTFIX=${PLUGIN_POSTFIX:-false}
-  PLUGIN_PPOLICY=${PLUGIN_PPOLICY:-false}
-  PLUGIN_PUPPET=${PLUGIN_PUPPET:-false}
-  PLUGIN_PUREFTPD=${PLUGIN_PUREFTPD:-false}
-  PLUGIN_QUOTA=${PLUGIN_QUOTA:-false}
-  PLUGIN_RENATER_PARTAGE=${PLUGIN_RENATER_PARTAGE:-false}
-  PLUGIN_REPOSITORY=${PLUGIN_REPOSITORY:-false}
-  PLUGIN_SAMBA=${PLUGIN_SAMBA:-false}
-  PLUGIN_SOGO=${PLUGIN_SOGO:-false}
-  PLUGIN_SPAMASSASSIN=${PLUGIN_SPAMASSASSIN:-false}
-  PLUGIN_SQUID=${PLUGIN_SQUID:-false}
-  PLUGIN_SSH=${PLUGIN_SSH:-false}
-  PLUGIN_SUBCONTRACTING=${PLUGIN_SUBCONTRACTING:-false}
-  PLUGIN_SUDO=${PLUGIN_SUDO:-false}
-  PLUGIN_SUPANN=${PLUGIN_SUPANN:-false}
-  PLUGIN_SYMPA=${PLUGIN_SYMPA:-false}
-  PLUGIN_SYSTEMS=${PLUGIN_SYSTEMS:-false}
-  PLUGIN_USER_REMINDER=${PLUGIN_USER_REMINDER:-false}
-  PLUGIN_WEBLINK=${PLUGIN_WEBLINK:-false}
-  PLUGIN_WEBSERVICE=${PLUGIN_WEBSERVICE:-false}
+  PLUGIN_ALIAS=${PLUGIN_ALIAS:-"FALSE"}
+  PLUGIN_APPLICATIONS=${PLUGIN_APPLICATIONS:-"FALSE"}
+  PLUGIN_ARGONAUT=${PLUGIN_ARGONAUT:-"FALSE"}
+  PLUGIN_AUDIT=${PLUGIN_AUDIT:-"FALSE"}
+  PLUGIN_AUTOFS=${PLUGIN_AUTOFS:-"FALSE"}
+  PLUGIN_CERTIFICATES=${PLUGIN_CERTIFICATES:-"FALSE"}
+  PLUGIN_COMMUNITY=${PLUGIN_COMMUNITY:-"FALSE"}
+  PLUGIN_CYRUS=${PLUGIN_CYRUS:-"FALSE"}
+  PLUGIN_DEBCONF=${PLUGIN_DEBCONF:-"FALSE"}
+  PLUGIN_DEVELOPERS=${PLUGIN_DEVELOPERS:-"FALSE"}
+  PLUGIN_DHCP=${PLUGIN_DHCP:-"FALSE"}
+  PLUGIN_DNS=${PLUGIN_DNS:-"FALSE"}
+  PLUGIN_DOVECOT=${PLUGIN_DOVECOT:-"FALSE"}
+  PLUGIN_DSA=${PLUGIN_DSA:-"FALSE"}
+  PLUGIN_EJBCA=${PLUGIN_EJBCA:-"FALSE"}
+  PLUGIN_FAI=${PLUGIN_FAI:-"FALSE"}
+  PLUGIN_FREERADIUS=${PLUGIN_FREERADIUS:-"FALSE"}
+  PLUGIN_FUSIONINVENTORY=${PLUGIN_FUSIONINVENTORY:-"FALSE"}
+  PLUGIN_GPG=${PLUGIN_GPG:-"FALSE"}
+  PLUGIN_IPMI=${PLUGIN_IPMI:-"FALSE"}
+  PLUGIN_LDAPDUMP=${PLUGIN_LDAPDUMP:-"FALSE"}
+  PLUGIN_LDAPMANAGER=${PLUGIN_LDAPMANAGER:-"FALSE"}
+  PLUGIN_MAIL=${PLUGIN_MAIL:-"FALSE"}
+  PLUGIN_MIXEDGROUPS=${PLUGIN_MIXEDGROUPS:-"FALSE"}
+  PLUGIN_NAGIOS=${PLUGIN_NAGIOS:-"FALSE"}
+  PLUGIN_NETGROUPS=${PLUGIN_NETGROUPS:-"FALSE"}
+  PLUGIN_NEWSLETTER=${PLUGIN_NEWSLETTER:-"FALSE"}
+  PLUGIN_OPSI=${PLUGIN_OPSI:-"FALSE"}
+  PLUGIN_PERSONAL=${PLUGIN_PERSONAL:-"FALSE"}
+  PLUGIN_POSIX=${PLUGIN_POSIX:-"FALSE"}
+  PLUGIN_POSTFIX=${PLUGIN_POSTFIX:-"FALSE"}
+  PLUGIN_PPOLICY=${PLUGIN_PPOLICY:-"FALSE"}
+  PLUGIN_PUPPET=${PLUGIN_PUPPET:-"FALSE"}
+  PLUGIN_PUREFTPD=${PLUGIN_PUREFTPD:-"FALSE"}
+  PLUGIN_QUOTA=${PLUGIN_QUOTA:-"FALSE"}
+  PLUGIN_RENATER_PARTAGE=${PLUGIN_RENATER_PARTAGE:-"FALSE"}
+  PLUGIN_REPOSITORY=${PLUGIN_REPOSITORY:-"FALSE"}
+  PLUGIN_SAMBA=${PLUGIN_SAMBA:-"FALSE"}
+  PLUGIN_SOGO=${PLUGIN_SOGO:-"FALSE"}
+  PLUGIN_SPAMASSASSIN=${PLUGIN_SPAMASSASSIN:-"FALSE"}
+  PLUGIN_SQUID=${PLUGIN_SQUID:-"FALSE"}
+  PLUGIN_SSH=${PLUGIN_SSH:-"FALSE"}
+  PLUGIN_SUBCONTRACTING=${PLUGIN_SUBCONTRACTING:-"FALSE"}
+  PLUGIN_SUDO=${PLUGIN_SUDO:-"FALSE"}
+  PLUGIN_SUPANN=${PLUGIN_SUPANN:-"FALSE"}
+  PLUGIN_SYMPA=${PLUGIN_SYMPA:-"FALSE"}
+  PLUGIN_SYSTEMS=${PLUGIN_SYSTEMS:-"FALSE"}
+  PLUGIN_USER_REMINDER=${PLUGIN_USER_REMINDER:-"FALSE"}
+  PLUGIN_WEBLINK=${PLUGIN_WEBLINK:-"FALSE"}
+  PLUGIN_WEBSERVICE=${PLUGIN_WEBSERVICE:-"FALSE"}
 
 
 
 #### Plugin Dependencies Override
  ### Admin Plugins
   ## Audit
-  if [ "$PLUGIN_AUDIT" != "FALSE" ] || [ "$PLUGIN_AUDIT" != "false" ];  then
+  if [[ "$PLUGIN_AUDIT" != "FALSE" ]] && [[ "$PLUGIN_AUDIT" != "false" ]];  then
     export PLUGIN_ARGONAUT=TRUE
   fi
 
   ## LDAP Dump
-  if [ "$PLUGIN_LDAPDUMP" != "FALSE" ] || [ "$PLUGIN_LDAPDUMP" != "false" ];  then
+  if [[ "$PLUGIN_LDAPDUMP" != "FALSE" ]] && [[ "$PLUGIN_LDAPDUMP" != "false" ]];  then
     :
   fi
 
   ## LDAP Manager
-  if [ "$PLUGIN_LDAPMANAGER" != "FALSE" ] || [ "$PLUGIN_LDAPMANAGER" != "false" ];  then
+  if [[ "$PLUGIN_LDAPMANAGER" != "FALSE" ]] && [[ "$PLUGIN_LDAPMANAGER" != "false" ]];  then
     :
   fi
 
   ## User Reminder
-  if [ "$PLUGIN_USER_REMINDER" != "FALSE" ] || [ "$PLUGIN_USER_REMINDER" != "false" ];  then
+  if [[ "$PLUGIN_USER_REMINDER" != "FALSE" ]] && [[ "$PLUGIN_USER_REMINDER" != "false" ]];  then
     export PLUGIN_ARGONAUT=TRUE
   fi
 
   ## Webservice
-  if [ "$PLUGIN_WEBSERVICE" != "FALSE" ] || [ "$PLUGIN_WEBSERVICE" != "false" ];  then
+  if [[ "$PLUGIN_WEBSERVICE" != "FALSE" ]] && [[ "$PLUGIN_WEBSERVICE" != "false" ]];  then
     :
   fi
 
  ### Mail Plugins
   ## Cyrus
-  if [ "$PLUGIN_CYRUS" != "FALSE" ] || [ "$PLUGIN_CYRUS" != "false" ];  then
+  if [[ "$PLUGIN_CYRUS" != "FALSE" ]] && [[ "$PLUGIN_CYRUS" != "false" ]];  then
     export PLUGIN_MAIL=TRUE
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Dovecot
-  if [ "$PLUGIN_DOVECOT" != "FALSE" ] || [ "$PLUGIN_DOVECOT" != "false" ];  then
+  if [[ "$PLUGIN_DOVECOT" != "FALSE" ]] && [[ "$PLUGIN_DOVECOT" != "false" ]];  then
     export PLUGIN_MAIL=TRUE
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Postfix
-  if [ "$PLUGIN_POSTFIX" != "FALSE" ] || [ "$PLUGIN_POSTFIX" != "false" ];  then
+  if [[ "$PLUGIN_POSTFIX" != "FALSE" ]] && [[ "$PLUGIN_POSTFIX" != "false" ]];  then
     export PLUGIN_MAIL=TRUE
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Sogo
-  if [ "$PLUGIN_SOGO" != "FALSE" ] || [ "$PLUGIN_SOGO" != "false" ];  then
+  if [[ "$PLUGIN_SOGO" != "FALSE" ]] && [[ "$PLUGIN_SOGO" != "false" ]];  then
     export PLUGIN_MAIL=TRUE
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Sympa
-  if [ "$PLUGIN_SYMPA" != "FALSE" ] || [ "$PLUGIN_SYMPA" != "false" ];  then
+  if [[ "$PLUGIN_SYMPA" != "FALSE" ]] && [[ "$PLUGIN_SYMPA" != "false" ]];  then
     export PLUGIN_ALIAS=TRUE
   fi
 
   ## SpamAssassin
-  if [ "$PLUGIN_SPAMASSASSIN" != "FALSE" ] || [ "$PLUGIN_SPAMASSASSIN" != "false" ];  then
+  if [[ "$PLUGIN_SPAMASSASSIN" != "FALSE" ]] && [[ "$PLUGIN_SPAMASSASSIN" != "false" ]];  then
     export PLUGIN_MAIL=TRUE
     export PLUGIN_SYSTEMS=TRUE
   fi
 
  ### Services Plugins
   ## AutoFS
-  if [ "$PLUGIN_AUTOFS" != "FALSE" ] || [ "$PLUGIN_AUTOFS" != "false" ];  then
+  if [[ "$PLUGIN_AUTOFS" != "FALSE" ]] && [[ "$PLUGIN_AUTOFS" != "false" ]];  then
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## DSA
-  if [ "$PLUGIN_DSA" != "FALSE" ] || [ "$PLUGIN_DSA" != "false" ];  then
+  if [[ "$PLUGIN_DSA" != "FALSE" ]] && [[ "$PLUGIN_DSA" != "false" ]];  then
     :
   fi
 
   ## DHCP
-  if [ "$PLUGIN_DHCP" != "FALSE" ] || [ "$PLUGIN_DHCP" != "false" ];  then
+  if [[ "$PLUGIN_DHCP" != "FALSE" ]] && [[ "$PLUGIN_DHCP" != "false" ]];  then
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## DNS
-  if [ "$PLUGIN_DNS" != "FALSE" ] || [ "$PLUGIN_DNS" != "false" ];  then
+  if [[ "$PLUGIN_DNS" != "FALSE" ]] && [[ "$PLUGIN_DNS" != "false" ]];  then
     :
   fi
 
   ## Ejbca
-  if [ "$PLUGIN_EJBCA" != "FALSE" ] || [ "$PLUGIN_EJBCA" != "false" ];  then
+  if [[ "$PLUGIN_EJBCA" != "FALSE" ]] && [[ "$PLUGIN_EJBCA" != "false" ]];  then
     :
   fi
 
   ## FusionInventory
-  if [ "$PLUGIN_FUSIONINVENTORY" != "FALSE" ] || [ "$PLUGIN_FUSIONINVENTORY" != "false" ];  then
+  if [[ "$PLUGIN_FUSIONINVENTORY" != "FALSE" ]] && [[ "$PLUGIN_FUSIONINVENTORY" != "false" ]];  then
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## GPG
-  if [ "$PLUGIN_GPG" != "FALSE" ] || [ "$PLUGIN_GPG" != "false" ];  then
+  if [[ "$PLUGIN_GPG" != "FALSE" ]] && [[ "$PLUGIN_GPG" != "false" ]];  then
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## IPMI
-  if [ "$PLUGIN_IPMI" != "FALSE" ] || [ "$PLUGIN_IPMI" != "false" ];  then
+  if [[ "$PLUGIN_IPMI" != "FALSE" ]] && [[ "$PLUGIN_IPMI" != "false" ]];  then
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## NetGroups
-  if [ "$PLUGIN_NETGROUPS" != "FALSE" ] || [ "$PLUGIN_NETGROUPS" != "false" ];  then
+  if [[ "$PLUGIN_NETGROUPS" != "FALSE" ]] && [[ "$PLUGIN_NETGROUPS" != "false" ]];  then
     :
   fi
 
   ## PPolicy
-  if [ "$PLUGIN_PPOLICY" != "FALSE" ] || [ "$PLUGIN_PPOLICY" != "false" ];  then
+  if [[ "$PLUGIN_PPOLICY" != "FALSE" ]] && [[ "$PLUGIN_PPOLICY" != "false" ]];  then
     :
   fi
 
   ## Quota
-  if [ "$PLUGIN_QUOTA" != "FALSE" ] || [ "$PLUGIN_QUOTA" != "false" ];  then
+  if [[ "$PLUGIN_QUOTA" != "FALSE" ]] && [[ "$PLUGIN_QUOTA" != "false" ]];  then
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Repository
-  if [ "$PLUGIN_REPOSITORY" != "FALSE" ] || [ "$PLUGIN_REPOSITORY" != "false" ];  then
+  if [[ "$PLUGIN_REPOSITORY" != "FALSE" ]] && [[ "$PLUGIN_REPOSITORY" != "false" ]];  then
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Squid
-  if [ "$PLUGIN_SQUID" != "FALSE" ] || [ "$PLUGIN_SQUID" != "false" ];  then
+  if [[ "$PLUGIN_SQUID" != "FALSE" ]] && [[ "$PLUGIN_SQUID" != "false" ]];  then
     :
   fi
 
   ## Sudo
-  if [ "$PLUGIN_SUDO" != "FALSE" ] || [ "$PLUGIN_SUDO" != "false" ];  then
+  if [[ "$PLUGIN_SUDO" != "FALSE" ]] && [[ "$PLUGIN_SUDO" != "false" ]];  then
     :
   fi
 
   ## Weblink
-  if [ "$PLUGIN_WEBLINK" != "FALSE" ] || [ "$PLUGIN_WEBLINK" != "false" ];  then
+  if [[ "$PLUGIN_WEBLINK" != "FALSE" ]] && [[ "$PLUGIN_WEBLINK" != "false" ]];  then
     :
   fi
 
  ### Deployment Plugins
   ## Debconf
-  if [ "$PLUGIN_DEBCONF" != "FALSE" ] || [ "$PLUGIN_DEBCONF" != "false" ];  then
+  if [[ "$PLUGIN_DEBCONF" != "FALSE" ]] && [[ "$PLUGIN_DEBCONF" != "false" ]];  then
     :
   fi
 
   ## FAI
-  if [ "$PLUGIN_FAI" != "FALSE" ] || [ "$PLUGIN_FAI" != "false" ];  then
+  if [[ "$PLUGIN_FAI" != "FALSE" ]] && [[ "$PLUGIN_FAI" != "false" ]];  then
     export PLUGIN_ARGONAUT=TRUE
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## OPSI
-  if [ "$PLUGIN_OPSI" != "FALSE" ] || [ "$PLUGIN_OPSI" != "false" ];  then
+  if [[ "$PLUGIN_OPSI" != "FALSE" ]] && [[ "$PLUGIN_OPSI" != "false" ]];  then
     export PLUGIN_ARGONAUT=TRUE
     export PLUGIN_DNS=TRUE
     export PLUGIN_SAMBA=TRUE
@@ -227,74 +233,74 @@
   fi
 
   ## Puppet
-  if [ "$PLUGIN_PUPPET" != "FALSE" ] || [ "$PLUGIN_PUPPET" != "false" ];  then
+  if [[ "$PLUGIN_PUPPET" != "FALSE" ]] && [[ "$PLUGIN_PUPPET" != "false" ]];  then
     :
   fi
 
  ### System Management Plugins
   ## Argonaut
-  if [ "$PLUGIN_ARGONAUT" != "FALSE" ] || [ "$PLUGIN_SYSTEMS" != "false" ];  then
+  if [[ "$PLUGIN_ARGONAUT" != "FALSE" ]] && [[ "$PLUGIN_SYSTEMS" != "false" ]];  then
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Systems
-  if [ "$PLUGIN_SYSTEMS" != "FALSE" ] || [ "$PLUGIN_SYSTEMS" != "false" ];  then
+  if [[ "$PLUGIN_SYSTEMS" != "FALSE" ]] && [[ "$PLUGIN_SYSTEMS" != "false" ]];  then
     export PLUGIN_ARGONAUT=TRUE
   fi
 
   ## Samba
-  if [ "$PLUGIN_SAMBA" != "FALSE" ] || [ "$PLUGIN_SAMBA" != "false" ];  then
+  if [[ "$PLUGIN_SAMBA" != "FALSE" ]] && [[ "$PLUGIN_SAMBA" != "false" ]];  then
     export PLUGIN_SYSTEMS=TRUE
   fi
 
  ### User Management Plugins
   ## Certificates
-  if [ "$PLUGIN_CERTIFICATES" != "FALSE" ] || [ "$PLUGIN_CERTIFICATES" != "false" ];  then
+  if [[ "$PLUGIN_CERTIFICATES" != "FALSE" ]] && [[ "$PLUGIN_CERTIFICATES" != "false" ]];  then
     :
   fi
 
   ## FreeRadius
-  if [ "$PLUGIN_FREERADIUS" != "FALSE" ] || [ "$PLUGIN_FREERADIUS" != "false" ];  then
+  if [[ "$PLUGIN_FREERADIUS" != "FALSE" ]] && [[ "$PLUGIN_FREERADIUS" != "false" ]];  then
     :
   fi
 
   ## Mixed Groups
-  if [ "$PLUGIN_MIXEDGROUPS" != "FALSE" ] || [ "$PLUGIN_MIXEDGROUPS" != "false" ];  then
+  if [[ "$PLUGIN_MIXEDGROUPS" != "FALSE" ]] && [[ "$PLUGIN_MIXEDGROUPS" != "false" ]];  then
     :
   fi
 
   ## Nagios
-  if [ "$PLUGIN_NAGIOS" != "FALSE" ] || [ "$PLUGIN_MIXEDGROUPS" != "false" ];  then
+  if [[ "$PLUGIN_NAGIOS" != "FALSE" ]] && [[ "$PLUGIN_MIXEDGROUPS" != "false" ]];  then
     :
   fi
 
   ## Newsletter
-  if [ "$PLUGIN_NEWSLETTER" != "FALSE" ] || [ "$PLUGIN_NEWSLETTER" != "false" ];  then
+  if [[ "$PLUGIN_NEWSLETTER" != "FALSE" ]] && [[ "$PLUGIN_NEWSLETTER" != "false" ]];  then
     :
   fi
 
   ## Personal
-  if [ "$PLUGIN_PERSONAL" != "FALSE" ] || [ "$PLUGIN_PERSONAL" != "false" ];  then
+  if [[ "$PLUGIN_PERSONAL" != "FALSE" ]] && [[ "$PLUGIN_PERSONAL" != "false" ]];  then
     :
   fi
 
   ## PureFTPd
-  if [ "$PLUGIN_PUREFTPD" != "FALSE" ] || [ "$PLUGIN_PUREFTPD" != "false" ];  then
+  if [[ "$PLUGIN_PUREFTPD" != "FALSE" ]] && [[ "$PLUGIN_PUREFTPD" != "false" ]];  then
     :
   fi
 
   ## Quota
-  if [ "$PLUGIN_QUOTA" != "FALSE" ] || [ "$PLUGIN_QUOTA" != "false" ];  then
+  if [[ "$PLUGIN_QUOTA" != "FALSE" ]] && [[ "$PLUGIN_QUOTA" != "false" ]];  then
     export PLUGIN_SYSTEMS=TRUE
   fi
 
   ## Subcontracting
-  if [ "$PLUGIN_SUBCONTRACTING" != "FALSE" ] || [ "$PLUGIN_SUBCONTRACTING" != "false" ];  then
+  if [[ "$PLUGIN_SUBCONTRACTING" != "FALSE" ]] && [[ "$PLUGIN_SUBCONTRACTING" != "false" ]];  then
     :
   fi
 
   ## Supann
-  if [ "$PLUGIN_SUPANN" != "FALSE" ] || [ "$PLUGIN_SUPANN" != "false" ];  then
+  if [[ "$PLUGIN_SUPANN" != "FALSE" ]] && [[ "$PLUGIN_SUPANN" != "false" ]];  then
     :
   fi
 
@@ -358,7 +364,7 @@
 
 ### Install Plugins
   echo '/assets/fusiondirectory-plugins.tar.gz' | fusiondirectory-setup --set-fd_home=/www/fusiondirectory --write-vars --install-plugins --check-directories --update-locales --update-cache  >/dev/null
-  rm -rf /assets/fusiondirectory-plugins.tar.gz /assets/fusiondirectory-plugins
+  #rm -rf /assets/fusiondirectory-plugins.tar.gz /assets/fusiondirectory-plugins
 
 ### Configuration File Building
   if [ -z ${LDAP_DOMAIN} ] ; then printf "\n\nLDAP_DOMAIN is not defined!\n"; exit 1; fi;
@@ -393,13 +399,6 @@
   cat <<EOF > /etc/fusiondirectory/fusiondirectory.conf
 <?xml version="1.0"?>
 <conf>
-  <!-- Main section **********************************************************
-       The main section defines global settings, which might be overridden by
-       each location definition inside.
-
-       For more information about the configuration parameters, take a look at
-       the FusionDirectory.conf(5) manual page.
-  -->
   <main default="${INSTANCE}"
         logging="TRUE"
         displayErrors="FALSE"
@@ -408,7 +407,7 @@
         debugLevel="0"
     >
 
-    <!-- Location definition -->
+
     <location name="${INSTANCE}"
     >
         <referral URI="${LDAP_SCHEME}://${LDAP_HOST}:${LDAP_COMM_PORT}/${suffix}"
@@ -420,7 +419,7 @@
 EOF
 
 #### Disable or Enable Argonaut Server from Starting
-  if [ "$ENABLE_ARGONAUT" = "FALSE" ] || [ "$ENABLE_ARGONAUT" = "false" ];  then
+  if [[ "$ENABLE_ARGONAUT" = "FALSE" ]] && [[ "$ENABLE_ARGONAUT" = "false" ]];  then
     s6-svc -d /var/run/s6/services/30-argonaut
   else
     sed -i -e "s/#BASE	dc=example,dc=com/BASE   ${BASE_DN}/g" /etc/openldap/ldap.conf
