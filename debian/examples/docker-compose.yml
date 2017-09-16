@@ -1,69 +1,23 @@
 version: '2'
 services:
-  openldap-fusiondirectory-dc:
+  
+  fusiondirectory-app-:
+    container_name: fusiondirectory-app
     restart: always
-    container_name: openldap-fusiondirectory-dc
-    image: registry.selfdesign.org/docker/openldap-fusiondirectory:2.2-test
-    environment:
-      - HOSTNAME=dc11.selfdesign.org     
-      - CONTAINER_LOG_LEVEL=5
-      - LDAP_LOG_LEVEL=16384
-      - LDAP_ORGANISATION="Self Design Learning Foundation"
-      - LDAP_DOMAIN=selfdesign.org
-      - LDAP_ADMIN_PASSWORD=password
-      - LDAP_CONFIG_PASSWORD=password
-
-      - LDAP_READONLY_USER=true
-      - LDAP_READONLY_USER_USERNAME=reader
-      - LDAP_READONLY_USER_PASSWORD=reader
-
-      - LDAP_BACKEND=hdb
-
-      - FD_ADMIN_PASSWORD=password
-
-      - LDAP_TLS=true
-      - LDAP_TLS_CRT_FILENAME=ldap.crt
-      - LDAP_TLS_KEY_FILENAME=ldap.key
-      - LDAP_TLS_CA_CRT_FILENAME=ca.crt
-      - LDAP_TLS_ENFORCE=false
-      - LDAP_TLS_CIPHER_SUITE=SECURE256:-VERS-SSL3.0
-      - LDAP_TLS_PROTOCOL_MIN=3.1
-      - LDAP_TLS_VERIFY_CLIENT=demand
-      
-      - LDAP_REPLICATION=false
-      - LDAP_REPLICATION_CONFIG_SYNCPROV=binddn="cn=admin,cn=config" bindmethod=simple credentials="password" searchbase="cn=config" type=refreshAndPersist retry="60 +" timeout=1 starttls=critical
-      - LDAP_REPLICATION_DB_SYNCPROV=binddn="cn=admin,dc=selfdesign,dc=org" bindmethod=simple credentials="password" searchbase="dc=selfdesign,dc=org" type=refreshAndPersist interval=00:00:00:10 retry="60 +" timeout=1 starttls=critical
-      - LDAP_REPLICATION_HOSTS=#PYTHON2BASH:['ldap://dc19.selfdesign.org','ldap://home.tiredofit.ca']
-      - LDAP_REMOVE_CONFIG_AFTER_SETUP=false
-      - LDAP_SSL_HELPER_PREFIX=ldap
-    tty: true
-    stdin_open: true
-    volumes:
-      - ./data:/var/lib/ldap
-      - ./config:/etc/ldap/slapd.d
-      - ./certs/:/container/service/slapd/assets/certs/
-    networks:
-      - proxy-tier
-
-
-  fusiondirectory-app-dc:
-    container_name: fusiondirectory-app-dc
-    restart: always
-    #image: registry.selfdesign.org/docker/fusiondirectory:apache-1.0
-    image: registry.selfdesign.org/docker/fusiondirectory:3.0
+    image: tiredofit/fusiondirectory:debian
     depends_on:
-      - openldap-fusiondirectory-dc
+      - openldap-fusiondirectory
     environment:
-      - VIRTUAL_HOST=dc11.selfdesign.org
+      - VIRTUAL_HOST=fusiondirectory.example.org
       - VIRTUAL_NETWORK=nginx-proxy
       - VIRTUAL_PORT=80
-      - LETSENCRYPT_HOST=dc11.selfdesign.org
-      - LETSENCRYPT_EMAIL=daveconroy@selfdesign.org
+      - LETSENCRYPT_HOST=fusiondirectory.example.org
+      - LETSENCRYPT_EMAIL=yourname@example.org
 
-      - ZABBIX_HOSTNAME=dc11.selfdesign.org 
+      - ZABBIX_HOSTNAME=fusiondirectory-app
 
-      - LDAP_DOMAIN=selfdesign.org
-      - LDAP_HOST=openldap-fusiondirectory-dc
+      - LDAP_DOMAIN=example.org
+      - LDAP_HOST=openldap-fusiondirectory
       - LDAP_ADMIN_PASSWORD=password
     volumes:
       # Can also create just specific files following structure to map to ./custom:/assets/fusiondirectory

@@ -1,55 +1,10 @@
 version: '2'
 services:
-  openldap-fusiondirectory:
-    restart: always
-    container_name: openldap-fusiondirectory
-    image: 
-    environment:
-      - HOSTNAME=host1.example.org
-      - CONTAINER_LOG_LEVEL=5
-      - LDAP_LOG_LEVEL=16384
-      - LDAP_ORGANISATION="Example Organization"
-      - LDAP_DOMAIN=example.org
-      - LDAP_ADMIN_PASSWORD=password
-      - LDAP_CONFIG_PASSWORD=password
-
-      - LDAP_READONLY_USER=true
-      - LDAP_READONLY_USER_USERNAME=reader
-      - LDAP_READONLY_USER_PASSWORD=reader
-
-      - LDAP_BACKEND=hdb
-
-      - FD_ADMIN_PASSWORD=password
-
-      - LDAP_TLS=true
-      - LDAP_TLS_CRT_FILENAME=ldap.crt
-      - LDAP_TLS_KEY_FILENAME=ldap.key
-      - LDAP_TLS_CA_CRT_FILENAME=ca.crt
-      - LDAP_TLS_ENFORCE=false
-      - LDAP_TLS_CIPHER_SUITE=SECURE256:-VERS-SSL3.0
-      - LDAP_TLS_PROTOCOL_MIN=3.1
-      - LDAP_TLS_VERIFY_CLIENT=demand
-      
-      - LDAP_REPLICATION=false
-      - LDAP_REPLICATION_CONFIG_SYNCPROV=binddn="cn=admin,cn=config" bindmethod=simple credentials="password" searchbase="cn=config" type=refreshAndPersist retry="60 +" timeout=1 starttls=critical
-      - LDAP_REPLICATION_DB_SYNCPROV=binddn="cn=admin,dc=example,dc=org" bindmethod=simple credentials="password" searchbase="dc=example,dc=org" type=refreshAndPersist interval=00:00:00:10 retry="60 +" timeout=1 starttls=critical
-      - LDAP_REPLICATION_HOSTS=#PYTHON2BASH:['ldap://host1.example.org','ldap://host2.example.org']
-      - LDAP_REMOVE_CONFIG_AFTER_SETUP=false
-      - LDAP_SSL_HELPER_PREFIX=ldap
-    tty: true
-    stdin_open: true
-    volumes:
-      - ./data:/var/lib/ldap
-      - ./config:/etc/ldap/slapd.d
-      - ./certs/:/container/service/slapd/assets/certs/
-    networks:
-      - proxy-tier
-
-
+  
   fusiondirectory-app:
     container_name: fusiondirectory-app
     restart: always
-    image: tiredofit/fusiondirectory
+    image: tiredofit/fusiondirectory:alpine
     depends_on:
       - openldap-fusiondirectory
     environment:
@@ -61,9 +16,35 @@ services:
 
       - ZABBIX_HOSTNAME=fusiondirectory-app
 
-      - LDAP_DOMAIN=example.org
-      - LDAP_HOST=openldap-fusiondirectory
-      - LDAP_ADMIN_PASSWORD=password
+      - ENABLE_ARGONAUT=FALSE
+      - PLUGIN_AUDIT=TRUE
+      - PLUGIN_DSA=TRUE
+      - PLUGIN_LDAPDUMP=TRUE
+      - PLUGIN_LDAPMANAGER=TRUE
+      - PLUGIN_MAIL=TRUE
+      - PLUGIN_PERSONAL=TRUE
+      - PLUGIN_PPOLICY=TRUE
+      - PLUGIN_SSH=TRUE
+      - PLUGIN_SUDO=TRUE
+      - PLUGIN_WEBSERVICE=TRUE
+
+      - LDAP1_DOMAIN=example.org
+      - LDAP1_HOST=openldap-fusiondirectory
+      - LDAP1_ADMIN=admin
+      - LDAP1_ADMIN_PASS=password
+      - LDAP1_NAME=Production
+
+      #- LDAP2_DOMAIN=example2.org
+      #- LDAP2_ADMIN=admin
+      #- LDAP2_HOST=openldap-fusiondirectory2
+      #- LDAP2_ADMIN_PASS=password2
+      #- LDAP2_NAME=Development
+      #- LDAP2_TLS=TRUE
+
+    volumes:
+      - ./logs:/www/logs
+      #- ./custom:/assets/fusiondirectory
+
     networks:
       - proxy-tier
 

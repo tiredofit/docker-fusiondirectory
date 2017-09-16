@@ -4,8 +4,10 @@
 
 This will build a container for [Fusion Directory](https://www.fusiondirectory.org/) a Directory Manager frontend for LDAP.
 
-There are two versions of this image available. One is based on Alpine Linux, and has many more configuration options, and an older 
-Debian based release that has limited functionality.
+* This Container uses a [customized Alpine Linux base](https://hub.docker.com/r/tiredofit/alpine) which includes [s6 overlay](https://github.com/just-containers/s6-overlay) enabled for PID 1 Init capabilities, [zabbix-agent](https://zabbix.org) based on `3.4` compiled for individual container monitoring, Cron also installed along with other tools (bash,curl, less, logrotate, nano, vim) for easier management. It also supports sending to external SMTP servers
+
+Additional Components Inside are Nginx, PHP7.1 w/ APC, OPCache, LDAP extensions
+
 
 [Changelog](CHANGELOG.md)
 
@@ -41,16 +43,8 @@ recommended method of installation.
 
 
 ```bash
-docker pull tiredofit/fusiondirectory:(tag)
+docker pull tiredofit/fusiondirectory
 ```
-
-Tags Available:
-
-
-`alpine` - Alpine Linux Based with the ability to enable and disable various plugins upon container start.
-`debian` - Debian Linux Based with a series of hardcoded plugins installed. 
-`latest` - Tracks the Alpine Release.
-
 
 # Quick Start
 

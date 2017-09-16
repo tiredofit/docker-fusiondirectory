@@ -1,3 +1,7 @@
+## 6.1 2017-09-17 <dave at tiredofit dot ca>
+
+* Update Nginx Configuration
+
 ## 6.0 2017-09-03 <dave at tiredofit dot ca>
 
 * Debian Stretch

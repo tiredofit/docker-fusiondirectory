@@ -5,21 +5,16 @@
     set -x
   fi
 
-
   ### Adjust NGINX Runtime Variables
   UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:="2G"}
   sed -i -e "s/<UPLOAD_MAX_SIZE>/$UPLOAD_MAX_SIZE/g" /etc/nginx/nginx.conf
   
-  ### FusionDirectory
-  ### Sanity Test, Set Default Environment Variables
-  ENABLE_ARGONAUT=${ENABLE_ARGONAUT-"FALSE"}
-  LDAP_ADMIN_PASSWORD=${LDAP_ENV_LDAP_ADMIN_PASSWORD:-${LDAP_ADMIN_PASSWORD}}
-  LDAP_COMM_PORT=${LDAP_COMM_PORT:-389}
-  LDAP_DOMAIN=${LDAP_ENV_LDAP_DOMAIN:-${LDAP_DOMAIN}}
-  LDAP_HOST=${LDAP_PORT_389_TCP_ADDR:-${LDAP_HOST}}
+    ### Sanity Test, Set Default Environment Variables
+  DEBUG_MODE=${DEBUG_MODE:-"FALSE"}
+  ENABLE_ARGONAUT=${ENABLE_ARGONAUT:-"FALSE"}
+  LDAP_DEFAULT=${LDAP_DEFAULT:-${LDAP1_NAME}}
+  LDAP_PORT=${LDAP_PORT:-389}
   LDAP_SCHEME=${LDAP_SCHEME:-"ldap"}
-  LDAP_TLS=${LDAP_TLS:-"false"}
-  LDAP_TLS=${LDAP_ENV_LDAP_TLS:-${LDAP_TLS}}
   PLUGIN_ALIAS=${PLUGIN_ALIAS:-"FALSE"}
   PLUGIN_APPLICATIONS=${PLUGIN_APPLICATIONS:-"FALSE"}
   PLUGIN_ARGONAUT=${PLUGIN_ARGONAUT:-"FALSE"}
@@ -364,59 +359,75 @@
 
 ### Install Plugins
   echo '/assets/fusiondirectory-plugins.tar.gz' | fusiondirectory-setup --set-fd_home=/www/fusiondirectory --write-vars --install-plugins --check-directories --update-locales --update-cache  >/dev/null
-  #rm -rf /assets/fusiondirectory-plugins.tar.gz /assets/fusiondirectory-plugins
+  rm -rf /assets/fusiondirectory-plugins.tar.gz /assets/fusiondirectory-plugins /tmp/fusiondirectory-plugins
+
 
 ### Configuration File Building
-  if [ -z ${LDAP_DOMAIN} ] ; then printf "\n\nLDAP_DOMAIN is not defined!\n"; exit 1; fi;
-  if [ -z ${LDAP_HOST} ] ; then printf "\n\nLDAP_HOST is not defined!\n"; exit 1; fi;
-  if [ -z ${LDAP_ADMIN_PASSWORD} ] ; then printf "\n\nLDAP_ADMIN_PASSWORD is not defined!\n"; exit 1; fi;
+  if [ -z ${LDAP1_DOMAIN} ] ; then printf "\n\nLDAP1_DOMAIN is not defined!\n"; exit 1; fi;
+  if [ -z ${LDAP1_HOST} ] ; then printf "\n\nLDAP1_HOST is not defined!\n"; exit 1; fi;
+  if [ -z ${LDAP1_ADMIN_PASS} ] ; then printf "\n\nLDAP1_ADMIN_PASS is not defined!\n"; exit 1; fi;
+  if [ -z ${LDAP1_NAME} ] ; then printf "\n\nLDAP1_NAME is not defined!\n"; exit 1; fi;
 
-  IFS='.' read -a domain_elems <<< "${LDAP_DOMAIN}"
-
-  suffix=""
-  for elem in "${domain_elems[@]}" ; do
-      if [ "x${suffix}" = x ] ; then
-          suffix="dc=${elem}"
-      else
-          suffix="${suffix},dc=${elem}"
-      fi
-  done
-
-  if [ -z ${LDAP_ADMIN_DN} ] ; then
-      BASE_DN="dc=$(echo ${LDAP_DOMAIN} | sed 's/^\.//; s/\.$//; s/\./,dc=/g')"
-      : ${LDAP_ADMIN:="admin"}
-      LDAP_ADMIN_DN="cn=${LDAP_ADMIN},${BASE_DN}"
-      echo "** LDAP_ADMIN_DN is not defined and set to '${LDAP_ADMIN_DN}'"
-  fi
-
-  if ${LDAP_TLS}; then
-      LDAP_SCHEME="ldaps"
-      LDAP_COMM_PORT=636
-  fi
-
-  
 ### Write Fusiondirectory Configuration
   cat <<EOF > /etc/fusiondirectory/fusiondirectory.conf
 <?xml version="1.0"?>
 <conf>
-  <main default="${INSTANCE}"
+  <main default="${LDAP_DEFAULT}"
         logging="TRUE"
-        displayErrors="FALSE"
+        displayErrors="$DEBUG_MODE"
         forceSSL="FALSE"
         templateCompileDirectory="/var/spool/fusiondirectory/"
         debugLevel="0"
     >
+EOF
 
+    for (( i = 1; i <= 2; i++ ))
+    do
 
-    <location name="${INSTANCE}"
-    >
-        <referral URI="${LDAP_SCHEME}://${LDAP_HOST}:${LDAP_COMM_PORT}/${suffix}"
+        LDAP_HOST=LDAP${i}_HOST
+        LDAP_DOMAIN=LDAP${i}_DOMAIN
+        LDAP_ADMIN_PASS=LDAP${i}_ADMIN_PASS
+        LDAP_ADMIN=LDAP${i}_ADMIN
+        LDAP_NAME=LDAP${i}_NAME
+        LDAP_TLS=LDAP${i}_TLS
+
+        IFS='.' read -a domain_elems <<< "${!LDAP_DOMAIN}"
+
+        suffix=""
+        for elem in "${domain_elems[@]}" ; do
+            if [ "x${suffix}" = x ] ; then
+                suffix="dc=${elem}"
+            else
+                suffix="${suffix},dc=${elem}"
+            fi
+        done
+
+        if [ -z ${!LDAP_ADMIN_DN} ] ; then
+            BASE_DN="dc=$(echo ${!LDAP_DOMAIN} | sed 's/^\.//; s/\.$//; s/\./,dc=/g')"
+            : ${LDAP_ADMIN:="admin"}
+            LDAP_ADMIN_DN="cn=${!LDAP_ADMIN},${BASE_DN}"
+        fi
+
+        if [ "${!LDAP_TLS}" = "TRUE" ] ; then
+            LDAP_SCHEME="ldaps"
+            LDAP_COMM_PORT=636
+        fi
+    
+      cat <<EOF >> /etc/fusiondirectory/fusiondirectory.conf
+
+    <location name="${!LDAP_NAME}">
+        <referral URI="${LDAP_SCHEME}://${!LDAP_HOST}:${LDAP_COMM_PORT}/${suffix}"
                         adminDn="${LDAP_ADMIN_DN}"
-                        adminPassword="${LDAP_ADMIN_PASSWORD}" />
+                        adminPassword="${!LDAP_ADMIN_PASS}" />
     </location>
+EOF
+    done
+
+cat <<EOF >> /etc/fusiondirectory/fusiondirectory.conf
   </main>
 </conf>
 EOF
+
 
 #### Disable or Enable Argonaut Server from Starting
   if [[ "$ENABLE_ARGONAUT" = "TRUE" ]] && [[ "$ENABLE_ARGONAUT" = "true" ]];  then
@@ -434,6 +445,7 @@ EOF
   fi
 
 
+### Set Permissions
   chmod 640 /etc/fusiondirectory/fusiondirectory.conf
   chown root:www-data /etc/fusiondirectory/fusiondirectory.conf
   echo 'Yes' | fusiondirectory-setup --set-fd_home=/www/fusiondirectory --check-directories --check-config --update-cache >/dev/null
