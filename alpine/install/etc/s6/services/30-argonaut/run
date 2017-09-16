@@ -1,0 +1,14 @@
+#!/usr/bin/with-contenv bash
+
+while [ ! -f /tmp/state/00-container-initialized ]
+do
+  sleep 1
+done
+
+if [ ! -f /tmp/state/30-argonaut ]; then
+  echo 'Initialization Complete' >/tmp/state/30-argonaut
+fi
+
+echo '**'
+echo '** Starting Argonaut Server'
+exec argonaut-server
