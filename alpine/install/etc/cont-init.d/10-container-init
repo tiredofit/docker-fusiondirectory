@@ -419,9 +419,7 @@
 EOF
 
 #### Disable or Enable Argonaut Server from Starting
-  if [[ "$ENABLE_ARGONAUT" = "FALSE" ]] && [[ "$ENABLE_ARGONAUT" = "false" ]];  then
-    s6-svc -d /var/run/s6/services/30-argonaut
-  else
+  if [[ "$ENABLE_ARGONAUT" = "TRUE" ]] && [[ "$ENABLE_ARGONAUT" = "true" ]];  then
     sed -i -e "s/#BASE	dc=example,dc=com/BASE   ${BASE_DN}/g" /etc/openldap/ldap.conf
     sed -i -e "s/#URI	ldap:\/\/ldap.example.com ldap:\/\/ldap-master.example.com:666/URI ${LDAP_SCHEME}:\/\/${LDAP_HOST}:${LDAP_COMM_PORT}/g" /etc/openldap/ldap.conf
     sed -i -e "s/config   = \/etc\/ldap\/ldap.conf/config   = \/etc\/openldap\/ldap.conf/g" /etc/argonaut/argonaut.conf  
@@ -430,6 +428,9 @@ EOF
     if [ "$LDAP_SCHEME" = "ldaps" ];  then 
     	sed -i -e "s/tls      = off/tls      = on/g" /etc/argonaut/argonaut.conf
     fi
+    echo "** Enabling Argonaut Server"
+  else
+    s6-svc -d /var/run/s6/services/30-argonaut
   fi
 
 
@@ -441,7 +442,7 @@ EOF
   ### Theme Support
   if [ -d /assets/fusiondirectory ] ; then
      echo "Custom HTML Found, Copying over top of Master.."
-     cp -R /assets/fusiondirectory/* /www/html/fusiondirectory/
+     cp -R /assets/fusiondirectory/* /www/fusiondirectory/
   fi
 
   mkdir -p /tmp/state

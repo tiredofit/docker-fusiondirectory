@@ -7,7 +7,10 @@ ENV ARGONAUT_VERSION=1.2 \
     SCHEMA2LDIF_VERSION=1.3 \
     SMARTY_VERSION=3.1.31 \
     SMARTYGETTEXT_VERSION=1.5.1 \
-    INSTANCE=default
+    INSTANCE=default \
+    PHP_ENABLE_GETTEXT=TRUE \
+    PHP_ENABLE_IMAGICK=TRUE \
+    PHP_ENABLE_IMAP=TRUE
 
 
 # Build Dependencies
@@ -36,9 +39,6 @@ RUN apk update && \
         perl-path-class \
         perl-term-readkey \
         perl-xml-twig \
-        php7-gettext \
-        php7-imagick \
-        php7-imap  \
         && \
         
 ### Install Perl Dependencies that aren't available as packages
@@ -79,7 +79,7 @@ RUN apk update && \
     curl https://codeload.github.com/smarty-php/smarty/tar.gz/v${SMARTY_VERSION} | tar xvfz - --strip 1 -C /usr/src/smarty && \
     cp -r /usr/src/smarty/libs/* /usr/share/php/smarty3 && \
     ln -s /usr/share/php/smarty3/Smarty.class.php /usr/share/php/smarty3/smarty.class.php && \
-    curl https://codeload.github.com/smarty-gettext/smarty-gettext/tar.gz/${SMARTYGETTEXT_VERSION} | tar xvfz - --strip 1 -C /usr/src/smarty-gettext && \   
+    curl https://codeload.github.com/smarty-gettext/smarty-gettext/tar.gz/${SMARTYGETTEXT_VERSION} | tar xvfz - --strip 1 -C /usr/src/smarty-gettext && \
     mkdir -p /usr/share/php/smarty3/plugins && \
     cp -R /usr/src/smarty-gettext/block.t.php /usr/share/php/smarty3/plugins/ && \
     cp -R /usr/src/smarty-gettext/tsmarty2c.php /usr/sbin && \
@@ -92,7 +92,7 @@ RUN apk update && \
 
 ## Install Argonaut
     mkdir -p /usr/src/argonaut /etc/argonaut && \
-    curl https://codeload.github.com/fusiondirectory/argonaut/tar.gz/argonaut-${ARGONAUT_VERSION} | tar xvfz - --strip 1 -C /usr/src/argonaut && \    
+    curl https://codeload.github.com/fusiondirectory/argonaut/tar.gz/argonaut-${ARGONAUT_VERSION} | tar xvfz - --strip 1 -C /usr/src/argonaut && \
     chmod +x /usr/src/argonaut/*/bin/* && \
     cp -R /usr/src/argonaut/argonaut-common/Argonaut /usr/share/perl5/vendor_perl/ && \
     cp -R /usr/src/argonaut/argonaut-common/XML /usr/share/perl5/vendor_perl/ && \
@@ -132,12 +132,11 @@ RUN apk update && \
     mkdir -p /var/cache/fusiondirectory/tmp && \
     mkdir -p /etc/fusiondirectory && \
     cp -R /usr/src/fusiondirectory/contrib/fusiondirectory.conf /var/cache/fusiondirectory/template/fusiondirectory.conf && \
-
     cp -R /usr/src/fusiondirectory /www && \
     fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --write-vars && \
     fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --set-fd_smarty_dir="/usr/share/php/smarty3/Smarty.class.php" --write-vars && \
     touch /etc/debian_version && \
-    yes Yes | fusiondirectory-setup --set-fd_home=/www/fusiondirectory --check-directories --update-cache && \
+    yes Yes | fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --check-directories --update-cache && \
     fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --update-locales --update-cache && \
 
 ### PHP Setup
@@ -146,11 +145,5 @@ RUN apk update && \
 ### Cleanup
     rm -rf /usr/src/*
 
-### S6 Setup
-  ADD install/s6 /etc/s6
-  ADD install/cont-init.d /etc/cont-init.d
-  RUN chmod +x /etc/cont-init.d/*.sh
-
-### Nginx Setup
-  ADD install/nginx /etc/nginx
-
+### Add Files
+   ADD install /

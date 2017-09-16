@@ -6,7 +6,6 @@ do
 done
 
 if [ ! -f /tmp/state/30-argonaut ]; then
-
   echo 'Initialization Complete' >/tmp/state/30-argonaut
 fi
 
