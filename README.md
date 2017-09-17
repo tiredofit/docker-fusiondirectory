@@ -97,7 +97,6 @@ Enable various plugins. Please see the FusionDirectory Site for configuration op
 
 | Parameter | Description |
 |-----------|-------------|
-
 | `ENABLE_ARGONAUT` | Enable Argonaut Server - Default: `FALSE` |
 | `PLUGIN_ALIAS` | Mail Aliases - Default: `FALSE` |
 | `PLUGIN_APPLICATIONS` | Applications - Default: `FALSE` |
