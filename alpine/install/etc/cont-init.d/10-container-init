@@ -383,13 +383,14 @@ EOF
 
     for (( i = 1; i <= 2; i++ ))
     do
-
+    
         LDAP_HOST=LDAP${i}_HOST
         LDAP_DOMAIN=LDAP${i}_DOMAIN
         LDAP_ADMIN_PASS=LDAP${i}_ADMIN_PASS
         LDAP_ADMIN=LDAP${i}_ADMIN
         LDAP_NAME=LDAP${i}_NAME
         LDAP_TLS=LDAP${i}_TLS
+        LDAP_PORT=LDAP${i}_PORT
 
         IFS='.' read -a domain_elems <<< "${!LDAP_DOMAIN}"
 
@@ -410,18 +411,25 @@ EOF
 
         if [ "${!LDAP_TLS}" = "TRUE" ] ; then
             LDAP_SCHEME="ldaps"
-            LDAP_COMM_PORT=636
+            LDAP_PORT=636
         fi
     
-      cat <<EOF >> /etc/fusiondirectory/fusiondirectory.conf
+        if [ "${!LDAP_PORT}" = "" ] ; then
+            LDAP_PORT=389
+        fi
+
+
+        if [ "${!LDAP_HOST}" != "" ] ; then
+          cat <<EOF >> /etc/fusiondirectory/fusiondirectory.conf
 
     <location name="${!LDAP_NAME}">
-        <referral URI="${LDAP_SCHEME}://${!LDAP_HOST}:${LDAP_COMM_PORT}/${suffix}"
+        <referral URI="${LDAP_SCHEME}://${!LDAP_HOST}:${!LDAP_PORT}/${suffix}"
                         adminDn="${LDAP_ADMIN_DN}"
                         adminPassword="${!LDAP_ADMIN_PASS}" />
     </location>
 EOF
-    done
+          fi
+          done
 
 cat <<EOF >> /etc/fusiondirectory/fusiondirectory.conf
   </main>
