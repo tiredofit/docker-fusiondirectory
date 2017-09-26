@@ -62,6 +62,8 @@ Make sure you have installed the appropriate schemas on the LDAP Server.
 
 If you would like to add custom HTML such as themes into Fusiondirectory map your folder that follows the /www/fusiondirectory/html structure into /assets/fusiondirectory and the script will overwrite upon bootup.
 
+If you have custom plugins, map a folder to /assets/plugins-custom/ and they will be automatically added to the container upon startup.
+
 
 ### Environment Variables
 
