@@ -44,6 +44,7 @@ services:
     volumes:
       - ./logs:/www/logs
       #- ./custom:/assets/fusiondirectory
+      #- ./plugins-custom:/assets/plugins-custom
 
     networks:
       - proxy-tier

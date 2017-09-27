@@ -1,3 +1,7 @@
+## 1.1 2017-09-27 <dave at tiredofit dot ca>
+
+* Added Custom Plugin Installation upon startup - Just map a volume to /assets/plugins-custom and it will automatically install (provided the folders are setup similar to how FD Original Plugins are defined
+
 ## 1.0 2017-09-17 <dave at tiredofit dot ca>
 
 * Argonaut Server Installed
