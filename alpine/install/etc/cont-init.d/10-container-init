@@ -386,7 +386,8 @@
     >
 EOF
 
-    for (( i = 1; i <= 2; i++ ))
+    NUM=`printenv | sort | grep '\LDAP.*HOST' | wc -l`
+    for (( i = 1; i <= $NUM; i++ ))
     do
     
         LDAP_HOST=LDAP${i}_HOST
