@@ -1,3 +1,7 @@
+## 1.3 2017-10-17 <dave at tiredofit dot ca>
+
+* Custom Plugin Fixup
+
 ## 1.2 2017-09-28 <dave at tiredofit dot ca>
 
 * Fixed Multiple Instances not appearing if over 3 on Frontend.

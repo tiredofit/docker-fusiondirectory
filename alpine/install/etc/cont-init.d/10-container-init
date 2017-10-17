@@ -355,12 +355,13 @@
   if [ "$PLUGIN_WEBSERVICE" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/webservice ; fi;
   cd /assets
   echo '** Enabling the following plugins: '$PLUGINS_ENABLED
-  tar cfz fusiondirectory-plugins.tar.gz ./fusiondirectory-plugins
-
+  
   if [ -d /assets/plugins-custom ]; then
     cp -R /assets/plugins-custom/* /assets/fusiondirectory-plugins/
     echo '** Adding Custom Plugins'
   fi
+
+  tar cfz fusiondirectory-plugins.tar.gz ./fusiondirectory-plugins
 
 ### Install Plugins
   echo '/assets/fusiondirectory-plugins.tar.gz' | fusiondirectory-setup --set-fd_home=/www/fusiondirectory --write-vars --install-plugins --check-directories --update-locales --update-cache  >/dev/null
