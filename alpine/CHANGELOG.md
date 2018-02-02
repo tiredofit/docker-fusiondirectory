@@ -1,6 +1,18 @@
+## 1.5 2018-02-01 <dave at tiredofit dot ca>
+
+* Rebase
+
+## 1.41 2018-01-23 <dave at tiredofit dot ca>
+
+* Fix Custom Welcome Email location
+
+## 1.4 2018-01-12 <dave at tiredofit dot ca>
+
+* Merged css and plugins repositories to one (/assets/custom)
+
 ## 1.3 2017-10-17 <dave at tiredofit dot ca>
 
-* Custom Plugin Fixup
+* Tweak to custom plugins installation.
 
 ## 1.2 2017-09-28 <dave at tiredofit dot ca>
 

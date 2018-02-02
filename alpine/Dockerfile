@@ -61,13 +61,13 @@ RUN apk update && \
       XML::SAX::Expat \
       && \
       cp -R /usr/local/share/perl5/site_perl/* /usr/share/perl5/vendor_perl/ && \
-      mkdir -p /usr/src/perl/poe-component-server-jsonrpc && \
-      curl http://www.cpan.org/authors/id/M/MC/MCMIC/POE-Component-Server-JSONRPC-0.05-bis.tar.gz | tar xvfz - --strip 1 -C /usr/src/perl/poe-component-server-jsonrpc && \
-      cd /usr/src/perl/poe-component-server-jsonrpc && \
-      sed -i -e "s/requires 'JSON::Client::RPC';/#requires 'JSON::Client::RPC';/g" Makefile.PL && \
-      perl Makefile.PL && \
-      make && \
-      make install && \
+      #mkdir -p /usr/src/perl/poe-component-server-jsonrpc && \
+      #curl http://www.cpan.org/authors/id/M/MC/MCMIC/POE-Component-Server-JSONRPC-0.05-bis.tar.gz | tar xvfz - --strip 1 -C /usr/src/perl/poe-component-server-jsonrpc && \
+      #cd /usr/src/perl/poe-component-server-jsonrpc && \
+      #sed -i -e "s/requires 'JSON::Client::RPC';/#requires 'JSON::Client::RPC';/g" Makefile.PL && \
+      #perl Makefile.PL && \
+      #make && \
+      #make install && \
 
   # Cleanup
       rm -rf /root/.cpanm && \

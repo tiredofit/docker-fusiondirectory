@@ -5,10 +5,6 @@
     set -x
   fi
 
-  ### Adjust NGINX Runtime Variables
-  UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:="2G"}
-  sed -i -e "s/<UPLOAD_MAX_SIZE>/$UPLOAD_MAX_SIZE/g" /etc/nginx/nginx.conf
-  
     ### Sanity Test, Set Default Environment Variables
   DEBUG_MODE=${DEBUG_MODE:-"FALSE"}
   ENABLE_ARGONAUT=${ENABLE_ARGONAUT:-"FALSE"}
@@ -356,13 +352,14 @@
   cd /assets
   echo '** Enabling the following plugins: '$PLUGINS_ENABLED
   
-  if [ -d /assets/plugins-custom ]; then
-    cp -R /assets/plugins-custom/* /assets/fusiondirectory-plugins/
+  if [ -d /assets/custom/plugins/ ]; then
+    cp -R /assets/custom/plugins/config /www/fusiondirectory/plugins/
+    cp -R /assets/custom/plugins/* /assets/fusiondirectory-plugins/
     echo '** Adding Custom Plugins'
   fi
 
   tar cfz fusiondirectory-plugins.tar.gz ./fusiondirectory-plugins
-
+  
 ### Install Plugins
   echo '/assets/fusiondirectory-plugins.tar.gz' | fusiondirectory-setup --set-fd_home=/www/fusiondirectory --write-vars --install-plugins --check-directories --update-locales --update-cache  >/dev/null
   rm -rf /assets/fusiondirectory-plugins.tar.gz /assets/fusiondirectory-plugins /tmp/fusiondirectory-plugins
@@ -467,9 +464,11 @@ EOF
   fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --set-fd_smarty_dir="/usr/share/php/smarty3/Smarty.class.php" --write-vars >/dev/null
  
   ### Theme Support
-  if [ -d /assets/fusiondirectory ] ; then
+  if [ -d /assets/custom ] ; then
      echo "Custom HTML Found, Copying over top of Master.."
-     cp -R /assets/fusiondirectory/* /www/fusiondirectory/
+     mv /assets/custom/plugins /tmp/
+     cp -R /assets/custom/* /www/fusiondirectory/
+     mv /tmp/plugins /assets/custom/plugins
   fi
 
   mkdir -p /tmp/state
