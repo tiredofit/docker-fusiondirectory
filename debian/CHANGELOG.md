@@ -1,7 +1,3 @@
-## 6.2 2016-06-12 <dave at tiredofit dot ca>
-
-* FusionDirectory 1.21
-
 ## 6.1 2017-09-17 <dave at tiredofit dot ca>
 
 * Update Nginx Configuration

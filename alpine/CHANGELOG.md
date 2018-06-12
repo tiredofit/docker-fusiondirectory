@@ -1,6 +1,14 @@
-## 1.6 2018-06-12 <dave at tiredofit dot ca>
+## 1.7 2018-06-12 <dave at tiredofit dot ca>
 
-* Bump to FusionDirectory 1.21
+* FusionDirectory 1.2.1
+
+## 1.6 2018-04-28 <dave at tiredofit dot ca>
+
+* Add LLNG Authentication Support
+
+## 1.51 2018-03-12 <dave at tiredofit dot ca>
+	
+* Inject 1.3-dev code for Displaying Groups of Groups
 
 ## 1.5 2018-02-01 <dave at tiredofit dot ca>
 

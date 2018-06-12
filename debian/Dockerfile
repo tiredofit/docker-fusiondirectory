@@ -1,4 +1,4 @@
-FROM tiredofit/debian:stretch
+FROM registry.selfdesign.org/docker/debian:stretch
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ### Set Environment Variables
@@ -7,7 +7,7 @@ LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 ### Add FusionDirectory Repository
   RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 0xD744D55EACDA69FF && \
       echo "deb http://repos.fusiondirectory.org/fusiondirectory-releases/fusiondirectory-1.2.1/debian-stretch stretch main" > /etc/apt/sources.list.d/fusiondirectory-stretch.list && \
-      echo "deb http://repos.fusiondirectory.org/fusiondirectory-extra/debian-stretch stretch main" >> /etc/apt/sources.list.d/fusiondirectory-stretch.list && \
+      echo "deb http://repos.fusiondirectory.org/fusiondirectory-extra/debian-jessie jessie main" >> /etc/apt/sources.list.d/fusiondirectory-stretch.list && \
       apt-get update
 
 ### Install Fusion Directory and Dependencies

@@ -1,9 +1,9 @@
-FROM tiredofit/nginx-php-fpm:7.1
+FROM registry.selfdesign.org/docker/nginx-php-fpm:7.1-latest
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ## Set Environment Varialbes
 ENV ARGONAUT_VERSION=1.2 \
-    FUSIONDIRECTORY_VERSION=1.21 \
+    FUSIONDIRECTORY_VERSION=1.2.1 \
     SCHEMA2LDIF_VERSION=1.3 \
     SMARTY_VERSION=3.1.31 \
     SMARTYGETTEXT_VERSION=1.5.1 \
@@ -14,14 +14,15 @@ ENV ARGONAUT_VERSION=1.2 \
 
 
 # Build Dependencies
-RUN apk update && \
+RUN set -x ;\
+    apk update && \
     apk add --no-cache --virtual build-deps \
             coreutils \
             build-base \
             make \
             perl-dev \
             && \
-
+    \
 ## Run Dependencies Installation
     apk add --virtual run-deps \
         gettext \
@@ -68,12 +69,12 @@ RUN apk update && \
       #perl Makefile.PL && \
       #make && \
       #make install && \
-
+      \
   # Cleanup
       rm -rf /root/.cpanm && \
       apk del build-deps && \
       rm -rf /tmp/* /var/cache/apk/* && \
-
+      \
 ## Install Smarty3
     mkdir -p /usr/src/smarty /usr/src/smarty-gettext /usr/share/php/smarty3 && \
     curl https://codeload.github.com/smarty-php/smarty/tar.gz/v${SMARTY_VERSION} | tar xvfz - --strip 1 -C /usr/src/smarty && \
@@ -84,12 +85,12 @@ RUN apk update && \
     cp -R /usr/src/smarty-gettext/block.t.php /usr/share/php/smarty3/plugins/ && \
     cp -R /usr/src/smarty-gettext/tsmarty2c.php /usr/sbin && \
     chmod 750 /usr/sbin/tsmarty2c.php && \
-
+    \
 ## Install Schema2LDIF
     curl https://codeload.github.com/fusiondirectory/schema2ldif/tar.gz/${SCHEMA2LDIF_VERSION} | tar xvfz - --strip 1 -C /usr && \
     rm -rf /usr/CHANGELOG && \
     rm -rf /usr/LICENSE && \
-
+    \
 ## Install Argonaut
     mkdir -p /usr/src/argonaut /etc/argonaut && \
     curl https://codeload.github.com/fusiondirectory/argonaut/tar.gz/argonaut-${ARGONAUT_VERSION} | tar xvfz - --strip 1 -C /usr/src/argonaut && \
@@ -102,12 +103,12 @@ RUN apk update && \
     cp -R /usr/src/argonaut/argonaut-server/bin/argonaut-server /usr/sbin && \
     cp -R /usr/src/argonaut/argonaut-server/Argonaut /usr/share/perl5/vendor_perl/ && \
     cp -R /usr/src/argonaut/*/Argonaut/ /usr/share/perl5/vendor_perl && \
-    
+    \
 ## Install FusionDirectory
     mkdir -p /usr/src/fusiondirectory /assets/fusiondirectory-plugins && \
     curl https://codeload.github.com/fusiondirectory/fusiondirectory/tar.gz/fusiondirectory-${FUSIONDIRECTORY_VERSION} | tar xvfz - --strip 1 -C /usr/src/fusiondirectory && \
     curl https://codeload.github.com/fusiondirectory/fusiondirectory-plugins/tar.gz/fusiondirectory-${FUSIONDIRECTORY_VERSION} | tar xvfz - --strip 1 -C /assets/fusiondirectory-plugins && \
-
+    \
 ## Configure FusionDirectory
     mkdir -p /usr/src/javascript && \
     cd /usr/src/javascript && \
@@ -120,6 +121,12 @@ RUN apk update && \
     cp -R scriptaculous-js-1.9.0/src/controls.js /usr/src/fusiondirectory/html/include && \
     cp -R scriptaculous-js-1.9.0/src/dragdrop.js /usr/src/fusiondirectory/html/include && \
     cp -R scriptaculous-js-1.9.0/src/effects.js /usr/src/fusiondirectory/html/include && \
+    ### Patch 1.3 Files for Groups of Groups Display
+    cd /usr/src/fusiondirectory/plugins/admin/groups/ && \
+    rm -rf class_groupManagement.inc group-filter.xml && \
+    wget https://gitlab.fusiondirectory.org/fusiondirectory/fd/raw/754871d5b0edb9ce0d427d1897083bea6a8ef63a/plugins/admin/groups/class_groupManagement.inc && \
+    wget https://gitlab.fusiondirectory.org/fusiondirectory/fd/raw/1.3-dev/plugins/admin/groups/group-filter.xml && \
+    ###
     chmod 750 /usr/src/fusiondirectory/contrib/bin/* && \
     cp -R /usr/src/fusiondirectory/contrib/bin/* /usr/sbin/ && \
     cp -R /usr/src/fusiondirectory/contrib/smarty/plugins/* /usr/share/php/smarty3/plugins/ && \
@@ -138,10 +145,10 @@ RUN apk update && \
     touch /etc/debian_version && \
     yes Yes | fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --check-directories --update-cache && \
     fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --update-locales --update-cache && \
-
+    \
 ### PHP Setup
     sed -i -e "s/expose_php = On/expose_php = Off/g" /etc/php7/php.ini && \
-
+    \
 ### Cleanup
     rm -rf /usr/src/*
 
