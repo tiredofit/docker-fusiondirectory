@@ -1,3 +1,7 @@
+## 1.6 2018-06-12 <dave at tiredofit dot ca>
+
+* Bump to FusionDirectory 1.21
+
 ## 1.5 2018-02-01 <dave at tiredofit dot ca>
 
 * Rebase
