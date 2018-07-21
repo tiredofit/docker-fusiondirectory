@@ -1,0 +1,2 @@
+00 00 * * * /usr/sbin/argonaut-clean-audit >/dev/null 2>&1
+

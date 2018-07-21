@@ -69,6 +69,12 @@
   ## Audit
   if [[ "$PLUGIN_AUDIT" != "FALSE" ]] && [[ "$PLUGIN_AUDIT" != "false" ]];  then
     export PLUGIN_ARGONAUT=TRUE
+    ENABLE_AUDIT_CLEANUP=${ENABLE_AUDIT_CLEANUP:"TRUE"}
+    AUDIT_CLEANUP_CRON_EXP=${AUDIT_CLEANUP_CRON_EXP:-"0 0 * * *"
+    if [[ "$AUDIT_CLEANUP" != "FALSE" ]] && [[ "$AUDIT_CLEANUP" != "false" ]];  then
+    	echo "** [fusiondirectory] Setting Audit Cleanup Script"
+        echo $AUDIT_CLEANUP_CRON_EXP " /usr/sbin/argonaut-clean-audit >/dev/null 2>&1" >> /assets/cron/crontab.txt
+    fi
   fi
 
   ## LDAP Dump
@@ -440,18 +446,39 @@ cat <<EOF >> /etc/fusiondirectory/fusiondirectory.conf
 </conf>
 EOF
 
+### Set some LDAP and Argonaut Configuration Files regardless if Argonaut Server Started for Cleaning Audit Dir
+
+cat <<EOF > /etc/openldap/ldap.conf
+# LDAP Settings
+
+BASE    ${BASE_DN}
+URI ${LDAP_SCHEME}://${LDAP_HOST}:{$LDAP_COMM_PORT}
+BINDDN ${LDAP_ADMIN_DN}
+BINDPW ${LDAP_ADMIN_PASSWORD}
+EOF
+chmod 0600 /etc/openldap/ldap.conf
+
+cat <<EOF > /etc/argonaut/argonaut.conf
+[server]
+server_ip   = 127.0.0.1
+
+[client]
+client_ip  = 127.0.0.1
+
+[ldap]
+config   = /etc/openldap/ldap.conf
+dn       = {LDAP_ADMIN_DN}
+password = ${LDAP_ADMIN_PASSWORD}
+EOF
+
+if [ "$LDAP_SCHEME" = "ldaps" ];  then 
+  echo 'tls      = on' /etc/argonaut/argonaut.conf
+fi
 
 #### Disable or Enable Argonaut Server from Starting
   if [[ "$ENABLE_ARGONAUT" = "TRUE" ]] && [[ "$ENABLE_ARGONAUT" = "true" ]];  then
-    sed -i -e "s/#BASE	dc=example,dc=com/BASE   ${BASE_DN}/g" /etc/openldap/ldap.conf
-    sed -i -e "s/#URI	ldap:\/\/ldap.example.com ldap:\/\/ldap-master.example.com:666/URI ${LDAP_SCHEME}:\/\/${LDAP_HOST}:${LDAP_COMM_PORT}/g" /etc/openldap/ldap.conf
-    sed -i -e "s/config   = \/etc\/ldap\/ldap.conf/config   = \/etc\/openldap\/ldap.conf/g" /etc/argonaut/argonaut.conf  
-    sed -i -e "s/dn       = cn=admin,dc=fusiondirectory,dc=org/dn       = ${LDAP_ADMIN_DN}/g" /etc/argonaut/argonaut.conf	
-    sed -i -e "s/password = secret/password = ${LDAP_ADMIN_PASSWORD}/g" /etc/argonaut/argonaut.conf	
-    if [ "$LDAP_SCHEME" = "ldaps" ];  then 
-    	sed -i -e "s/tls      = off/tls      = on/g" /etc/argonaut/argonaut.conf
-    fi
-    echo "** Enabling Argonaut Server"
+    
+    echo "** [fusiondirectory] Enabling Argonaut Server"
   else
     s6-svc -d /var/run/s6/services/30-argonaut
   fi

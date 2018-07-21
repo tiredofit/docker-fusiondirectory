@@ -1,4 +1,4 @@
-FROM registry.selfdesign.org/docker/nginx-php-fpm:7.1-latest
+FROM tiredofit/nginx-php-fpm:7.1-latest
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ## Set Environment Varialbes

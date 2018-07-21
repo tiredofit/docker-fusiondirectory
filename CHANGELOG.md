@@ -1,3 +1,15 @@
+## 1.82 2018-07-21 <dave at tiredofit dot ca>
+
+* Allowed capability of turning off and on Audit Cleanup and defining time 
+
+## 1.81 2018-07-18 <dave at tiredofit dot ca>
+
+* Autoexecute argonaut-clean-audit at midnight
+
+## 1.8 2018-07-18 <dave at tiredofit dot ca>
+
+* Tweak Argonaut and LDAP configuration files to allow for argoaut-clean-audit to work properly
+    
 ## 1.7 2018-06-12 <dave at tiredofit dot ca>
 
 * FusionDirectory 1.2.1
