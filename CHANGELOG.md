@@ -1,3 +1,15 @@
+## 1.11 2018-07-23 <dave at tiredofit dot ca>
+
+* Enable scheduled User Reminder Option for password expiry
+
+## 1.10 2018-07-22 <dave at tiredofit dot ca>
+
+* Rework the Multiple Hosts Option
+
+## 1.9 2018-07-21 <dave at tiredofit dot ca>
+
+* Switch to PHP-FPM 7.2 / Alpine 3.8
+
 ## 1.82 2018-07-21 <dave at tiredofit dot ca>
 
 * Allowed capability of turning off and on Audit Cleanup and defining time 

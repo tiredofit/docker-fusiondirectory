@@ -28,14 +28,14 @@ services:
       - PLUGIN_SUDO=TRUE
       - PLUGIN_WEBSERVICE=TRUE
 
-      - LDAP1_DOMAIN=example.org
       - LDAP1_HOST=openldap-fusiondirectory
-      - LDAP1_ADMIN=admin
+      - LDAP1_BASE_DN=dc=example,dc=org
+      - LDAP1_ADMIN_DN=cn=admin,dc=example,dc=org
       - LDAP1_ADMIN_PASS=password
       - LDAP1_NAME=Production
 
-      #- LDAP2_DOMAIN=example2.org
-      #- LDAP2_ADMIN=admin
+      #- LDAP2_BASE_DN=dc=example,dc=org
+      #- LDAP2_ADMIN_DN=cn=admin,dc=example,dc=org
       #- LDAP2_HOST=openldap-fusiondirectory2
       #- LDAP2_ADMIN_PASS=password2
       #- LDAP2_NAME=Development

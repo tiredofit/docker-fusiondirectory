@@ -85,13 +85,15 @@ You can connect to multiple LDAP servers by setting the following environment va
 | `LDAP1_TLS` | (optional) Use TLS `TRUE` or `FALSE` - Default `false` |
 | `LDAP1_PORT` | (optional) Port number - Default `389` unless TLS=TRUE `636`
 | `LDAP1_ADMIN_PASS` | cn=admin,dc=example,dc=org Password e.g. `password` |
-| `LDAP1_DOMAIN` | The Domain to Manage e.g. `example.org` |
+| `LDAP1_ADMIN_DN` | The Primary DN to Manage e.g. `cn=admin,dc=example,dc=org` |
+| `LDAP1_BASE_DN` | The Primary Base DN to Manage e.g. `dc=example,dc=org` |
 | `LDAP2_NAME` | The Instance Name (e.g. `development`) |
 | `LDAP2_HOST` | The Second Domain Hostname with the openldap-fusiondirectory service running (e.g. `openldap-fusiondirectory`) |
-| `LDAP2_DOMAIN` | The Second Domain to Manage e.g. `example.org` |
 | `LDAP2_TLS` | (optional) Use TLS `TRUE` or `FALSE` - Default `false` |
 | `LDAP2_PORT` | (optional) Port number - Default `389` unless TLS=TRUE `636`
 | `LDAP2_ADMIN_PASS` | cn=admin,dc=example,dc=org Password e.g. `password` |
+| `LDAP2_ADMIN_DN` | The second Admin DN e.g. `cn=admin,dc=example,dc=org` |
+| `LDAP2_BASE_DN` | The second BASE DN e.g. `dc=example,dc=org` |
 | `LDAP_DEFAULT` | The Default Instance to show on Login Page e.g. `production` - Default `LDAP1_NAME` |
 
 #### Plugins 
@@ -101,8 +103,10 @@ Enable various plugins. Please see the FusionDirectory Site for configuration op
 | Parameter | Description |
 |-----------|-------------|
 | `ENABLE_ARGONAUT` | Enable Argonaut Server - Default: `FALSE` |
-| `ENABLE_AUDIT_LOG_CLEANUP` | Enable scheduled Audit Log Cleanups - Default `TRUE` |
+| `ENABLE_AUDIT_LOG_CLEANUP` | Enable scheduled Audit Log Cleanups - Default `TRUE` if plugin enabled |
+| `ENABLE_USER_REMINDER` | Enable scheduled User Reminder emails - Default `TRUE` if plugin enabled |
 | `AUDIT_LOG_CLEANUP_CRON_EXP | Cron expression for when to run Audit log cleanup - Default `0 0 * * *` |
+| `USER_REMINDER_CLEANUP_CRON_EXP | Cron expression for when to send user reminder emails log cleanup - Default `0 0 * * *` |
 | `PLUGIN_ALIAS` | Mail Aliases - Default: `FALSE` |
 | `PLUGIN_APPLICATIONS` | Applications - Default: `FALSE` |
 | `PLUGIN_ARGONAUT` | Argonaut - Default: `FALSE` |

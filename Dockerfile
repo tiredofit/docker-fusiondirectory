@@ -1,4 +1,4 @@
-FROM tiredofit/nginx-php-fpm:7.1-latest
+FROM tiredofit/nginx-php-fpm:7.2-latest
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ## Set Environment Varialbes
@@ -53,6 +53,7 @@ RUN set -x ;\
       JSON::Any \
       JSON::RPC \
       Log::Handler \
+      Mail::Sendmail \
       Module::Pluggable \
       POE \
       POE::Component::Schedule \
