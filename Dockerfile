@@ -2,7 +2,7 @@ FROM tiredofit/nginx-php-fpm:7.2-latest
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ## Set Environment Varialbes
-ENV ARGONAUT_VERSION=1.2 \
+ENV ARGONAUT_VERSION=1.2.1 \
     FUSIONDIRECTORY_VERSION=1.2.2 \
     SCHEMA2LDIF_VERSION=1.3 \
     SMARTY_VERSION=3.1.31 \
@@ -14,7 +14,7 @@ ENV ARGONAUT_VERSION=1.2 \
 
 
 # Build Dependencies
-RUN set -x ;\
+RUN set -x && \
     apk update && \
     apk add --no-cache --virtual build-deps \
             coreutils \
@@ -41,7 +41,7 @@ RUN set -x ;\
         perl-term-readkey \
         perl-xml-twig \
         && \
-        
+      \        
 ### Install Perl Dependencies that aren't available as packages
       ln -s /usr/bin/perl /usr/local/bin/perl && \
       curl -L http://cpanmin.us -o /usr/bin/cpanm && \
@@ -88,13 +88,13 @@ RUN set -x ;\
     chmod 750 /usr/sbin/tsmarty2c.php && \
     \
 ## Install Schema2LDIF
-    curl https://codeload.github.com/fusiondirectory/schema2ldif/tar.gz/${SCHEMA2LDIF_VERSION} | tar xvfz - --strip 1 -C /usr && \
+    curl https://gitlab.fusiondirectory.org/fusiondirectory/schema2ldif/-/archive/${SCHEMA2LDIF_VERSION}/schema2ldif-${SCHEMA2LDIF_VERSION}.tar.gz| tar xvfz - --strip 1 -C /usr && \
     rm -rf /usr/CHANGELOG && \
     rm -rf /usr/LICENSE && \
     \
 ## Install Argonaut
     mkdir -p /usr/src/argonaut /etc/argonaut && \
-    curl https://codeload.github.com/fusiondirectory/argonaut/tar.gz/argonaut-${ARGONAUT_VERSION} | tar xvfz - --strip 1 -C /usr/src/argonaut && \
+    curl https://gitlab.fusiondirectory.org/argonaut/argonaut/-/archive/argonaut-${ARGONAUT_VERSION}/argonaut-argonaut-${ARGONAUT_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/argonaut && \
     chmod +x /usr/src/argonaut/*/bin/* && \
     cp -R /usr/src/argonaut/argonaut-common/Argonaut /usr/share/perl5/vendor_perl/ && \
     cp -R /usr/src/argonaut/argonaut-common/XML /usr/share/perl5/vendor_perl/ && \
@@ -107,8 +107,8 @@ RUN set -x ;\
     \
 ## Install FusionDirectory
     mkdir -p /usr/src/fusiondirectory /assets/fusiondirectory-plugins && \
-    curl https://codeload.github.com/fusiondirectory/fusiondirectory/tar.gz/fusiondirectory-${FUSIONDIRECTORY_VERSION} | tar xvfz - --strip 1 -C /usr/src/fusiondirectory && \
-    curl https://codeload.github.com/fusiondirectory/fusiondirectory-plugins/tar.gz/fusiondirectory-${FUSIONDIRECTORY_VERSION} | tar xvfz - --strip 1 -C /assets/fusiondirectory-plugins && \
+    curl https://gitlab.fusiondirectory.org/fusiondirectory/fd/-/archive/fusiondirectory-${FUSIONDIRECTORY_VERSION}/fd-fusiondirectory-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/fusiondirectory && \
+    curl https://gitlab.fusiondirectory.org/fusiondirectory/fd-plugins/-/archive/fusiondirectory-${FUSIONDIRECTORY_VERSION}/fd-plugins-fusiondirectory-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /assets/fusiondirectory-plugins && \
     \
 ## Configure FusionDirectory
     mkdir -p /usr/src/javascript && \

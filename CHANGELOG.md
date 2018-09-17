@@ -1,6 +1,8 @@
 ## 1.12 2018-09-17 <dave at tiredofit dot ca>
 
 * Update to FusionDirectory 1.2.2
+* Switch to FusionDirectory Gitlab
+* Argonaut 1.2.1
 
 ## 1.11 2018-07-23 <dave at tiredofit dot ca>
 

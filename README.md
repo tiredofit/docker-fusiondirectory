@@ -13,7 +13,7 @@ This will build a container for [Fusion Directory](https://www.fusiondirectory.o
 
 * This Container uses a [customized Alpine Linux base](https://hub.docker.com/r/tiredofit/alpine) which includes [s6 overlay](https://github.com/just-containers/s6-overlay) enabled for PID 1 Init capabilities, [zabbix-agent](https://zabbix.org) based on `3.4` compiled for individual container monitoring, Cron also installed along with other tools (bash,curl, less, logrotate, nano, vim) for easier management. It also supports sending to external SMTP servers
 
-Additional Components Inside are Nginx, PHP7.2 w/ APC, OPCache, LDAP extensions
+Additional Components Inside are Nginx, PHP7.1 w/ APC, OPCache, LDAP extensions
 
 
 [Changelog](CHANGELOG.md)
@@ -105,8 +105,8 @@ Enable various plugins. Please see the FusionDirectory Site for configuration op
 | `ENABLE_ARGONAUT` | Enable Argonaut Server - Default: `FALSE` |
 | `ENABLE_AUDIT_LOG_CLEANUP` | Enable scheduled Audit Log Cleanups - Default `TRUE` if plugin enabled |
 | `ENABLE_USER_REMINDER` | Enable scheduled User Reminder emails - Default `TRUE` if plugin enabled |
-| `AUDIT_LOG_CLEANUP_CRON_EXP` | Cron expression for when to run Audit log cleanup - Default `0 0 * * *` |
-| `USER_REMINDER_CLEANUP_CRON_EXP` | Cron expression for when to send user reminder emails log cleanup - Default `0 0 * * *` |
+| `AUDIT_LOG_CLEANUP_CRON_EXP | Cron expression for when to run Audit log cleanup - Default `0 0 * * *` |
+| `USER_REMINDER_CLEANUP_CRON_EXP | Cron expression for when to send user reminder emails log cleanup - Default `0 0 * * *` |
 | `PLUGIN_ALIAS` | Mail Aliases - Default: `FALSE` |
 | `PLUGIN_APPLICATIONS` | Applications - Default: `FALSE` |
 | `PLUGIN_ARGONAUT` | Argonaut - Default: `FALSE` |
