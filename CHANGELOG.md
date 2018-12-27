@@ -1,3 +1,7 @@
+## 1.13 2018-12-27 <dave at tiredofit dot ca>
+
+* Update to FusionDirectory 1.2.3
+
 ## 1.12 2018-09-17 <dave at tiredofit dot ca>
 
 * Update to FusionDirectory 1.2.2

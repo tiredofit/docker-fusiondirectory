@@ -3,7 +3,7 @@ LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ## Set Environment Varialbes
 ENV ARGONAUT_VERSION=1.2.1 \
-    FUSIONDIRECTORY_VERSION=1.2.2 \
+    FUSIONDIRECTORY_VERSION=1.2.3 \
     SCHEMA2LDIF_VERSION=1.3 \
     SMARTY_VERSION=3.1.31 \
     SMARTYGETTEXT_VERSION=1.5.1 \
