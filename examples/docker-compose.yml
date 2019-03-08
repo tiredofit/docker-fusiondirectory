@@ -1,10 +1,12 @@
 version: '2'
 services:
-  
+
   fusiondirectory-app:
     container_name: fusiondirectory-app
     restart: always
     image: tiredofit/fusiondirectory:alpine
+    ports:
+      - 80:80
     depends_on:
       - openldap-fusiondirectory
     environment:
@@ -29,10 +31,12 @@ services:
       - PLUGIN_WEBSERVICE=TRUE
 
       - LDAP1_HOST=openldap-fusiondirectory
+      - LDAP1_DOMAIN=example.org
       - LDAP1_BASE_DN=dc=example,dc=org
       - LDAP1_ADMIN_DN=cn=admin,dc=example,dc=org
       - LDAP1_ADMIN_PASS=password
       - LDAP1_NAME=Production
+      - LDAP1_PORT=389
 
       #- LDAP2_BASE_DN=dc=example,dc=org
       #- LDAP2_ADMIN_DN=cn=admin,dc=example,dc=org
@@ -54,5 +58,3 @@ networks:
   proxy-tier:
     external:
       name: nginx-proxy
-
-
