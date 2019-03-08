@@ -125,8 +125,8 @@ RUN set -x && \
     ### Patch 1.3 Files for Groups of Groups Display
     cd /usr/src/fusiondirectory/plugins/admin/groups/ && \
     rm -rf class_groupManagement.inc group-filter.xml && \
-    wget https://gitlab.fusiondirectory.org/fusiondirectory/fd/raw/754871d5b0edb9ce0d427d1897083bea6a8ef63a/plugins/admin/groups/class_groupManagement.inc && \
-    wget https://gitlab.fusiondirectory.org/fusiondirectory/fd/raw/1.3-dev/plugins/admin/groups/group-filter.xml && \
+    wget https://gitlab.fusiondirectory.org/fusiondirectory/fd/raw/fusiondirectory-1.3/plugins/admin/groups/class_groupManagement.inc && \
+    wget https://gitlab.fusiondirectory.org/fusiondirectory/fd/raw/fusiondirectory-1.3/plugins/admin/groups/group-filter.xml && \
     ###
     chmod 750 /usr/src/fusiondirectory/contrib/bin/* && \
     cp -R /usr/src/fusiondirectory/contrib/bin/* /usr/sbin/ && \
