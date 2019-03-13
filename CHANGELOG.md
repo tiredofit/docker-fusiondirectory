@@ -1,3 +1,9 @@
+## 1.14 2019-03-12 <credit to michalekj at github>
+
+* Fix URLs for 1.3 backported fix
+* Fix ADMIN_DN Entry for Multiple LDAP servers
+* Update docker-compose to pull from :latest instead of old :alpine
+
 ## 1.13 2018-12-27 <dave at tiredofit dot ca>
 
 * Update to FusionDirectory 1.2.3

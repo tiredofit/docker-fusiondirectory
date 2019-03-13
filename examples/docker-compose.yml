@@ -4,9 +4,7 @@ services:
   fusiondirectory-app:
     container_name: fusiondirectory-app
     restart: always
-    image: tiredofit/fusiondirectory:alpine
-    depends_on:
-      - openldap-fusiondirectory
+    image: tiredofit/fusiondirectory
     environment:
       - VIRTUAL_HOST=fusiondirectory.example.org
       - VIRTUAL_NETWORK=nginx-proxy
@@ -48,7 +46,6 @@ services:
 
     networks:
       - proxy-tier
-
 
 networks:
   proxy-tier:

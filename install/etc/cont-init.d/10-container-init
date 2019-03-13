@@ -301,7 +301,8 @@
     :
   fi
 
-  PLUGINS_ENABLED=`printenv | sort | grep PLUGIN | grep TRUE |sed -e 's/PLUGIN_//g' | sed -e 's/=TRUE//g' | awk -vRS="" -vOFS=', ' '$1=$1' | tr A-Z a-z`
+  PLUGINS_ENABLED=`printenv | sort | grep PLUGIN | grep TRUE |sed -e 's/PLUGIN_//g' | sed -e 's/=TRUE//g' | awk -vRS="" -vOFS=', ' '$1=$1' | 
+tr A-Z a-z`
 
 
 ### Create Plugins Archive
@@ -367,7 +368,8 @@
   tar cfz fusiondirectory-plugins.tar.gz ./fusiondirectory-plugins
   
 ### Install Plugins
-  echo '/assets/fusiondirectory-plugins.tar.gz' | fusiondirectory-setup --set-fd_home=/www/fusiondirectory --write-vars --install-plugins --check-directories --update-locales --update-cache  >/dev/null
+  echo '/assets/fusiondirectory-plugins.tar.gz' | fusiondirectory-setup --set-fd_home=/www/fusiondirectory --write-vars --install-plugins 
+--check-directories --update-locales --update-cache  >/dev/null
   rm -rf /assets/fusiondirectory-plugins.tar.gz /assets/fusiondirectory-plugins /tmp/fusiondirectory-plugins
 
 
@@ -398,6 +400,7 @@ EOF
         LDAP_DOMAIN=LDAP${i}_DOMAIN
         LDAP_ADMIN_PASS=LDAP${i}_ADMIN_PASS
         LDAP_ADMIN=LDAP${i}_ADMIN
+        LDAP_ADMIN_DN=LDAP${i}_ADMIN_DN
         LDAP_NAME=LDAP${i}_NAME
         LDAP_TLS=LDAP${i}_TLS
         LDAP_PORT=LDAP${i}_PORT
@@ -488,7 +491,8 @@ fi
   chmod 640 /etc/fusiondirectory/fusiondirectory.conf
   chown root:www-data /etc/fusiondirectory/fusiondirectory.conf
   echo 'Yes' | fusiondirectory-setup --set-fd_home=/www/fusiondirectory --check-directories --check-config --update-cache >/dev/null
-  fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --set-fd_smarty_dir="/usr/share/php/smarty3/Smarty.class.php" --write-vars >/dev/null
+  fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --set-fd_smarty_dir="/usr/share/php/smarty3/Smarty.class.php" --write-vars 
+>/dev/null
  
   ### Theme Support
   if [ -d /assets/custom ] ; then
@@ -500,3 +504,4 @@ fi
 
   mkdir -p /tmp/state
   touch /tmp/state/00-container-initialized
+
