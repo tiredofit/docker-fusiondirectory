@@ -490,4 +490,4 @@ fi
   fi
 
   mkdir -p /tmp/state
-  touch /tmp/state/00-container-initialized
+  touch /tmp/state/10-fusiondirectory-init

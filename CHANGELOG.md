@@ -1,3 +1,7 @@
+## 1.15 2019-03-14 <dave at tiredofit dot ca>
+
+* Remove duplicate container init script 
+
 ## 1.14 2019-03-12 <credit to michalekj at github>
 
 * Fix URLs for 1.3 backported fix

@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-while [ ! -f /tmp/state/00-container-initialized ]
+while [ ! -f /tmp/state/10-fusiondirectory-init ]
 do
   sleep 1
 done
