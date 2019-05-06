@@ -359,6 +359,7 @@
   if [ "$PLUGIN_SUBCONTRACTING" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/subcontracting ; fi;
   if [ "$PLUGIN_SUDO" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/sudo ; fi;
   if [ "$PLUGIN_SUPANN" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/supann ; fi;
+  if [ "$PLUGIN_SUPANN" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/supann-ext ; fi;
   if [ "$PLUGIN_SYMPA" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/sympa ; fi;
   if [ "$PLUGIN_SYSTEMS" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/systems ; fi;
   if [ "$PLUGIN_USER_REMINDER" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/user-reminder ; fi;
@@ -490,4 +491,4 @@ fi
   fi
 
   mkdir -p /tmp/state
-  touch /tmp/state/10-fusiondirectory-init
+  touch /tmp/state/00-container-initialized

@@ -1,3 +1,7 @@
+## 1.16 2019-05-06 <dave at tiredofit dot ca>
+
+* Update to FusionDirectory 1.3
+
 ## 1.15 2019-03-14 <dave at tiredofit dot ca>
 
 * Remove duplicate container init script 

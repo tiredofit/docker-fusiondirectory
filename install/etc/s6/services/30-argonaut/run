@@ -10,5 +10,5 @@ if [ ! -f /tmp/state/30-argonaut ]; then
 fi
 
 echo '**'
-echo '** [fusiondirectory] Starting Argonaut Server'
+echo '** Starting Argonaut Server'
 exec argonaut-server

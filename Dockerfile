@@ -2,8 +2,8 @@ FROM tiredofit/nginx-php-fpm:7.2-latest
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ## Set Environment Varialbes
-ENV ARGONAUT_VERSION=1.2.1 \
-    FUSIONDIRECTORY_VERSION=1.2.3 \
+ENV ARGONAUT_VERSION=1.3 \
+    FUSIONDIRECTORY_VERSION=1.3 \
     SCHEMA2LDIF_VERSION=1.3 \
     SMARTY_VERSION=3.1.31 \
     SMARTYGETTEXT_VERSION=1.5.1 \
@@ -89,13 +89,13 @@ RUN set -x && \
     chmod 750 /usr/sbin/tsmarty2c.php && \
     \
 ## Install Schema2LDIF
-    curl https://gitlab.fusiondirectory.org/fusiondirectory/schema2ldif/-/archive/${SCHEMA2LDIF_VERSION}/schema2ldif-${SCHEMA2LDIF_VERSION}.tar.gz| tar xvfz - --strip 1 -C /usr && \
+    curl https://repos.fusiondirectory.org/sources/schema2ldif/schema2ldif-${SCHEMA2LDIF_VERSION}.tar.gz| tar xvfz - --strip 1 -C /usr && \
     rm -rf /usr/CHANGELOG && \
     rm -rf /usr/LICENSE && \
     \
 ## Install Argonaut
     mkdir -p /usr/src/argonaut /etc/argonaut && \
-    curl https://gitlab.fusiondirectory.org/argonaut/argonaut/-/archive/argonaut-${ARGONAUT_VERSION}/argonaut-argonaut-${ARGONAUT_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/argonaut && \
+    curl https://repos.fusiondirectory.org/sources/argonaut/argonaut-${ARGONAUT_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/argonaut && \
     chmod +x /usr/src/argonaut/*/bin/* && \
     cp -R /usr/src/argonaut/argonaut-common/Argonaut /usr/share/perl5/vendor_perl/ && \
     cp -R /usr/src/argonaut/argonaut-common/XML /usr/share/perl5/vendor_perl/ && \
@@ -108,8 +108,8 @@ RUN set -x && \
     \
 ## Install FusionDirectory
     mkdir -p /usr/src/fusiondirectory /assets/fusiondirectory-plugins && \
-    curl https://gitlab.fusiondirectory.org/fusiondirectory/fd/-/archive/fusiondirectory-${FUSIONDIRECTORY_VERSION}/fd-fusiondirectory-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/fusiondirectory && \
-    curl https://gitlab.fusiondirectory.org/fusiondirectory/fd-plugins/-/archive/fusiondirectory-${FUSIONDIRECTORY_VERSION}/fd-plugins-fusiondirectory-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /assets/fusiondirectory-plugins && \
+    curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/fusiondirectory && \
+    curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-plugins-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /assets/fusiondirectory-plugins && \
     \
 ## Configure FusionDirectory
     mkdir -p /usr/src/javascript && \
@@ -124,10 +124,10 @@ RUN set -x && \
     cp -R scriptaculous-js-1.9.0/src/dragdrop.js /usr/src/fusiondirectory/html/include && \
     cp -R scriptaculous-js-1.9.0/src/effects.js /usr/src/fusiondirectory/html/include && \
     ### Patch 1.3 Files for Groups of Groups Display
-    cd /usr/src/fusiondirectory/plugins/admin/groups/ && \
-    rm -rf class_groupManagement.inc group-filter.xml && \
-    wget https://gitlab.fusiondirectory.org/fusiondirectory/fd/raw/fusiondirectory-1.3/plugins/admin/groups/class_groupManagement.inc && \
-    wget https://gitlab.fusiondirectory.org/fusiondirectory/fd/raw/fusiondirectory-1.3/plugins/admin/groups/group-filter.xml && \
+    #cd /usr/src/fusiondirectory/plugins/admin/groups/ && \
+    #rm -rf class_groupManagement.inc group-filter.xml && \
+    #wget https://gitlab.fusiondirectory.org/fusiondirectory/fd/raw/fusiondirectory-1.3/plugins/admin/groups/class_groupManagement.inc && \
+    #wget https://gitlab.fusiondirectory.org/fusiondirectory/fd/raw/fusiondirectory-1.3/plugins/admin/groups/group-filter.xml && \
     ###     
     chmod 750 /usr/src/fusiondirectory/contrib/bin/* && \
     cp -R /usr/src/fusiondirectory/contrib/bin/* /usr/sbin/ && \
