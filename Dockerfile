@@ -123,12 +123,6 @@ RUN set -x && \
     cp -R scriptaculous-js-1.9.0/src/controls.js /usr/src/fusiondirectory/html/include && \
     cp -R scriptaculous-js-1.9.0/src/dragdrop.js /usr/src/fusiondirectory/html/include && \
     cp -R scriptaculous-js-1.9.0/src/effects.js /usr/src/fusiondirectory/html/include && \
-    ### Patch 1.3 Files for Groups of Groups Display
-    #cd /usr/src/fusiondirectory/plugins/admin/groups/ && \
-    #rm -rf class_groupManagement.inc group-filter.xml && \
-    #wget https://gitlab.fusiondirectory.org/fusiondirectory/fd/raw/fusiondirectory-1.3/plugins/admin/groups/class_groupManagement.inc && \
-    #wget https://gitlab.fusiondirectory.org/fusiondirectory/fd/raw/fusiondirectory-1.3/plugins/admin/groups/group-filter.xml && \
-    ###     
     chmod 750 /usr/src/fusiondirectory/contrib/bin/* && \
     cp -R /usr/src/fusiondirectory/contrib/bin/* /usr/sbin/ && \
     cp -R /usr/src/fusiondirectory/contrib/smarty/plugins/* /usr/share/php/smarty3/plugins/ && \
