@@ -11,9 +11,9 @@ Layers](https://images.microbadger.com/badges/image/tiredofit/fusiondirectory.sv
 
 This will build a container for [Fusion Directory](https://www.fusiondirectory.org/) a Directory Manager frontend for LDAP.
 
-* This Container uses a [customized Alpine Linux base](https://hub.docker.com/r/tiredofit/alpine) which includes [s6 overlay](https://github.com/just-containers/s6-overlay) enabled for PID 1 Init capabilities, [zabbix-agent](https://zabbix.org) based on `3.4` compiled for individual container monitoring, Cron also installed along with other tools (bash,curl, less, logrotate, nano, vim) for easier management. It also supports sending to external SMTP servers
+* This Container uses a [customized Alpine Linux base](https://hub.docker.com/r/tiredofit/alpine) which includes [s6 overlay](https://github.com/just-containers/s6-overlay) enabled for PID 1 Init capabilities, [zabbix-agent](https://zabbix.org) for individual container monitoring, Cron also installed along with other tools (bash,curl, less, logrotate, nano, vim) for easier management. It also supports sending to external SMTP servers
 
-Additional Components Inside are Nginx, PHP7.2 w/ APC, OPCache, LDAP extensions and openldap clients.
+Additional Components Inside are Nginx, PHP7.2 w/ APC, OPCache, LDAP extensions and Openldap clients.
 
 
 [Changelog](CHANGELOG.md)

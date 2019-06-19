@@ -1,3 +1,7 @@
+## 1.17 2019-06-19 <dave at tiredofit dot ca>
+
+* Fix Issue with TLS / LDAPS not writing configuration correctly - Credit for find <dcendents@github>
+
 ## 1.16 2019-05-06 <dave at tiredofit dot ca>
 
 * Update to FusionDirectory 1.3

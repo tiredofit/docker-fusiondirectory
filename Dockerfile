@@ -12,7 +12,6 @@ ENV ARGONAUT_VERSION=1.3 \
     PHP_ENABLE_IMAGICK=TRUE \
     PHP_ENABLE_IMAP=TRUE
 
-
 # Build Dependencies
 RUN set -x && \
     apk update && \
