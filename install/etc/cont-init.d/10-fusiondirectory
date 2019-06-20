@@ -414,7 +414,6 @@ EOF
 
         if [ "${!LDAP_TLS}" = "TRUE" ] ; then
             LDAP_SCHEME="ldaps"
-            LDAP_PORT=636
         fi
     
         if [ "${!LDAP_PORT}" = "" ] ; then

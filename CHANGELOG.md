@@ -1,4 +1,4 @@
-## 1.17 2019-06-19 <dave at tiredofit dot ca>
+## 1.17.1 2019-06-19 <dave at tiredofit dot ca>
 
 * Fix Issue with TLS / LDAPS not writing configuration correctly - Credit for find <dcendents@github>
 
