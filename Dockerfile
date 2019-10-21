@@ -36,6 +36,7 @@ RUN set -x && \
         perl-file-copy-recursive \
         perl-io-socket-ssl \
         perl-json \
+        perl-mime-tools \
         perl-net-ldap \
         perl-path-class \
         perl-term-readkey \
@@ -93,7 +94,7 @@ RUN set -x && \
     rm -rf /usr/LICENSE && \
     \
 ## Install Argonaut
-    mkdir -p /usr/src/argonaut /etc/argonaut && \
+    mkdir -p /usr/src/argonaut /etc/argonaut /var/log/argonaut && \
     curl https://repos.fusiondirectory.org/sources/argonaut/argonaut-${ARGONAUT_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/argonaut && \
     chmod +x /usr/src/argonaut/*/bin/* && \
     cp -R /usr/src/argonaut/argonaut-common/Argonaut /usr/share/perl5/vendor_perl/ && \
