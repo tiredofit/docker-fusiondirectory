@@ -1,3 +1,8 @@
+## 1.18 2019-10-22 <jrevillard@github>
+
+* Fix for User Reminder Script (Argonaut)
+* Added perl-mime-tools
+
 ## 1.17.1 2019-06-19 <dave at tiredofit dot ca>
 
 * Fix Issue with TLS / LDAPS not writing configuration correctly - Credit for find <dcendents@github>
