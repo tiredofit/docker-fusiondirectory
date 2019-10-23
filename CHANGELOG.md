@@ -1,3 +1,8 @@
+## 1.19 2019-10-23 <jrevillard@github>
+
+* Fix for crontab expressions for argonaut (User Reminder/Audit) functions
+* Tweak for password recovery emails to properly send the URL.
+
 ## 1.18 2019-10-22 <jrevillard@github>
 
 * Fix for User Reminder Script (Argonaut)
