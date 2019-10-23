@@ -74,7 +74,7 @@
     
     if [[ "$ENABLE_AUDIT_CLEANUP" != "FALSE" ]] && [[ "$ENABLE_AUDIT_CLEANUP" != "false" ]];  then
     	echo "** [fusiondirectory] Setting Audit Cleanup Scheduled Task"
-        echo $AUDIT_CLEANUP_CRON_EXP " /usr/sbin/argonaut-clean-audit >/dev/null 2>&1" >> /assets/cron/crontab.txt
+        echo "$AUDIT_CLEANUP_CRON_EXP  /usr/sbin/argonaut-clean-audit >/dev/null 2>&1" >> /assets/cron/crontab.txt
     fi
   fi
 
@@ -96,7 +96,7 @@
 
     if [[ "$ENABLE_USER_REMINDER" != "FALSE" ]] && [[ "$ENABLE_USER_REMINDER" != "false" ]];  then
         echo "** [fusiondirectory] Setting User Reminder Scheduled Task"
-        echo $USER_REMINDER_CRON_EXP " /usr/sbin/argonaut-user-reminder >/dev/null 2>&1" >> /assets/cron/crontab.txt
+        echo "$USER_REMINDER_CRON_EXP  /usr/sbin/argonaut-user-reminder >/dev/null 2>&1" >> /assets/cron/crontab.txt
     fi
 
   fi
