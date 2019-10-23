@@ -141,6 +141,7 @@ RUN set -x && \
     touch /etc/debian_version && \
     yes Yes | fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --check-directories --update-cache && \
     fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --update-locales --update-cache && \
+    sed -i -e "s#= \$_SERVER\\['PHP_SELF'\\];#= '/recovery.php';#g" /www/fusiondirectory/html/class_passwordRecovery.inc && \
     \
 ### PHP Setup
     sed -i -e "s/expose_php = On/expose_php = Off/g" /etc/php7/php.ini && \
