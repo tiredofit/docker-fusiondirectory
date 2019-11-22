@@ -3,7 +3,7 @@ services:
   
   fusiondirectory-app:
     container_name: fusiondirectory-app
-    image: tiredofit/fusiondirectory:alpine
+    image: tiredofit/fusiondirectory
     depends_on:
       - openldap-fusiondirectory
     labels:
