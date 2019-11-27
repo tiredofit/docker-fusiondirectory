@@ -1,11 +1,11 @@
 #!/usr/bin/with-contenv bash
 
-  ## Set Debug Mode
+## Set Debug Mode
   if [ "$DEBUG_MODE" = "TRUE" ] || [ "$DEBUG_MODE" = "true" ];  then
     set -x
   fi
 
-    ### Sanity Test, Set Default Environment Variables
+### Sanity Test, Set Default Environment Variables
   DEBUG_MODE=${DEBUG_MODE:-"FALSE"}
   ENABLE_ARGONAUT=${ENABLE_ARGONAUT:-"FALSE"}
   LDAP_DEFAULT=${LDAP_DEFAULT:-${LDAP1_NAME}}
@@ -63,7 +63,6 @@
   PLUGIN_WEBSERVICE=${PLUGIN_WEBSERVICE:-"FALSE"}
 
 
-
 #### Plugin Dependencies Override
  ### Admin Plugins
   ## Audit
@@ -91,7 +90,7 @@
   ## User Reminder
   if [[ "$PLUGIN_USER_REMINDER" != "FALSE" ]] && [[ "$PLUGIN_USER_REMINDER" != "false" ]];  then
     export PLUGIN_ARGONAUT=TRUE
-    ENABLE_USER_REMINDER=${ENABLE_USER_REMINDER:"TRUE"}
+    ENABLE_USER_REMINDER=${ENABLE_USER_REMINDER:-"TRUE"}
     USER_REMINDER_CRON_EXP=${USER_REMINDER_CRON_EXP:-"0 0 * * *"}
 
     if [[ "$ENABLE_USER_REMINDER" != "FALSE" ]] && [[ "$ENABLE_USER_REMINDER" != "false" ]];  then

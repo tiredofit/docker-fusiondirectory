@@ -1,3 +1,9 @@
+## 1.19.1 2019-11-27 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Update startup script to properly enable User Reminder Plugin (credit hongkongkiwi@github)
+
+
 ## 1.19 2019-10-23 <jrevillard@github>
 
 * Fix for crontab expressions for argonaut (User Reminder/Audit) functions
