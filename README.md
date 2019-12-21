@@ -105,8 +105,8 @@ Enable various plugins. Please see the FusionDirectory Site for configuration op
 | `ENABLE_ARGONAUT` | Enable Argonaut Server - Default: `FALSE` |
 | `ENABLE_AUDIT_LOG_CLEANUP` | Enable scheduled Audit Log Cleanups - Default `TRUE` if plugin enabled |
 | `ENABLE_USER_REMINDER` | Enable scheduled User Reminder emails - Default `TRUE` if plugin enabled |
-| `AUDIT_LOG_CLEANUP_CRON_EXP | Cron expression for when to run Audit log cleanup - Default `0 0 * * *` |
-| `USER_REMINDER_CLEANUP_CRON_EXP | Cron expression for when to send user reminder emails log cleanup - Default `0 0 * * *` |
+| `AUDIT_LOG_CLEANUP_CRON_EXP` | Cron expression for when to run Audit log cleanup - Default `0 0 * * *` |
+| `USER_REMINDER_CLEANUP_CRON_EXP` | Cron expression for when to send user reminder emails log cleanup - Default `0 0 * * *` |
 | `PLUGIN_ALIAS` | Mail Aliases - Default: `FALSE` |
 | `PLUGIN_APPLICATIONS` | Applications - Default: `FALSE` |
 | `PLUGIN_ARGONAUT` | Argonaut - Default: `FALSE` |
