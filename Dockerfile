@@ -1,4 +1,4 @@
-FROM tiredofit/nginx-php-fpm:7.2-latest
+FROM tiredofit/nginx-php-fpm:7.3
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ## Set Environment Varialbes
@@ -8,9 +8,12 @@ ENV ARGONAUT_VERSION=1.3 \
     SMARTY_VERSION=3.1.31 \
     SMARTYGETTEXT_VERSION=1.5.1 \
     INSTANCE=default \
+    NGINX_WEBROOT=/www/fusiondirectory \
+    PHP_ENABLE_CREATE_SAMPLE_PHP=FALSE \
     PHP_ENABLE_GETTEXT=TRUE \
     PHP_ENABLE_IMAGICK=TRUE \
-    PHP_ENABLE_IMAP=TRUE
+    PHP_ENABLE_IMAP=TRUE \
+    PHP_ENABLE_LDAP=TRUE
 
 # Build Dependencies
 RUN set -x && \
@@ -42,41 +45,41 @@ RUN set -x && \
         perl-term-readkey \
         perl-xml-twig \
         && \
-      \        
+    \
 ### Install Perl Dependencies that aren't available as packages
-      ln -s /usr/bin/perl /usr/local/bin/perl && \
-      curl -L http://cpanmin.us -o /usr/bin/cpanm && \
-      chmod +x /usr/bin/cpanm && \
-      cpanm -n \
-      App::Daemon \
-      Archive::Extract \
-      HTTP::Daemon \
-      JSON::Any \
-      JSON::RPC \
-      Log::Handler \
-      Mail::Sendmail \
-      Module::Pluggable \
-      POE \
-      POE::Component::Schedule \
-      POE::Component::Server::SimpleHTTP \
-      POE::Component::Pool::Thread \
-      POE::Component::SSLify \
-      XML::SAX::Expat \
-      && \
-      cp -R /usr/local/share/perl5/site_perl/* /usr/share/perl5/vendor_perl/ && \
-      #mkdir -p /usr/src/perl/poe-component-server-jsonrpc && \
-      #curl http://www.cpan.org/authors/id/M/MC/MCMIC/POE-Component-Server-JSONRPC-0.05-bis.tar.gz | tar xvfz - --strip 1 -C /usr/src/perl/poe-component-server-jsonrpc && \
-      #cd /usr/src/perl/poe-component-server-jsonrpc && \
-      #sed -i -e "s/requires 'JSON::Client::RPC';/#requires 'JSON::Client::RPC';/g" Makefile.PL && \
-      #perl Makefile.PL && \
-      #make && \
-      #make install && \
-      \
-  # Cleanup
-      rm -rf /root/.cpanm && \
-      apk del build-deps && \
-      rm -rf /tmp/* /var/cache/apk/* && \
-      \
+    ln -s /usr/bin/perl /usr/local/bin/perl && \
+    curl -L http://cpanmin.us -o /usr/bin/cpanm && \
+    chmod +x /usr/bin/cpanm && \
+    cpanm -n \
+    App::Daemon \
+    Archive::Extract \
+    HTTP::Daemon \
+    JSON::Any \
+    JSON::RPC \
+    Log::Handler \
+    Mail::Sendmail \
+    Module::Pluggable \
+    POE \
+    POE::Component::Schedule \
+    POE::Component::Server::SimpleHTTP \
+    POE::Component::Pool::Thread \
+    POE::Component::SSLify \
+    XML::SAX::Expat \
+    && \
+    cp -R /usr/local/share/perl5/site_perl/* /usr/share/perl5/vendor_perl/ && \
+    #mkdir -p /usr/src/perl/poe-component-server-jsonrpc && \
+    #curl http://www.cpan.org/authors/id/M/MC/MCMIC/POE-Component-Server-JSONRPC-0.05-bis.tar.gz | tar xvfz - --strip 1 -C /usr/src/perl/poe-component-server-jsonrpc && \
+    #cd /usr/src/perl/poe-component-server-jsonrpc && \
+    #sed -i -e "s/requires 'JSON::Client::RPC';/#requires 'JSON::Client::RPC';/g" Makefile.PL && \
+    #perl Makefile.PL && \
+    #make && \
+    #make install && \
+    \
+# Cleanup
+    rm -rf /root/.cpanm && \
+    apk del build-deps && \
+    rm -rf /tmp/* /var/cache/apk/* && \
+    \
 ## Install Smarty3
     mkdir -p /usr/src/smarty /usr/src/smarty-gettext /usr/share/php/smarty3 && \
     curl https://codeload.github.com/smarty-php/smarty/tar.gz/v${SMARTY_VERSION} | tar xvfz - --strip 1 -C /usr/src/smarty && \
@@ -136,12 +139,12 @@ RUN set -x && \
     mkdir -p /etc/fusiondirectory && \
     cp -R /usr/src/fusiondirectory/contrib/fusiondirectory.conf /var/cache/fusiondirectory/template/fusiondirectory.conf && \
     cp -R /usr/src/fusiondirectory /www && \
-    fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --write-vars && \
-    fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --set-fd_smarty_dir="/usr/share/php/smarty3/Smarty.class.php" --write-vars && \
+    fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --write-vars && \
+    fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --set-fd_smarty_dir="/usr/share/php/smarty3/Smarty.class.php" --write-vars && \
     touch /etc/debian_version && \
     yes Yes | fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --check-directories --update-cache && \
     fusiondirectory-setup --set-fd_home="/www/fusiondirectory" --update-locales --update-cache && \
-    sed -i -e "s#= \$_SERVER\\['PHP_SELF'\\];#= '/recovery.php';#g" /www/fusiondirectory/html/class_passwordRecovery.inc && \
+    sed -i -e "s#= \$_SERVER\\['PHP_SELF'\\];#= '/recovery.php';#g" ${NGINX_WEBROOT}/html/class_passwordRecovery.inc && \
     \
 ### PHP Setup
     sed -i -e "s/expose_php = On/expose_php = Off/g" /etc/php7/php.ini && \

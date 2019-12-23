@@ -1,0 +1,495 @@
+#!/usr/bin/with-contenv bash
+
+## Set Debug Mode
+if [ "$DEBUG_MODE" = "TRUE" ] || [ "$DEBUG_MODE" = "true" ];  then
+  set -x
+fi
+
+### Sanity Test, Set Default Environment Variables
+DEBUG_MODE=${DEBUG_MODE:-"FALSE"}
+ENABLE_ARGONAUT=${ENABLE_ARGONAUT:-"FALSE"}
+LDAP_DEFAULT=${LDAP_DEFAULT:-${LDAP1_NAME}}
+LDAP_PORT=${LDAP_PORT:-389}
+LDAP_SCHEME=${LDAP_SCHEME:-"ldap"}
+PLUGIN_ALIAS=${PLUGIN_ALIAS:-"FALSE"}
+PLUGIN_APPLICATIONS=${PLUGIN_APPLICATIONS:-"FALSE"}
+PLUGIN_ARGONAUT=${PLUGIN_ARGONAUT:-"FALSE"}
+PLUGIN_AUDIT=${PLUGIN_AUDIT:-"FALSE"}
+PLUGIN_AUTOFS=${PLUGIN_AUTOFS:-"FALSE"}
+PLUGIN_CERTIFICATES=${PLUGIN_CERTIFICATES:-"FALSE"}
+PLUGIN_COMMUNITY=${PLUGIN_COMMUNITY:-"FALSE"}
+PLUGIN_CYRUS=${PLUGIN_CYRUS:-"FALSE"}
+PLUGIN_DEBCONF=${PLUGIN_DEBCONF:-"FALSE"}
+PLUGIN_DEVELOPERS=${PLUGIN_DEVELOPERS:-"FALSE"}
+PLUGIN_DHCP=${PLUGIN_DHCP:-"FALSE"}
+PLUGIN_DNS=${PLUGIN_DNS:-"FALSE"}
+PLUGIN_DOVECOT=${PLUGIN_DOVECOT:-"FALSE"}
+PLUGIN_DSA=${PLUGIN_DSA:-"FALSE"}
+PLUGIN_EJBCA=${PLUGIN_EJBCA:-"FALSE"}
+PLUGIN_FAI=${PLUGIN_FAI:-"FALSE"}
+PLUGIN_FREERADIUS=${PLUGIN_FREERADIUS:-"FALSE"}
+PLUGIN_FUSIONINVENTORY=${PLUGIN_FUSIONINVENTORY:-"FALSE"}
+PLUGIN_GPG=${PLUGIN_GPG:-"FALSE"}
+PLUGIN_IPMI=${PLUGIN_IPMI:-"FALSE"}
+PLUGIN_LDAPDUMP=${PLUGIN_LDAPDUMP:-"FALSE"}
+PLUGIN_LDAPMANAGER=${PLUGIN_LDAPMANAGER:-"FALSE"}
+PLUGIN_MAIL=${PLUGIN_MAIL:-"FALSE"}
+PLUGIN_MIXEDGROUPS=${PLUGIN_MIXEDGROUPS:-"FALSE"}
+PLUGIN_NAGIOS=${PLUGIN_NAGIOS:-"FALSE"}
+PLUGIN_NETGROUPS=${PLUGIN_NETGROUPS:-"FALSE"}
+PLUGIN_NEWSLETTER=${PLUGIN_NEWSLETTER:-"FALSE"}
+PLUGIN_OPSI=${PLUGIN_OPSI:-"FALSE"}
+PLUGIN_PERSONAL=${PLUGIN_PERSONAL:-"FALSE"}
+PLUGIN_POSIX=${PLUGIN_POSIX:-"FALSE"}
+PLUGIN_POSTFIX=${PLUGIN_POSTFIX:-"FALSE"}
+PLUGIN_PPOLICY=${PLUGIN_PPOLICY:-"FALSE"}
+PLUGIN_PUPPET=${PLUGIN_PUPPET:-"FALSE"}
+PLUGIN_PUREFTPD=${PLUGIN_PUREFTPD:-"FALSE"}
+PLUGIN_QUOTA=${PLUGIN_QUOTA:-"FALSE"}
+PLUGIN_RENATER_PARTAGE=${PLUGIN_RENATER_PARTAGE:-"FALSE"}
+PLUGIN_REPOSITORY=${PLUGIN_REPOSITORY:-"FALSE"}
+PLUGIN_SAMBA=${PLUGIN_SAMBA:-"FALSE"}
+PLUGIN_SOGO=${PLUGIN_SOGO:-"FALSE"}
+PLUGIN_SPAMASSASSIN=${PLUGIN_SPAMASSASSIN:-"FALSE"}
+PLUGIN_SQUID=${PLUGIN_SQUID:-"FALSE"}
+PLUGIN_SSH=${PLUGIN_SSH:-"FALSE"}
+PLUGIN_SUBCONTRACTING=${PLUGIN_SUBCONTRACTING:-"FALSE"}
+PLUGIN_SUDO=${PLUGIN_SUDO:-"FALSE"}
+PLUGIN_SUPANN=${PLUGIN_SUPANN:-"FALSE"}
+PLUGIN_SYMPA=${PLUGIN_SYMPA:-"FALSE"}
+PLUGIN_SYSTEMS=${PLUGIN_SYSTEMS:-"FALSE"}
+PLUGIN_USER_REMINDER=${PLUGIN_USER_REMINDER:-"FALSE"}
+PLUGIN_WEBLINK=${PLUGIN_WEBLINK:-"FALSE"}
+PLUGIN_WEBSERVICE=${PLUGIN_WEBSERVICE:-"FALSE"}
+
+
+#### Plugin Dependencies Override
+### Admin Plugins
+## Audit
+if [[ "$PLUGIN_AUDIT" != "FALSE" ]] && [[ "$PLUGIN_AUDIT" != "false" ]];  then
+  export PLUGIN_ARGONAUT=TRUE
+  ENABLE_AUDIT_CLEANUP=${ENABLE_AUDIT_CLEANUP:"TRUE"}
+  AUDIT_CLEANUP_CRON_EXP=${AUDIT_CLEANUP_CRON_EXP:-"0 0 * * *"}
+  
+  if [[ "$ENABLE_AUDIT_CLEANUP" != "FALSE" ]] && [[ "$ENABLE_AUDIT_CLEANUP" != "false" ]];  then
+  	echo "** [fusiondirectory] Setting Audit Cleanup Scheduled Task"
+      echo "$AUDIT_CLEANUP_CRON_EXP  /usr/sbin/argonaut-clean-audit >/dev/null 2>&1" >> /assets/cron/crontab.txt
+  fi
+fi
+
+## LDAP Dump
+if [[ "$PLUGIN_LDAPDUMP" != "FALSE" ]] && [[ "$PLUGIN_LDAPDUMP" != "false" ]];  then
+  :
+fi
+
+## LDAP Manager
+if [[ "$PLUGIN_LDAPMANAGER" != "FALSE" ]] && [[ "$PLUGIN_LDAPMANAGER" != "false" ]];  then
+  :
+fi
+
+## User Reminder
+if [[ "$PLUGIN_USER_REMINDER" != "FALSE" ]] && [[ "$PLUGIN_USER_REMINDER" != "false" ]];  then
+  export PLUGIN_ARGONAUT=TRUE
+  ENABLE_USER_REMINDER=${ENABLE_USER_REMINDER:-"TRUE"}
+  USER_REMINDER_CRON_EXP=${USER_REMINDER_CRON_EXP:-"0 0 * * *"}
+
+  if [[ "$ENABLE_USER_REMINDER" != "FALSE" ]] && [[ "$ENABLE_USER_REMINDER" != "false" ]];  then
+      echo "** [fusiondirectory] Setting User Reminder Scheduled Task"
+      echo "$USER_REMINDER_CRON_EXP  /usr/sbin/argonaut-user-reminder >/dev/null 2>&1" >> /assets/cron/crontab.txt
+  fi
+
+fi
+
+## Webservice
+if [[ "$PLUGIN_WEBSERVICE" != "FALSE" ]] && [[ "$PLUGIN_WEBSERVICE" != "false" ]];  then
+  :
+fi
+
+### Mail Plugins
+## Cyrus
+if [[ "$PLUGIN_CYRUS" != "FALSE" ]] && [[ "$PLUGIN_CYRUS" != "false" ]];  then
+  export PLUGIN_MAIL=TRUE
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## Dovecot
+if [[ "$PLUGIN_DOVECOT" != "FALSE" ]] && [[ "$PLUGIN_DOVECOT" != "false" ]];  then
+  export PLUGIN_MAIL=TRUE
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## Postfix
+if [[ "$PLUGIN_POSTFIX" != "FALSE" ]] && [[ "$PLUGIN_POSTFIX" != "false" ]];  then
+  export PLUGIN_MAIL=TRUE
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## Sogo
+if [[ "$PLUGIN_SOGO" != "FALSE" ]] && [[ "$PLUGIN_SOGO" != "false" ]];  then
+  export PLUGIN_MAIL=TRUE
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## Sympa
+if [[ "$PLUGIN_SYMPA" != "FALSE" ]] && [[ "$PLUGIN_SYMPA" != "false" ]];  then
+  export PLUGIN_ALIAS=TRUE
+fi
+
+## SpamAssassin
+if [[ "$PLUGIN_SPAMASSASSIN" != "FALSE" ]] && [[ "$PLUGIN_SPAMASSASSIN" != "false" ]];  then
+  export PLUGIN_MAIL=TRUE
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+### Services Plugins
+## AutoFS
+if [[ "$PLUGIN_AUTOFS" != "FALSE" ]] && [[ "$PLUGIN_AUTOFS" != "false" ]];  then
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## DSA
+if [[ "$PLUGIN_DSA" != "FALSE" ]] && [[ "$PLUGIN_DSA" != "false" ]];  then
+  :
+fi
+
+## DHCP
+if [[ "$PLUGIN_DHCP" != "FALSE" ]] && [[ "$PLUGIN_DHCP" != "false" ]];  then
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## DNS
+if [[ "$PLUGIN_DNS" != "FALSE" ]] && [[ "$PLUGIN_DNS" != "false" ]];  then
+  :
+fi
+
+## Ejbca
+if [[ "$PLUGIN_EJBCA" != "FALSE" ]] && [[ "$PLUGIN_EJBCA" != "false" ]];  then
+  :
+fi
+
+## FusionInventory
+if [[ "$PLUGIN_FUSIONINVENTORY" != "FALSE" ]] && [[ "$PLUGIN_FUSIONINVENTORY" != "false" ]];  then
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## GPG
+if [[ "$PLUGIN_GPG" != "FALSE" ]] && [[ "$PLUGIN_GPG" != "false" ]];  then
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## IPMI
+if [[ "$PLUGIN_IPMI" != "FALSE" ]] && [[ "$PLUGIN_IPMI" != "false" ]];  then
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## NetGroups
+if [[ "$PLUGIN_NETGROUPS" != "FALSE" ]] && [[ "$PLUGIN_NETGROUPS" != "false" ]];  then
+  :
+fi
+
+## PPolicy
+if [[ "$PLUGIN_PPOLICY" != "FALSE" ]] && [[ "$PLUGIN_PPOLICY" != "false" ]];  then
+  :
+fi
+
+## Quota
+if [[ "$PLUGIN_QUOTA" != "FALSE" ]] && [[ "$PLUGIN_QUOTA" != "false" ]];  then
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## Repository
+if [[ "$PLUGIN_REPOSITORY" != "FALSE" ]] && [[ "$PLUGIN_REPOSITORY" != "false" ]];  then
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## Squid
+if [[ "$PLUGIN_SQUID" != "FALSE" ]] && [[ "$PLUGIN_SQUID" != "false" ]];  then
+  :
+fi
+
+## Sudo
+if [[ "$PLUGIN_SUDO" != "FALSE" ]] && [[ "$PLUGIN_SUDO" != "false" ]];  then
+  :
+fi
+
+## Weblink
+if [[ "$PLUGIN_WEBLINK" != "FALSE" ]] && [[ "$PLUGIN_WEBLINK" != "false" ]];  then
+  :
+fi
+
+### Deployment Plugins
+## Debconf
+if [[ "$PLUGIN_DEBCONF" != "FALSE" ]] && [[ "$PLUGIN_DEBCONF" != "false" ]];  then
+  :
+fi
+
+## FAI
+if [[ "$PLUGIN_FAI" != "FALSE" ]] && [[ "$PLUGIN_FAI" != "false" ]];  then
+  export PLUGIN_ARGONAUT=TRUE
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## OPSI
+if [[ "$PLUGIN_OPSI" != "FALSE" ]] && [[ "$PLUGIN_OPSI" != "false" ]];  then
+  export PLUGIN_ARGONAUT=TRUE
+  export PLUGIN_DNS=TRUE
+  export PLUGIN_SAMBA=TRUE
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## Puppet
+if [[ "$PLUGIN_PUPPET" != "FALSE" ]] && [[ "$PLUGIN_PUPPET" != "false" ]];  then
+  :
+fi
+
+### System Management Plugins
+## Argonaut
+if [[ "$PLUGIN_ARGONAUT" != "FALSE" ]] && [[ "$PLUGIN_SYSTEMS" != "false" ]];  then
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## Systems
+if [[ "$PLUGIN_SYSTEMS" != "FALSE" ]] && [[ "$PLUGIN_SYSTEMS" != "false" ]];  then
+  export PLUGIN_ARGONAUT=TRUE
+fi
+
+## Samba
+if [[ "$PLUGIN_SAMBA" != "FALSE" ]] && [[ "$PLUGIN_SAMBA" != "false" ]];  then
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+### User Management Plugins
+## Certificates
+if [[ "$PLUGIN_CERTIFICATES" != "FALSE" ]] && [[ "$PLUGIN_CERTIFICATES" != "false" ]];  then
+  :
+fi
+
+## FreeRadius
+if [[ "$PLUGIN_FREERADIUS" != "FALSE" ]] && [[ "$PLUGIN_FREERADIUS" != "false" ]];  then
+  :
+fi
+
+## Mixed Groups
+if [[ "$PLUGIN_MIXEDGROUPS" != "FALSE" ]] && [[ "$PLUGIN_MIXEDGROUPS" != "false" ]];  then
+  :
+fi
+
+## Nagios
+if [[ "$PLUGIN_NAGIOS" != "FALSE" ]] && [[ "$PLUGIN_MIXEDGROUPS" != "false" ]];  then
+  :
+fi
+
+## Newsletter
+if [[ "$PLUGIN_NEWSLETTER" != "FALSE" ]] && [[ "$PLUGIN_NEWSLETTER" != "false" ]];  then
+  :
+fi
+
+## Personal
+if [[ "$PLUGIN_PERSONAL" != "FALSE" ]] && [[ "$PLUGIN_PERSONAL" != "false" ]];  then
+  :
+fi
+
+## PureFTPd
+if [[ "$PLUGIN_PUREFTPD" != "FALSE" ]] && [[ "$PLUGIN_PUREFTPD" != "false" ]];  then
+  :
+fi
+
+## Quota
+if [[ "$PLUGIN_QUOTA" != "FALSE" ]] && [[ "$PLUGIN_QUOTA" != "false" ]];  then
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## Subcontracting
+if [[ "$PLUGIN_SUBCONTRACTING" != "FALSE" ]] && [[ "$PLUGIN_SUBCONTRACTING" != "false" ]];  then
+  :
+fi
+
+## Supann
+if [[ "$PLUGIN_SUPANN" != "FALSE" ]] && [[ "$PLUGIN_SUPANN" != "false" ]];  then
+  :
+fi
+
+PLUGINS_ENABLED=`printenv | sort | grep PLUGIN | grep TRUE |sed -e 's/PLUGIN_//g' | sed -e 's/=TRUE//g' | awk -vRS="" -vOFS=', ' '$1=$1' | tr A-Z a-z`
+
+
+### Create Plugins Archive
+if [ "$PLUGIN_ALIAS" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/alias ; fi;
+if [ "$PLUGIN_APPLICATIONS" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/applications ; fi;
+if [ "$PLUGIN_ARGONAUT" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/argonaut ; fi;
+if [ "$PLUGIN_AUDIT" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/audit ; fi;
+if [ "$PLUGIN_AUTOFS" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/autofs ; fi;
+if [ "$PLUGIN_CERTIFICATES" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/certificates ; fi;
+if [ "$PLUGIN_COMMUNITY" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/community ; fi;
+if [ "$PLUGIN_CYRUS" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/cyrus ; fi;
+if [ "$PLUGIN_DEBCONF" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/debconf ; fi;
+if [ "$PLUGIN_DEVELOPERS" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/developers ; fi;
+if [ "$PLUGIN_DHCP" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/dhcp ; fi;
+if [ "$PLUGIN_DNS" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/dns ; fi;
+if [ "$PLUGIN_DOVECOT" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/dovecot ; fi;
+if [ "$PLUGIN_DSA" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/dsa ; fi;
+if [ "$PLUGIN_EJBCA" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/ejbca ; fi;
+if [ "$PLUGIN_FAI" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/fai ; fi;
+if [ "$PLUGIN_FREERADIUS" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/freeradius ; fi;
+if [ "$PLUGIN_FUSIONINVENTORY" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/fusioninventory ; fi;
+if [ "$PLUGIN_GPG" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/gpg ; fi;
+if [ "$PLUGIN_IPMI" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/ipmi ; fi;
+if [ "$PLUGIN_LDAPDUMP" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/ldapdump ; fi;
+if [ "$PLUGIN_LDAPMANAGER" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/ldapmanager ; fi;
+if [ "$PLUGIN_MAIL" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/mail ; fi;
+if [ "$PLUGIN_MIXEDGROUPS" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/mixedgroups ; fi;
+if [ "$PLUGIN_NAGIOS" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/nagios ; fi;
+if [ "$PLUGIN_NETGROUPS" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/netgroups ; fi;
+if [ "$PLUGIN_NEWSLETTER" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/newsletter ; fi;
+if [ "$PLUGIN_OPSI" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/opsi ; fi;
+if [ "$PLUGIN_PERSONAL" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/personal ; fi;
+if [ "$PLUGIN_POSIX" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/posix ; fi;
+if [ "$PLUGIN_POSTFIX" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/postfix ; fi;
+if [ "$PLUGIN_PPOLICY" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/ppolicy ; fi;
+if [ "$PLUGIN_PUPPET" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/puppet ; fi;
+if [ "$PLUGIN_PUREFTPD" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/pureftpd ; fi;
+if [ "$PLUGIN_QUOTA" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/quota ; fi;
+if [ "$PLUGIN_RENATER_PARTAGE" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/renater-partage ; fi;
+if [ "$PLUGIN_REPOSITORY" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/repository ; fi;
+if [ "$PLUGIN_SAMBA" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/samba ; fi;
+if [ "$PLUGIN_SOGO" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/sogo ; fi;
+if [ "$PLUGIN_SPAMASSASSIN" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/spamassassin ; fi;
+if [ "$PLUGIN_SQUID" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/squid ; fi;
+if [ "$PLUGIN_SSH" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/ssh ; fi;
+if [ "$PLUGIN_SUBCONTRACTING" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/subcontracting ; fi;
+if [ "$PLUGIN_SUDO" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/sudo ; fi;
+if [ "$PLUGIN_SUPANN" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/supann ; fi;
+if [ "$PLUGIN_SUPANN" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/supann-ext ; fi;
+if [ "$PLUGIN_SYMPA" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/sympa ; fi;
+if [ "$PLUGIN_SYSTEMS" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/systems ; fi;
+if [ "$PLUGIN_USER_REMINDER" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/user-reminder ; fi;
+if [ "$PLUGIN_WEBLINK" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/weblink ; fi;
+if [ "$PLUGIN_WEBSERVICE" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/webservice ; fi;
+cd /assets
+echo "** [fusiondirectory] Enabling the following plugins: ${PLUGINS_ENABLED}"
+
+if [ -d /assets/custom/plugins/ ]; then
+  cp -R /assets/custom/plugins/config {$NGINX_WEBROOT}/plugins/
+  cp -R /assets/custom/plugins/* /assets/fusiondirectory-plugins/
+  echo "** [fusiondirectory] Adding Custom Plugins"
+fi
+
+tar cfz fusiondirectory-plugins.tar.gz ./fusiondirectory-plugins
+
+### Install Plugins
+echo '/assets/fusiondirectory-plugins.tar.gz' | fusiondirectory-setup --set-fd_home={$NGINX_WEBROOT} --write-vars --install-plugins --check-directories --update-locales --update-cache  >/dev/null
+rm -rf /assets/fusiondirectory-plugins.tar.gz /assets/fusiondirectory-plugins /tmp/fusiondirectory-plugins
+
+### Configuration File Building
+if [ -z ${LDAP1_BASE_DN} ] ; then printf "\n\nLDAP1_BASE_DN is not defined!\n"; exit 1; fi;
+if [ -z ${LDAP1_HOST} ] ; then printf "\n\nLDAP1_HOST is not defined!\n"; exit 1; fi;
+if [ -z ${LDAP1_ADMIN_DN} ] ; then printf "\n\nLDAP1_ADMIN_DN is not defined!\n"; exit 1; fi;
+if [ -z ${LDAP1_ADMIN_PASS} ] ; then printf "\n\nLDAP1_ADMIN_PASS is not defined!\n"; exit 1; fi;
+if [ -z ${LDAP1_NAME} ] ; then printf "\n\nLDAP1_NAME is not defined!\n"; exit 1; fi;
+
+### Write Fusiondirectory Configuration
+cat <<EOF > /etc/fusiondirectory/fusiondirectory.conf
+<?xml version="1.0"?>
+<conf>
+  <main default="${LDAP_DEFAULT}"
+        logging="TRUE"
+        displayErrors="$DEBUG_MODE"
+        forceSSL="FALSE"
+        templateCompileDirectory="/var/spool/fusiondirectory/"
+        debugLevel="0"
+    >
+EOF
+
+  NUM=`printenv | sort | grep '\LDAP.*HOST' | wc -l`
+  for (( i = 1; i <= $NUM; i++ ))
+  do
+
+      LDAP_HOST=LDAP${i}_HOST
+      LDAP_ADMIN_PASS=LDAP${i}_ADMIN_PASS
+      LDAP_ADMIN_DN=LDAP${i}_ADMIN_DN
+      LDAP_BASE_DN=LDAP${i}_BASE_DN
+      LDAP_NAME=LDAP${i}_NAME
+      LDAP_TLS=LDAP${i}_TLS
+      LDAP_PORT=LDAP${i}_PORT
+
+      if [ "${!LDAP_TLS}" = "TRUE" ] ; then
+          LDAP_SCHEME="ldaps"
+      fi
+  
+      if [ "${!LDAP_PORT}" = "" ] ; then
+          LDAP_PORT=389
+      fi
+
+
+      if [ "${!LDAP_HOST}" != "" ] ; then
+        cat <<EOF >> /etc/fusiondirectory/fusiondirectory.conf
+
+  <location name="${!LDAP_NAME}">
+      <referral URI='${LDAP_SCHEME}://${!LDAP_HOST}:${!LDAP_PORT}/${!LDAP_BASE_DN}'
+                      adminDn="${!LDAP_ADMIN_DN}"
+                      adminPassword="${!LDAP_ADMIN_PASS}" />
+  </location>
+EOF
+        fi
+        done
+
+cat <<EOF >> /etc/fusiondirectory/fusiondirectory.conf
+  </main>
+</conf>
+EOF
+
+### Set some LDAP and Argonaut Configuration Files regardless if Argonaut Server Started for Cleaning Audit Dir
+cat <<EOF > /etc/openldap/ldap.conf
+# LDAP Settings
+
+BASE ${LDAP1_BASE_DN}
+URI ${LDAP_SCHEME}://${LDAP1_HOST}:${LDAP1_PORT}
+BINDDN ${LDAP1_ADMIN_DN}
+BINDPW ${LDAP1_ADMIN_PASS}
+EOF
+chmod 0600 /etc/openldap/ldap.conf
+
+cat <<EOF > /etc/argonaut/argonaut.conf
+[server]
+server_ip   = 127.0.0.1
+
+[client]
+client_ip  = 127.0.0.1
+
+[ldap]
+config   = /etc/openldap/ldap.conf
+dn       = ${LDAP1_ADMIN_DN}
+password = ${LDAP1_ADMIN_PASS}
+EOF
+
+if [ "$LDAP_SCHEME" = "ldaps" ];  then 
+  echo 'tls      = on' /etc/argonaut/argonaut.conf
+fi
+
+#### Disable or Enable Argonaut Server from Starting
+if [[ "$ENABLE_ARGONAUT" = "TRUE" ]] && [[ "$ENABLE_ARGONAUT" = "true" ]];  then
+  
+  echo "** [fusiondirectory] Enabling Argonaut Server"
+else
+  s6-svc -d /var/run/s6/services/30-argonaut
+fi
+
+
+### Set Permissions
+chmod 640 /etc/fusiondirectory/fusiondirectory.conf
+chown root:${NGINX_GROUP} /etc/fusiondirectory/fusiondirectory.conf
+echo 'Yes' | fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --check-directories --check-config --update-cache >/dev/null
+fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --set-fd_smarty_dir="/usr/share/php/smarty3/Smarty.class.php" --write-vars >/dev/null
+
+### Theme Support
+if [ -d /assets/custom ] ; then
+   echo "** [fusiondirectory] Custom Assets Found, Copying over top of Master"
+   mv /assets/custom/plugins /tmp/
+   cp -R /assets/custom/* ${NGINX_WEBROOT}
+   mv /tmp/plugins /assets/custom/plugins
+fi
+
+chown -R ${NGINX_USER}:${NGINX_GRROUP} ${NGINX_WEBROOT}
+
+echo "** [fusiondirectory] Fusiondirectory ${FUSIONDIRECTORY_VERSION} initialized and ready to login"
+
+touch /tmp/state/30-fusiondirectory-init

@@ -1,3 +1,11 @@
+## 2.0.0 2019-12-23 <dave at tiredofit dot ca>
+
+   ### Added
+      - Refactor Image to utilize new tiredofit/nginx and tiredofit/nginx-php-fpm images
+      - Code Cleanup, better verbosity
+      - Removed extra crontab entries
+
+
 ## 1.19.1 2019-11-27 <dave at tiredofit dot ca>
 
    ### Changed

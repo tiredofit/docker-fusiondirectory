@@ -13,7 +13,7 @@ This will build a container for [Fusion Directory](https://www.fusiondirectory.o
 
 * This Container uses a [customized Alpine Linux base](https://hub.docker.com/r/tiredofit/alpine) which includes [s6 overlay](https://github.com/just-containers/s6-overlay) enabled for PID 1 Init capabilities, [zabbix-agent](https://zabbix.org) for individual container monitoring, Cron also installed along with other tools (bash,curl, less, logrotate, nano, vim) for easier management. It also supports sending to external SMTP servers
 
-Additional Components Inside are Nginx, PHP7.2 w/ APC, OPCache, LDAP extensions and Openldap clients.
+Additional Components Inside are Nginx, PHP7.3 w/ APC, OPCache, LDAP extensions and Openldap clients.
 
 
 [Changelog](CHANGELOG.md)
@@ -74,7 +74,7 @@ If you have custom plugins, map a folder to /assets/plugins-custom/ and they wil
 
 ### Environment Variables
 
-Along with the Environment Variables from the [Base image](https://hub.docker.com/r/tiredofit/alpine), and the [Nginx+PHP-FPM Engine](https://hub.docker.com/r/tiredofit/nginx-php-fpm) below is the complete list of available options that can be used to customize your installation.
+Along with the Environment Variables from the [Base image](https://hub.docker.com/r/tiredofit/alpine), the [Nginx](https://hub.docker.com/r/tiredofit/nginx) and the [Nginx+PHP-FPM Engine](https://hub.docker.com/r/tiredofit/nginx-php-fpm) below is the complete list of available options that can be used to customize your installation.
 
 You can connect to multiple LDAP servers by setting the following environment variables. Simply Add as many LDAP(x) Variables for the amount of servers you wish to manage.
 
