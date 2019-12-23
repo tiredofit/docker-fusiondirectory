@@ -368,7 +368,7 @@ cd /assets
 echo "** [fusiondirectory] Enabling the following plugins: ${PLUGINS_ENABLED}"
 
 if [ -d /assets/custom/plugins/ ]; then
-  cp -R /assets/custom/plugins/config {$NGINX_WEBROOT}/plugins/
+  cp -R /assets/custom/plugins/config ${NGINX_WEBROOT}/plugins/
   cp -R /assets/custom/plugins/* /assets/fusiondirectory-plugins/
   echo "** [fusiondirectory] Adding Custom Plugins"
 fi
@@ -376,7 +376,7 @@ fi
 tar cfz fusiondirectory-plugins.tar.gz ./fusiondirectory-plugins
 
 ### Install Plugins
-echo '/assets/fusiondirectory-plugins.tar.gz' | fusiondirectory-setup --set-fd_home={$NGINX_WEBROOT} --write-vars --install-plugins --check-directories --update-locales --update-cache  >/dev/null
+echo '/assets/fusiondirectory-plugins.tar.gz' | fusiondirectory-setup --set-fd_home=${NGINX_WEBROOT} --write-vars --install-plugins --check-directories --update-locales --update-cache  >/dev/null
 rm -rf /assets/fusiondirectory-plugins.tar.gz /assets/fusiondirectory-plugins /tmp/fusiondirectory-plugins
 
 ### Configuration File Building

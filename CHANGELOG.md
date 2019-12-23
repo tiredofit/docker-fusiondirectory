@@ -1,3 +1,9 @@
+## 2.0.1 2019-12-23 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix spelling mistakes limiting plugins from being enabled
+
+
 ## 2.0.0 2019-12-23 <dave at tiredofit dot ca>
 
    ### Added
