@@ -1,22 +1,22 @@
 #!/usr/bin/with-contenv bash
 
 function file_env () {
-		local var="$1"
-		local fileVar="${var}_FILE"
-		local def="${2:-}"
-		local val="$def"
-		if [ "${!fileVar:-}" ]; then
-			val="$(<"${!fileVar}")"
-		elif [ "${!var:-}" ]; then
-			val="${!var}"
-		fi
-		if [ -z ${val} ]; then
-			echo >&2 "error: neither $var nor $fileVar are set but are required"
-			exit 1
-		fi
-		export "$var"="$val"
-		unset "$fileVar"
-	}
+  local var="$1"
+  local fileVar="${var}_FILE"
+  local def="${2:-}"
+  local val="$def"
+  if [ "${!fileVar:-}" ]; then
+    val="$(<"${!fileVar}")"
+  elif [ "${!var:-}" ]; then
+    val="${!var}"
+  fi
+  if [ -z ${val} ]; then
+    echo >&2 "error: neither $var nor $fileVar are set but are required"
+    exit 1
+  fi
+  export "$var"="$val"
+  unset "$fileVar"
+}
 
 for s in /assets/functions/*; do source $s; done
 PROCESS_NAME="fusiondirectory"
