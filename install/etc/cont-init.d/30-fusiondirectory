@@ -6,12 +6,12 @@ function file_env () {
   local def="${2:-}"
   local val="$def"
   if [ "${!fileVar:-}" ]; then
-    val="$(<"${!fileVar}")"
+    val="$(cat "${!fileVar}")"
   elif [ "${!var:-}" ]; then
     val="${!var}"
   fi
   if [ -z ${val} ]; then
-    echo >&2 "error: neither $var nor $fileVar are set but are required"
+    print_error "error: neither $var nor $fileVar are set but are required"
     exit 1
   fi
   export "$var"="$val"
