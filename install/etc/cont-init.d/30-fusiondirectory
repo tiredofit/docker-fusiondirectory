@@ -293,6 +293,7 @@ if [ "$PLUGIN_QUOTA" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/qu
 if [ "$PLUGIN_RENATER_PARTAGE" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/renater-partage ; fi;
 if [ "$PLUGIN_REPOSITORY" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/repository ; fi;
 if [ "$PLUGIN_SAMBA" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/samba ; fi;
+if [ "$PLUGIN_SINAPS" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/sinaps ; fi;
 if [ "$PLUGIN_SOGO" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/sogo ; fi;
 if [ "$PLUGIN_SPAMASSASSIN" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/spamassassin ; fi;
 if [ "$PLUGIN_SQUID" != "TRUE" ]; then rm -rf /assets/fusiondirectory-plugins/squid ; fi;
