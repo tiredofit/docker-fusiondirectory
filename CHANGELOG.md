@@ -1,3 +1,10 @@
+## 2.2.0 2020-01-14 <sagreal@github>
+
+   ### Added
+      - Add Secrets Support
+      - Add Sinaps Plugin
+
+
 ## 2.1.0 2020-01-02 <dave at tiredofit dot ca>
 
    ### Added
