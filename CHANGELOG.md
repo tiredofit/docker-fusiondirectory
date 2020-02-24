@@ -1,3 +1,9 @@
+## 2.2.1 2020-02-24 <talltechdude@github>
+
+   ### Changed
+      - Fix Mutleiple LDAP Hosts Regex
+      - Allow spaces in environment variables
+
 ## 2.2.0 2020-01-14 <sagreal@github>
 
    ### Added
