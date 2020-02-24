@@ -346,11 +346,11 @@ rm -rf /assets/fusiondirectory-plugins.tar.gz /assets/fusiondirectory-plugins /t
 
 file_env 'LDAP1_ADMIN_PASS'
 ### Configuration File Building
-if [ -z ${LDAP1_BASE_DN} ] ; then printf "\n\nLDAP1_BASE_DN is not defined!\n"; exit 1; fi;
-if [ -z ${LDAP1_HOST} ] ; then printf "\n\nLDAP1_HOST is not defined!\n"; exit 1; fi;
-if [ -z ${LDAP1_ADMIN_DN} ] ; then printf "\n\nLDAP1_ADMIN_DN is not defined!\n"; exit 1; fi;
-if [ -z ${LDAP1_ADMIN_PASS} ] ; then printf "\n\nLDAP1_ADMIN_PASS is not defined!\n"; exit 1; fi;
-if [ -z ${LDAP1_NAME} ] ; then printf "\n\nLDAP1_NAME is not defined!\n"; exit 1; fi;
+if [ -z "${LDAP1_BASE_DN}" ] ; then printf "\n\nLDAP1_BASE_DN is not defined!\n"; exit 1; fi;
+if [ -z "${LDAP1_HOST}" ] ; then printf "\n\nLDAP1_HOST is not defined!\n"; exit 1; fi;
+if [ -z "${LDAP1_ADMIN_DN}" ] ; then printf "\n\nLDAP1_ADMIN_DN is not defined!\n"; exit 1; fi;
+if [ -z "${LDAP1_ADMIN_PASS}" ] ; then printf "\n\nLDAP1_ADMIN_PASS is not defined!\n"; exit 1; fi;
+if [ -z "${LDAP1_NAME}" ] ; then printf "\n\nLDAP1_NAME is not defined!\n"; exit 1; fi;
 
 ### Write Fusiondirectory Configuration
 cat <<EOF > /etc/fusiondirectory/fusiondirectory.conf
@@ -365,7 +365,7 @@ cat <<EOF > /etc/fusiondirectory/fusiondirectory.conf
     >
 EOF
 
-  NUM=`printenv | sort | grep '\LDAP.*HOST' | wc -l`
+  NUM=`printenv | sort | grep '^LDAP.*HOST' | wc -l`
   for (( i = 1; i <= $NUM; i++ ))
   do
 
