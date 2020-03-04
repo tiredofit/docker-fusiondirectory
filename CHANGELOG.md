@@ -1,3 +1,9 @@
+## 2.2.2 2020-03-04 <dave at tiredofit dot ca>
+
+   ### Added
+      - Update image to support new tiredofit/alpine:4.4.0 base
+
+
 ## 2.2.1 2020-02-24 <talltechdude@github>
 
    ### Changed
