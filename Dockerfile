@@ -60,6 +60,7 @@ RUN set -x && \
     Mail::Sendmail \
     Module::Pluggable \
     POE \
+    POE::Component::Server::JSONRPC::Http \
     POE::Component::Schedule \
     POE::Component::Server::SimpleHTTP \
     POE::Component::Pool::Thread \

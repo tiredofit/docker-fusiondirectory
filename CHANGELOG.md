@@ -1,3 +1,9 @@
+## 2.2.3 2020-03-26 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add POE::Component::Server::JSONRPC::Http Module to resolve argonaut errors
+
+
 ## 2.2.2 2020-03-04 <dave at tiredofit dot ca>
 
    ### Added
