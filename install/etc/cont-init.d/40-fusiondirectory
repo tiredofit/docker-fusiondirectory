@@ -433,15 +433,6 @@ if [ "$LDAP_SCHEME" = "ldaps" ];  then
   echo 'tls      = on' /etc/argonaut/argonaut.conf
 fi
 
-#### Disable or Enable Argonaut Server from Starting
-if [[ "$ENABLE_ARGONAUT" = "TRUE" ]] && [[ "$ENABLE_ARGONAUT" = "true" ]];  then
-
-  print_notice "** [fusiondirectory] Enabling Argonaut Server"
-else
-  service_stop 30-argonaut
-fi
-
-
 ### Set Permissions
 chmod 640 /etc/fusiondirectory/fusiondirectory.conf
 chown root:${NGINX_GROUP} /etc/fusiondirectory/fusiondirectory.conf
