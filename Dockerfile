@@ -129,6 +129,7 @@ RUN set -x && \
     mkdir -p /var/cache/fusiondirectory/tmp && \
     mkdir -p /etc/fusiondirectory && \
     cp -R /usr/src/fusiondirectory/contrib/fusiondirectory.conf /var/cache/fusiondirectory/template/fusiondirectory.conf && \
+    mkdir -p ${NGINX_WEBROOT} && \
     cp -R /usr/src/fusiondirectory/* ${NGINX_WEBROOT} && \
     fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --write-vars && \
     fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --set-fd_smarty_dir="/usr/share/php/smarty3/Smarty.class.php" --write-vars && \

@@ -1,3 +1,9 @@
+## 2.2.5 2020-04-16 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for Dockerfile not being able to extract Fusiondirectory introduced in version 2.2.4
+
+
 ## 2.2.4 2020-04-16 <dave at tiredofit dot ca>
 
    ### Changed
