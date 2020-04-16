@@ -1,0 +1,15 @@
+#!/usr/bin/with-contenv bash
+
+for s in /assets/functions/*; do source $s; done
+PROCESS_NAME="argonaut"
+
+check_service_initialized init 20-php-fpm
+
+#### Disable or Enable Argonaut Server from Starting
+if [[ "$ENABLE_ARGONAUT" = "TRUE" ]] && [[ "$ENABLE_ARGONAUT" = "true" ]];  then
+
+  print_notice "** [fusiondirectory] Enabling Argonaut Server"
+else
+  service_stop 30-argonaut
+fi
+
