@@ -1,13 +1,11 @@
 #!/usr/bin/with-contenv bash
 
-while [ ! -f /tmp/state/30-fusiondirectory-init ]
-do
-  sleep 1
-done
+for s in /assets/functions/*; do source $s; done
+PROCESS_NAME="argonaut"
 
-if [ ! -f /tmp/state/30-argonaut ]; then
-  echo 'Initialization Complete' >/tmp/state/30-argonaut
-fi
+check_container_initialized
+check_service_initialized init
+liftoff
 
-echo "** [fusiondirectory] Starting Argonaut Server ${ARGONAUT_VERSION}"
+print_info "Starting Argonaut Server ${ARGONAUT_VERSION}"
 exec argonaut-server

@@ -1,3 +1,9 @@
+## 2.2.4 2020-04-16 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Split argonaut service from Fusiondirectory init script
+      - Cleanup of Dockerfile to remove old comments and perform cleanup steps last
+
 ## 2.2.3 2020-03-26 <dave at tiredofit dot ca>
 
    ### Added

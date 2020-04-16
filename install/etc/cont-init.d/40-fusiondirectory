@@ -25,7 +25,7 @@ function file_env () {
 for s in /assets/functions/*; do source $s; done
 PROCESS_NAME="fusiondirectory"
 
-check_service_initialized init 20-php-fpm
+check_service_initialized init 30-argonaut
 
 #### Plugin Dependencies Override
 ### Admin Plugins
