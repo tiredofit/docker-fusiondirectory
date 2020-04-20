@@ -250,7 +250,7 @@ fi
 if var_true $PLUGIN_SUPANN ; then 
   :
 fi
-printenv |sort
+
 PLUGINS_ENABLED=`printenv | sort | grep PLUGIN | grep TRUE |sed -e 's/PLUGIN_//g' | sed -e 's/=TRUE//g' | awk -vRS="" -vOFS=', ' '$1=$1' | tr A-Z a-z`
 
 ### Create Plugins Archive
