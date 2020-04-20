@@ -6,8 +6,8 @@ PROCESS_NAME="argonaut"
 check_service_initialized init 20-php-fpm
 
 #### Disable or Enable Argonaut Server from Starting
-if [ "$ENABLE_ARGONAUT" = "TRUE" ] || [ "$ENABLE_ARGONAUT" = "true" ];  then
-  print_notice "** [fusiondirectory] Enabling Argonaut Server"
+if var_true $ENABLE_ARGONAUT ;  then
+  print_notice "Enabling Argonaut Server"
 else
   service_stop 30-argonaut
 fi

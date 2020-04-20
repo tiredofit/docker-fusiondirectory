@@ -1,3 +1,12 @@
+## 2.3.0 2020-04-17 <dave at tiredofit dot ca>
+
+   ### Changed
+      - More fixes to ENABLE_ARGONAUT conditions
+      - Minor console logging fix
+      - Properly Define LDAP Port if TLS is used
+      - Update image to support new tiredofit/alpine:4.5.1 base
+
+
 ## 2.2.5 2020-04-16 <dave at tiredofit dot ca>
 
    ### Changed
