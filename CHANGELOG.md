@@ -1,3 +1,8 @@
+## 2.3.1 2020-04-20 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Remove console output of environment variables
+
 ## 2.3.0 2020-04-17 <dave at tiredofit dot ca>
 
    ### Changed
