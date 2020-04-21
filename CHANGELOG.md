@@ -1,3 +1,9 @@
+## 2.3.2 2020-04-21 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix error in spacing when setting `set -a`
+
+
 ## 2.3.1 2020-04-20 <dave at tiredofit dot ca>
 
    ### Changed
