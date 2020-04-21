@@ -1,3 +1,9 @@
+## 2.3.3 2020-04-21 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix missing redirection code when using TLS for argonaut
+
+
 ## 2.3.2 2020-04-21 <dave at tiredofit dot ca>
 
    ### Changed

@@ -410,7 +410,7 @@ password = ${LDAP1_ADMIN_PASS}
 EOF
 
 if [ "$LDAP_SCHEME" = "ldaps" ];  then
-  echo 'tls      = on' /etc/argonaut/argonaut.conf
+  echo 'tls      = on' >> /etc/argonaut/argonaut.conf
 fi
 
 ### Set Permissions
