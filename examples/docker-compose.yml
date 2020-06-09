@@ -3,9 +3,7 @@ services:
   
   fusiondirectory-app:
     container_name: fusiondirectory-app
-    image: tiredofit/fusiondirectory
-    depends_on:
-      - openldap-fusiondirectory
+    image: fusiondirectory
     labels:
     - traefik.enable=true
     - traefik.frontend.rule=Host:fusiondirectory.example.org

@@ -1,0 +1,11 @@
+#!/usr/bin/with-contenv bash
+
+source /assets/functions/00-container
+PROCESS_NAME="argonaut"
+
+check_container_initialized
+check_service_initialized init
+liftoff
+
+print_info "Starting Argonaut Server ${ARGONAUT_VERSION}"
+exec argonaut-server

@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bash
+
+### Sanity Test, Set Default Environment Variables
+ENABLE_ARGONAUT=${ENABLE_ARGONAUT:-"FALSE"}

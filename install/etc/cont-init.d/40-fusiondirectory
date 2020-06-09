@@ -1,6 +1,7 @@
 #!/usr/bin/with-contenv bash
 
-set -a ; for s in /assets/functions/*; do source $s; done ; set +a
+source /assets/functions/00-container
+prepare_service
 PROCESS_NAME="fusiondirectory"
 
 check_service_initialized init 30-argonaut
