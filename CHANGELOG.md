@@ -1,3 +1,9 @@
+## 2.4.1 2020-06-16 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add another way of utilizing custom plugins (/assets/custom-plugins/)
+
+
 ## 2.4.0 2020-06-09 <dave at tiredofit dot ca>
 
    ### Added

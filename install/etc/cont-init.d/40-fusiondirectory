@@ -316,6 +316,10 @@ if [ -d /assets/custom/plugins/ ]; then
   print_warn "Adding Custom Plugins"
 fi
 
+if [ -d /assets/custom-plugins/ ] ; then
+  cp -R /assets/custom-plugins/* /assets/fusiondirectory-plugins/
+fi
+
 tar cfz fusiondirectory-plugins.tar.gz ./fusiondirectory-plugins
 
 ### Install Plugins
