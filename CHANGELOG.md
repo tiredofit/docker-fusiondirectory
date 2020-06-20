@@ -1,3 +1,11 @@
+## 2.5.0 2020-06-20 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add Kopano Plugin
+      - Add Nextcloud Plugin
+      - Add Seafile Plugin
+
+
 ## 2.4.1 2020-06-16 <dave at tiredofit dot ca>
 
    ### Added

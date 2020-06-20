@@ -22,6 +22,7 @@ RUN set -x && \
     apk add -t .fusiondirectory-build-deps \
             coreutils \
             build-base \
+            git \
             make \
             perl-dev \
             && \
@@ -104,6 +105,18 @@ RUN set -x && \
     mkdir -p /usr/src/fusiondirectory /assets/fusiondirectory-plugins && \
     curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/fusiondirectory && \
     curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-plugins-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /assets/fusiondirectory-plugins && \
+    \
+## Install Extra FusionDirectory Plugins
+    git clone https://github.com/tiredofit/fusiondirectory-plugin-kopano /usr/src/fusiondirectory-plugin-kopano && \
+    cp -R /usr/src/fusiondirectory-plugin-kopano/kopano /assets/fusiondirectory-plugins/ && \
+    git clone https://github.com/slangdaddy/fusiondirectory-plugin-nextcloud /usr/src/fusiondirectory-plugin-nextcloud && \
+    rm -rf /usr/src/fusiondirectory-plugin-nextcloud/src/DEBIAN && \
+    mkdir -p /assets/fusiondirectory-plugins/nextcloud && \
+    cp -R /usr/src/fusiondirectory-plugin-nextcloud/src/* /assets/fusiondirectory-plugins/nextcloud/ && \
+    git clone https://github.com/gallak/fusiondirectory-plugins-seafile /usr/src/fusiondirectory-plugins-seafile && \
+    rm -rf /usr/src/fusiondirectory-plugins-seafile/README.md && \
+    mkdir -p /assets/fusiondirectory-plugins/seafile && \
+    cp -R /usr/src/fusiondirectory-plugins-seafile/* /assets/fusiondirectory-plugins/seafile/ && \
     \
 ## Configure FusionDirectory
     mkdir -p /usr/src/javascript && \

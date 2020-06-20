@@ -48,6 +48,16 @@ if var_true $PLUGIN_WEBSERVICE ; then
   :
 fi
 
+### Cloud
+
+if var_true $PLUGIN_NEXTCLOUD ; then 
+  :
+fi
+
+if var_true $PLUGIN_SEAFILE ; then 
+  :
+fi
+
 ### Mail Plugins
 ## Cyrus
 if var_true $PLUGIN_CYRUS ; then 
@@ -58,6 +68,11 @@ fi
 ## Dovecot
 if var_true $PLUGIN_DOVECOT ; then 
   export PLUGIN_MAIL=TRUE
+  export PLUGIN_SYSTEMS=TRUE
+fi
+
+## Kopano
+if var_true $PLUGIN_KOPANO ; then 
   export PLUGIN_SYSTEMS=TRUE
 fi
 
@@ -102,7 +117,7 @@ fi
 
 ## DNS
 if var_true $PLUGIN_DNS ; then 
-  :
+  export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Ejbca
@@ -194,6 +209,7 @@ fi
 ## Systems
 if var_true $PLUGIN_SYSTEMS ; then 
   export PLUGIN_ARGONAUT=TRUE
+  export PLUGIN_DNS=TRUE
 fi
 
 ## Samba
@@ -277,11 +293,13 @@ if var_false $PLUGIN_GPG ; then rm -rf /assets/fusiondirectory-plugins/gpg ; fi;
 if var_false $PLUGIN_IPMI ; then rm -rf /assets/fusiondirectory-plugins/ipmi ; fi;
 if var_false $PLUGIN_LDAPDUMP ; then rm -rf /assets/fusiondirectory-plugins/ldapdump ; fi;
 if var_false $PLUGIN_LDAPMANAGER ; then rm -rf /assets/fusiondirectory-plugins/ldapmanager ; fi;
+if var_false $PLUGIN_KOPANO ; then rm -rf /assets/fusiondirectory-plugins/kopano ; fi;
 if var_false $PLUGIN_MAIL ; then rm -rf /assets/fusiondirectory-plugins/mail ; fi;
 if var_false $PLUGIN_MIXEDGROUPS ; then rm -rf /assets/fusiondirectory-plugins/mixedgroups ; fi;
 if var_false $PLUGIN_NAGIOS ; then rm -rf /assets/fusiondirectory-plugins/nagios ; fi;
 if var_false $PLUGIN_NETGROUPS ; then rm -rf /assets/fusiondirectory-plugins/netgroups ; fi;
 if var_false $PLUGIN_NEWSLETTER ; then rm -rf /assets/fusiondirectory-plugins/newsletter ; fi;
+if var_false $PLUGIN_NEXTCLOUD ; then rm -rf /assets/fusiondirectory-plugins/nextcloud ; fi;
 if var_false $PLUGIN_OPSI ; then rm -rf /assets/fusiondirectory-plugins/opsi ; fi;
 if var_false $PLUGIN_PERSONAL ; then rm -rf /assets/fusiondirectory-plugins/personal ; fi;
 if var_false $PLUGIN_POSIX ; then rm -rf /assets/fusiondirectory-plugins/posix ; fi;
@@ -293,6 +311,7 @@ if var_false $PLUGIN_QUOTA ; then rm -rf /assets/fusiondirectory-plugins/quota ;
 if var_false $PLUGIN_RENATER_PARTAGE ; then rm -rf /assets/fusiondirectory-plugins/renater-partage ; fi;
 if var_false $PLUGIN_REPOSITORY ; then rm -rf /assets/fusiondirectory-plugins/repository ; fi;
 if var_false $PLUGIN_SAMBA ; then rm -rf /assets/fusiondirectory-plugins/samba ; fi;
+if var_false $PLUGIN_SEAFILE ; then rm -rf /assets/fusiondirectory-plugins/seafile ; fi;
 if var_false $PLUGIN_SINAPS ; then rm -rf /assets/fusiondirectory-plugins/sinaps ; fi;
 if var_false $PLUGIN_SOGO ; then rm -rf /assets/fusiondirectory-plugins/sogo ; fi;
 if var_false $PLUGIN_SPAMASSASSIN ; then rm -rf /assets/fusiondirectory-plugins/spamassassin ; fi;

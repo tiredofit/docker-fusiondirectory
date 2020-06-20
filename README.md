@@ -127,12 +127,14 @@ Enable various plugins. Please see the FusionDirectory Site for configuration op
 | `PLUGIN_FUSIONINVENTORY` | Inventory Plugin - Default: `FALSE` |
 | `PLUGIN_GPG` | Manage GPG Keys - Default: `FALSE` |
 | `PLUGIN_IPMI` | IPMI Management - Default: `FALSE` |
+| `PLUGIN_Kopano` | Kopano Core Groupware Server - Default: `FALSE` |
 | `PLUGIN_LDAPDUMP` | LDAP Attribute Export - Default: `FALSE` |
 | `PLUGIN_LDAPMANAGER` | Import/Export CSV/LDIF - Default: `FALSE` |
 | `PLUGIN_MAIL` | Mail Attributes - Default: `FALSE` |
 | `PLUGIN_MIXEDGROUPS` | Unix/LDAP Groups - Default: `FALSE` |
 | `PLUGIN_NAGIOS` | Nagios Monitoring - Default: `FALSE` |
 | `PLUGIN_NETGROUPS` | NIS - Default: `FALSE` |
+| `PLUGIN_NEXTCLOUD` | Nextcloud Server - Default: `FALSE` |
 | `PLUGIN_NEWSLETTER` | Manage Newsletters - Default: `FALSE` |
 | `PLUGIN_OPSI` | Inventory - Default: `FALSE` |
 | `PLUGIN_PERSONAL` | Personal Details - Default: `FALSE` |
@@ -145,6 +147,7 @@ Enable various plugins. Please see the FusionDirectory Site for configuration op
 | `PLUGIN_RENATER_PARTAGE` | Unknown - Default: `FALSE` |
 | `PLUGIN_REPOSITORY` | Argonaut Deployment Registry - Default: `FALSE` |
 | `PLUGIN_SAMBA` | File Sharing - Default: `FALSE` |
+| `PLUGIN_SEAFILE` | Seafile Server - Default: `FALSE` |
 | `PLUGIN_SOGO` | Groupware - Default: `FALSE` |
 | `PLUGIN_SPAMASSASSIN` | Anti Spam - Default: `FALSE` |
 | `PLUGIN_SQUID` | Proxy - Default: `FALSE` |
