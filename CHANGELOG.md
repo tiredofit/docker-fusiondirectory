@@ -1,3 +1,9 @@
+## 2.5.1 2020-06-23 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix Nextcloud package whichis broken upstream
+
+
 ## 2.5.0 2020-06-20 <dave at tiredofit dot ca>
 
    ### Added

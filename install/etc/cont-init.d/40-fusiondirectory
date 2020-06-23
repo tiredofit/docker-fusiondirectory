@@ -51,7 +51,11 @@ fi
 ### Cloud
 
 if var_true $PLUGIN_NEXTCLOUD ; then 
-  :
+  cat <<EOF > ${NGINX_WEBROOT}/plugins/personal/nextcloud/
+  <?php
+nextcloudAccount::mainInc('nextcloudAccount', \$ui->dn);
+?>
+EOF
 fi
 
 if var_true $PLUGIN_SEAFILE ; then 
