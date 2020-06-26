@@ -1,3 +1,9 @@
+## 2.5.2 2020-06-26 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Place Nextcloud main.inc file in alternate location for installation
+
+
 ## 2.5.1 2020-06-23 <dave at tiredofit dot ca>
 
    ### Changed

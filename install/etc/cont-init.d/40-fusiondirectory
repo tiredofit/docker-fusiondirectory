@@ -51,7 +51,7 @@ fi
 ### Cloud
 
 if var_true $PLUGIN_NEXTCLOUD ; then 
-  cat <<EOF > ${NGINX_WEBROOT}/plugins/personal/nextcloud/main.inc
+  cat <<EOF > /assets/fusiondirectory-plugins/nextcloud/personal/nextcloud/main.inc
   <?php
 nextcloudAccount::mainInc('nextcloudAccount', \$ui->dn);
 ?>
