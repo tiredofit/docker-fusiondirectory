@@ -1,3 +1,12 @@
+## 2.6.0 2020-11-03 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add StartTLS support for connecting to OpenLDAP Servers
+
+   ### Changed
+      - Renamed LDAP1_TLS to LDAP1_SSL to properly describe what the variable does
+
+
 ## 2.5.2 2020-06-26 <dave at tiredofit dot ca>
 
    ### Changed

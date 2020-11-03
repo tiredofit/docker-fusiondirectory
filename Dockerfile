@@ -3,7 +3,8 @@ LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ## Set Environment Varialbes
 ENV ARGONAUT_VERSION=1.3 \
-    FUSIONDIRECTORY_VERSION=1.3 \
+    FUSIONDIRECTORY_VERSION=e4bc0f15014e485379e807050f0945f625f56f14 \
+    FUSIONDIRECTORY_PLUGINS_VERSION= \
     SCHEMA2LDIF_VERSION=1.3 \
     SMARTY_VERSION=3.1.31 \
     SMARTYGETTEXT_VERSION=1.5.1 \
@@ -29,6 +30,7 @@ RUN set -x && \
     \
 ## Run Dependencies Installation
     apk add -t .fusiondirectory-run-deps \
+        expect \
         gettext \
         gettext-lang \
         openldap \
@@ -88,7 +90,7 @@ RUN set -x && \
     rm -rf /usr/CHANGELOG && \
     rm -rf /usr/LICENSE && \
     \
-## Install Argonaut
+## Install Communication Server
     mkdir -p /usr/src/argonaut /etc/argonaut /var/log/argonaut && \
     curl https://repos.fusiondirectory.org/sources/argonaut/argonaut-${ARGONAUT_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/argonaut && \
     chmod +x /usr/src/argonaut/*/bin/* && \
@@ -103,8 +105,10 @@ RUN set -x && \
     \
 ## Install FusionDirectory
     mkdir -p /usr/src/fusiondirectory /assets/fusiondirectory-plugins && \
-    curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/fusiondirectory && \
-    curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-plugins-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /assets/fusiondirectory-plugins && \
+    #curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/fusiondirectory && \
+    git clone https://gitlab.fusiondirectory.org/fusiondirectory/fd/ /usr/src/fusiondirectory && \
+    cd /usr/src/fusiondirectory && \
+    curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-plugins-1.3.tar.gz | tar xvfz - --strip 1 -C /assets/fusiondirectory-plugins && \
     \
 ## Install Extra FusionDirectory Plugins
     git clone https://github.com/tiredofit/fusiondirectory-plugin-kopano /usr/src/fusiondirectory-plugin-kopano && \
@@ -149,7 +153,7 @@ RUN set -x && \
     touch /etc/debian_version && \
     yes Yes | fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --check-directories --update-cache && \
     fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --update-locales --update-cache && \
-    sed -i -e "s#= \$_SERVER\\['PHP_SELF'\\];#= '/recovery.php';#g" ${NGINX_WEBROOT}/html/class_passwordRecovery.inc && \
+#    sed -i -e "s#= \$_SERVER\\['PHP_SELF'\\];#= '/recovery.php';#g" ${NGINX_WEBROOT}/html/class_passwordRecovery.inc && \
     \
 ### Cleanup
     apk del .fusiondirectory-build-deps && \
