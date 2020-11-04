@@ -3,8 +3,8 @@ LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ## Set Environment Varialbes
 ENV ARGONAUT_VERSION=1.3 \
-    FUSIONDIRECTORY_VERSION=e4bc0f15014e485379e807050f0945f625f56f14 \
-    FUSIONDIRECTORY_PLUGINS_VERSION= \
+    FUSIONDIRECTORY_VERSION=1.3 \
+    FUSIONDIRECTORY_PLUGINS_VERSION=1.3 \
     SCHEMA2LDIF_VERSION=1.3 \
     SMARTY_VERSION=3.1.31 \
     SMARTYGETTEXT_VERSION=1.5.1 \
@@ -105,10 +105,10 @@ RUN set -x && \
     \
 ## Install FusionDirectory
     mkdir -p /usr/src/fusiondirectory /assets/fusiondirectory-plugins && \
-    #curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/fusiondirectory && \
-    git clone https://gitlab.fusiondirectory.org/fusiondirectory/fd/ /usr/src/fusiondirectory && \
+    curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/fusiondirectory && \
+    #git clone https://gitlab.fusiondirectory.org/fusiondirectory/fd/ /usr/src/fusiondirectory && \
     cd /usr/src/fusiondirectory && \
-    curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-plugins-1.3.tar.gz | tar xvfz - --strip 1 -C /assets/fusiondirectory-plugins && \
+    curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-plugins-${FUSIONDIRECTORY_PLUGINS_VERSION}.tar.gz | tar xvfz - --strip 1 -C /assets/fusiondirectory-plugins && \
     \
 ## Install Extra FusionDirectory Plugins
     git clone https://github.com/tiredofit/fusiondirectory-plugin-kopano /usr/src/fusiondirectory-plugin-kopano && \
