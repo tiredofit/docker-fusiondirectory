@@ -427,6 +427,7 @@ BINDDN ${LDAP1_ADMIN_DN}
 BINDPW ${LDAP1_ADMIN_PASS}
 EOF
 chmod 0600 /etc/openldap/ldap.conf
+ln -s /etc/openldap /etc/ldap
 
 cat <<EOF > /etc/argonaut/argonaut.conf
 [server]

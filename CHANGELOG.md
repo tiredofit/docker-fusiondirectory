@@ -1,3 +1,9 @@
+## 2.6.2 2020-11-05 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Add symlink from /etc/openldap to /etc/ldap to match hardcoded fusiondirectory location defaults
+
+
 ## 2.6.1 2020-11-04 <dave at tiredofit dot ca>
 
    ### Changed
