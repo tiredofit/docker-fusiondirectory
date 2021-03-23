@@ -1,0 +1,137 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fusiondirectory
+  labels:
+    app: fusiondirectory
+    ver: v1
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http-fusiondirectory
+  selector:
+    app: fusiondirectory
+    ver: v1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fusiondirectory
+    ver: v1
+  name: fusiondirectory
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fusiondirectory
+      ver: v1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: fusiondirectory
+        ver: v1
+    spec:
+      volumes:
+      - name: apachelogs
+        emptyDir: {}
+      containers:
+      - image: tiredofit/fusiondirectory:2.6.2
+        imagePullPolicy: IfNotPresent
+        name: fusiondirectory
+        resources:
+          limits:
+            memory: 500Mi
+            cpu: "0.5"
+          requests:
+            memory: 100Mi
+            cpu: "0.1"
+        volumeMounts:
+        - mountPath: /www/logs
+          name: apachelogs
+        env:
+          #- name: DEBUG_SMTP
+          #value: TRUE
+          #- name: DEBUG_MODE
+          #value: TRUE
+
+        - name: VIRTUAL_HOST
+          value: "fusiondirectory.example.net"
+        - name: VIRTUAL_PORT
+          value: "80"
+        - name: ENABLE_ZABBIX
+          value: "FALSE"
+
+        - name: ENABLE_ARGONAUT          
+          value: "FALSE"        
+        - name: PLUGIN_MAIL
+          value: "TRUE"
+        - name: PLUGIN_ALIAS
+          value: "TRUE"
+        - name: PLUGIN_PERSONAL
+          value: "TRUE"
+        - name: PLUGIN_POSIX
+          value: "TRUE"
+        - name: PLUGIN_DNS          
+          value: "TRUE"
+        - name: PLUGIN_SUDO
+          value: "TRUE"
+        - name: PLUGIN_SYSTEMS
+          value: "TRUE"          
+
+        - name: PLUGIN_LDAPDUMP
+          value: "TRUE"
+        - name: PLUGIN_LDAPMANAGER
+          value: "TRUE"
+        - name: PLUGIN_WEBSERVICE
+          value: "TRUE"
+
+        # Connect to only one openldap server
+        # in case of a oenldap replication setup
+        - name: LDAP1_HOST
+          value: "openldap-writer.default.svc"
+        - name: LDAP1_TLS
+          value: "FALSE"
+        - name: LDAP1_SSL
+          value: "FALSE"
+        - name: LDAP1_BASE_DN
+          value: "dc=example,dc=net"
+        - name: LDAP1_ADMIN_DN
+          value: "cn=admin,dc=example,dc=net"
+        # Defined in the openldap-fusiondirectory
+        # kubernetes exampel installation
+        # using the same password/secret
+        - name: LDAP1_ADMIN_PASS
+          valueFrom:
+            secretKeyRef:
+              name: openldap-passwords
+              key: ADMIN_PASS          
+        - name: LDAP1_PORT
+          value: "389"
+        - name: LDAP1_NAME
+          value: "exampleName"
+
+        - name: ENABLE_SMTP
+          value: "TRUE"
+        - name: SMTP_HOST
+          value: "smtp.example.net"
+        - name: SMTP_PORT
+          value: "25"
+        - name: SMTP_DOMAIN
+          value: "example.net"
+        - name: SMTP_MAILDOMAIN
+          value: "example.net"
+        - name: SMTP_TLS
+          value: "off"   
+        ports:
+        - containerPort: 80 
+        
+      restartPolicy: Always
