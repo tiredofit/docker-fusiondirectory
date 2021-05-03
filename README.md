@@ -1,24 +1,20 @@
-# tiredofit/fusiondirectory
+# github.com/tiredofit/docker-fusiondirectory
 
-[![Build Status](https://img.shields.io/docker/build/tiredofit/fusiondirectory.svg)](https://hub.docker.com/r/tiredofit/fusiondirectory)
-[![Docker Pulls](https://img.shields.io/docker/pulls/tiredofit/fusiondirectory.svg)](https://hub.docker.com/r/tiredofit/fusiondirectory)
-[![Docker Stars](https://img.shields.io/docker/stars/tiredofit/fusiondirectory.svg)](https://hub.docker.com/r/tiredofit/fusiondirectory)
-[![Docker
-Layers](https://images.microbadger.com/badges/image/tiredofit/fusiondirectory.svg)](https://microbadger.com/images/tiredofit/fusiondirectory)
+[![GitHub release](https://img.shields.io/github/v/tag/tiredofit/docker-fusiondirectory?style=flat-square)](https://github.com/tiredofit/docker-fusiondirectory/releases/latest)
+[![Build Status](https://img.shields.io/github/workflow/status/tiredofit/docker-fusiondirectory/build?style=flat-square)](https://github.com/tiredofit/docker-fusiondirectory/actions?query=workflow%3Abuild)
+[![Docker Stars](https://img.shields.io/docker/stars/tiredofit/fusiondirectory.svg?style=flat-square&logo=docker)](https://hub.docker.com/r/tiredofit/fusiondirectory/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/tiredofit/fusiondirectory.svg?style=flat-square&logo=docker)](https://hub.docker.com/r/tiredofit/fusiondirectory/)
+[![Become a sponsor](https://img.shields.io/badge/sponsor-tiredofit-181717.svg?logo=github&style=flat-square)](https://github.com/sponsors/tiredofit)
+[![Paypal Donate](https://img.shields.io/badge/donate-paypal-00457c.svg?logo=paypal&style=flat-square)](https://www.paypal.me/tiredofit)
 
-
-## Introduction
-
-This will build a container for [Fusion Directory](https://www.fusiondirectory.org/) a Directory Manager frontend for LDAP.
-
-* This Container uses a [customized Alpine Linux base](https://hub.docker.com/r/tiredofit/alpine) which includes [s6 overlay](https://github.com/just-containers/s6-overlay) enabled for PID 1 Init capabilities, [zabbix-agent](https://zabbix.org) for individual container monitoring, Cron also installed along with other tools (bash,curl, less, logrotate, nano, vim) for easier management. It also supports sending to external SMTP servers
-
-Additional Components Inside are Nginx, PHP7.3 w/ APC, OPCache, LDAP extensions and Openldap clients.
+* * *
 
 
-[Changelog](CHANGELOG.md)
+## About
 
-## Authors
+This will build a Docker Image for [Fusion Directory](https://www.fusiondirectory.org/) - an LDAP frontend.
+
+## Maintainer
 
 - [Dave Conroy](https://github.com/tiredofit)
 
@@ -39,43 +35,66 @@ Additional Components Inside are Nginx, PHP7.3 w/ APC, OPCache, LDAP extensions 
   - [Shell Access](#shell-access)
 - [References](#references)
 
-## Prerequisites
+## Prerequisites and Assumptions
 
-You must have use the accompanying [openldap-fusiondirectory](https://tiredofit/openldap-fusiondirectory) image with matching version number for the correct schema to operate!
+You must have use the accompanying  image with matching version number for the correct schema to operate!
+## Prerequisites and Assumptions
+*  Assumes you are using some sort of SSL terminating reverse proxy such as:
+   *  [Traefik](https://github.com/tiredofit/docker-traefik)
+   *  [Nginx](https://github.com/jc21/nginx-proxy-manager)
+   *  [Caddy](https://github.com/caddyserver/caddy)
+* Require - Access to an LDAP Server w/ necessary fusiondirectory schemas loaded. - See [openldap-fusiondirectory](https://tiredofit/openldap-fusiondirectory)
+* Optional - Access to a SMTP Server
 
 
 ## Installation
 
-Automated builds of the image are available on [Docker Hub](https://hub.docker.com/tiredofit/fusiondirectory) and is the
-recommended method of installation.
+### Build from Source
+Clone this repository and build the image with `docker build <arguments> (imagename) .`
 
+### Prebuilt Images
+Builds of the image are available on [Docker Hub](https://hub.docker.com/r/tiredofit/fusiondirectory) and is the recommended method of installation.
 
-```bash
-docker pull tiredofit/fusiondirectory
-```
+The following image tags are available along with their taged release based on what's written in the [Changelog](CHANGELOG.md):
 
-### Quick Start
+| Container OS | Tag       |
+| ------------ | --------- |
+| Alpine       | `:latest` |
 
-* The quickest way to get started is using [docker-compose](https://docs.docker.com/compose/). See the examples folder for a working [docker-compose.yml](examples/docker-compose.yml) that can be modified for development or production use.
-
-* Set various [environment variables](#environment-variables) to understand the capabilities of this image.
-* Map [persistent storage](#data-volumes) for access to configuration and data files for backup.
-
-Make sure you have installed the appropriate schemas on the LDAP Server.
+#### Multi Archictecture
+Images are built primarily for `amd64` architecture, and may also include builds for `arm/v6`, `arm/v7`, `arm64` and others. These variants are all unsupported. Consider [sponsoring](https://github.com/sponsors/tiredofit) my work so that I can work with various hardware. To see if this image supports multiple architecures, type `docker manifest (image):(tag)`
 
 
 ## Configuration
 
+### Quick Start
+
+* The quickest way to get started is using [docker-compose](https://docs.docker.com/compose/). See
+the examples folder for a working [docker-compose.yml](examples/docker-compose.yml) that can be
+modified for development or production use.
+
+* Set various [environment variables](#environment-variables) to understand the capabilities of this
+image.
+* Map [persistent storage](#data-volumes) for access to configuration and data files for backup.
 ### Persistent Storage
 
-If you would like to add custom HTML such as themes into Fusiondirectory map your folder that follows the /www/fusiondirectory/html structure into /assets/fusiondirectory and the script will overwrite upon bootup.
+If you would like to add custom HTML such as themes into Fusiondirectory map your folder that follows the `/www/fusiondirectory/html` structure into `/assets/fusiondirectory` and the script will overwrite upon bootup.
 
-If you have custom plugins, map a folder to /assets/plugins-custom/ and they will be automatically added to the container upon startup.
-
+If you have custom plugins, map a folder to `/assets/plugins-custom/` and they will be automatically added to the container upon startup.
 
 ### Environment Variables
+#### Base Images used
 
-Along with the Environment Variables from the [Base image](https://hub.docker.com/r/tiredofit/alpine), the [Nginx](https://hub.docker.com/r/tiredofit/nginx) and the [Nginx+PHP-FPM Engine](https://hub.docker.com/r/tiredofit/nginx-php-fpm) below is the complete list of available options that can be used to customize your installation.
+This image relies on an [Alpine Linux](https://hub.docker.com/r/tiredofit/alpine) or [Debian Linux](https://hub.docker.com/r/tiredofit/debian) base image that relies on an [init system](https://github.com/just-containers/s6-overlay) for added capabilities. Outgoing SMTP capabilities are handlded via `msmtp`. Individual container performance monitoring is performed by [zabbix-agent](https://zabbix.org). Additional tools include: `bash`,`curl`,`less`,`logrotate`,`nano`,`vim`.
+
+Be sure to view the following repositories to understand all the customizable options:
+
+| Image                                                         | Description                            |
+| ------------------------------------------------------------- | -------------------------------------- |
+| [OS Base](https://github.com/tiredofit/docker-alpine/)        | Customized Image based on Alpine Linux |
+| [Nginx](https://github.com/tiredofit/docker-nginx/)           | Nginx webserver                        |
+| [PHP-FPM](https://github.com/tiredofit/docker-nginx-php-fpm/) | PHP Interpreter                        |
+
 
 You can connect to multiple LDAP servers by setting the following environment variables. Simply Add as many LDAP(x) Variables for the amount of servers you wish to manage.
 
@@ -172,14 +191,36 @@ The following ports are exposed.
 | `80` | HTTP        |
 
 
+* * *
 ## Maintenance
+
 ### Shell Access
 
 For debugging and maintenance purposes you may want access the containers shell.
 
-```bash
-docker exec -it (whatever your container name is e.g. fusiondirectory) bash
-```
+``bash
+docker exec -it (whatever your container name is) bash
+``
+## Support
+
+These images were built to serve a specific need in a production environment and gradually have had more functionality added based on requests from the community.
+### Usage
+- The [Discussions board](../../discussions) is a great place for working with the community on tips and tricks of using this image.
+- Consider [sponsoring me](https://github.com/sponsors/tiredofit) personalized support.
+### Bugfixes
+- Please, submit a [Bug Report](issues/new) if something isn't working as expected. I'll do my best to issue a fix in short order.
+
+### Feature Requests
+- Feel free to submit a feature request, however there is no guarantee that it will be added, or at what timeline.
+- Consider [sponsoring me](https://github.com/sponsors/tiredofit) regarding development of features.
+
+### Updates
+- Best effort to track upstream changes, More priority if I am actively using the image in a production environment.
+- Consider [sponsoring me](https://github.com/sponsors/tiredofit) for up to date releases.
+
+## License
+MIT. See [LICENSE](LICENSE) for more details.## References
+
 
 ## References
 
