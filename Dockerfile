@@ -42,6 +42,7 @@ RUN set -x && \
                 perl-crypt-cbc \
                 perl-file-copy-recursive \
                 perl-io-socket-ssl \
+                perl-io-tty \
                 perl-json \
                 perl-mime-tools \
                 perl-net-ldap \
