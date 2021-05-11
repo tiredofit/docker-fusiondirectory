@@ -1,3 +1,13 @@
+## 2.6.3 2021-05-10 <dave at tiredofit dot ca>
+
+   ### Added
+      - FusionDirectory 1.4dev
+      - Smarty 3.1.39
+      - SmartyGettext 1.6.2
+      - PHP 7.4
+      - Prototype 1.7.3
+
+
 ## 2.6.2 2020-11-05 <dave at tiredofit dot ca>
 
    ### Changed

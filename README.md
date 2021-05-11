@@ -20,19 +20,30 @@ This will build a Docker Image for [Fusion Directory](https://www.fusiondirector
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Authors](#authors)
+- [About](#about)
+- [Maintainer](#maintainer)
 - [Table of Contents](#table-of-contents)
-- [Prerequisites](#prerequisites)
+- [Prerequisites and Assumptions](#prerequisites-and-assumptions)
+- [Prerequisites and Assumptions](#prerequisites-and-assumptions-1)
 - [Installation](#installation)
-  - [Quick Start](#quick-start)
+  - [Build from Source](#build-from-source)
+  - [Prebuilt Images](#prebuilt-images)
+    - [Multi Archictecture](#multi-archictecture)
 - [Configuration](#configuration)
+  - [Quick Start](#quick-start)
   - [Persistent Storage](#persistent-storage)
   - [Environment Variables](#environment-variables)
+    - [Base Images used](#base-images-used)
     - [Plugins](#plugins)
   - [Networking](#networking)
 - [Maintenance](#maintenance)
   - [Shell Access](#shell-access)
+- [Support](#support)
+  - [Usage](#usage)
+  - [Bugfixes](#bugfixes)
+  - [Feature Requests](#feature-requests)
+  - [Updates](#updates)
+- [License](#license)
 - [References](#references)
 
 ## Prerequisites and Assumptions
@@ -57,9 +68,10 @@ Builds of the image are available on [Docker Hub](https://hub.docker.com/r/tired
 
 The following image tags are available along with their tagged release based on what's written in the [Changelog](CHANGELOG.md):
 
-| Container OS | Tag       |
-| ------------ | --------- |
-| Alpine       | `:latest` |
+| Version | Container OS | Tag       |
+| ------- | ------------ | --------- |
+| 1.3     | Alpine       | `:latest` |
+| 1.4-dev | Alpine       | `:1.4`    |
 
 #### Multi Archictecture
 Images are built primarily for `amd64` architecture, and may also include builds for `arm/v6`, `arm/v7`, `arm64` and others. These variants are all unsupported. Consider [sponsoring](https://github.com/sponsors/tiredofit) my work so that I can work with various hardware. To see if this image supports multiple architecures, type `docker manifest (image):(tag)`
@@ -131,9 +143,11 @@ Enable various plugins. Please see the FusionDirectory Site for configuration op
 | `USER_REMINDER_CLEANUP_CRON_EXP` | Cron expression for when to send user reminder emails log cleanup        | `0 0 * * *` |
 | `PLUGIN_ALIAS`                   | Mail Aliases                                                             | `FALSE`     |
 | `PLUGIN_APPLICATIONS`            | Applications                                                             | `FALSE`     |
+| `PLUGIN_ARCHIVE`                 | Archive Attribuites                                                      | `FALSE`     |
 | `PLUGIN_ARGONAUT`                | Argonaut                                                                 | `FALSE`     |
 | `PLUGIN_AUDIT`                   | Audit Trail                                                              | `FALSE`     |
 | `PLUGIN_AUTOFS`                  | AutoFS                                                                   | `FALSE`     |
+| `PLUGIN_AUTOFS5`                 | AutoFS5                                                                  | `FALSE`     |
 | `PLUGIN_CERTIFICATES`            | Manage Certificates                                                      | `FALSE`     |
 | `PLUGIN_COMMUNITY`               | Community Plugin                                                         | `FALSE`     |
 | `PLUGIN_CYRUS`                   | Cyrus IMAP                                                               | `FALSE`     |
@@ -143,16 +157,21 @@ Enable various plugins. Please see the FusionDirectory Site for configuration op
 | `PLUGIN_DNS`                     | Manage DNS                                                               | `FALSE`     |
 | `PLUGIN_DOVECOT`                 | Dovecot IMAP                                                             | `FALSE`     |
 | `PLUGIN_DSA`                     | System Accounts                                                          | `FALSE`     |
+| `PLUGIN_DYNGROUPS`               | Dyanmic Group                                                            | `FALSE`     |
 | `PLUGIN_EJBCA`                   | Unknown                                                                  | `FALSE`     |
 | `PLUGIN_FAI`                     | Unknown                                                                  | `FALSE`     |
 | `PLUGIN_FREERADIUS`              | FreeRadius Management                                                    | `FALSE`     |
 | `PLUGIN_FUSIONINVENTORY`         | Inventory Plugin                                                         | `FALSE`     |
 | `PLUGIN_GPG`                     | Manage GPG Keys                                                          | `FALSE`     |
+| `PLUGIN_INVITATIONS`             | Invitations Management                                                   | `FALSE`     |
+| `PLUGIN_IPAM`                    | IPAM Management                                                          | `FALSE`     |
 | `PLUGIN_IPMI`                    | IPMI Management                                                          | `FALSE`     |
-| `PLUGIN_Kopano`                  | Kopano Core Groupware Server                                             | `FALSE`     |
+| `PLUGIN_KERBEROS`                | Kerberos                                                                 |
+| `PLUGIN_KOPANO`                  | Kopano Core Groupware Server                                             | `FALSE`     |
 | `PLUGIN_LDAPDUMP`                | LDAP Attribute Export                                                    | `FALSE`     |
 | `PLUGIN_LDAPMANAGER`             | Import/Export CSV/LDIF                                                   | `FALSE`     |
 | `PLUGIN_MAIL`                    | Mail Attributes                                                          | `FALSE`     |
+| `PLUGIN_MIGRATION_MAILROUTING`   | Mail routing                                                             | `FALSE`     |
 | `PLUGIN_MIXEDGROUPS`             | Unix/LDAP Groups                                                         | `FALSE`     |
 | `PLUGIN_NAGIOS`                  | Nagios Monitoring                                                        | `FALSE`     |
 | `PLUGIN_NETGROUPS`               | NIS                                                                      | `FALSE`     |
@@ -163,25 +182,29 @@ Enable various plugins. Please see the FusionDirectory Site for configuration op
 | `PLUGIN_POSIX`                   | Posix Groups                                                             | `FALSE`     |
 | `PLUGIN_POSTFIX`                 | Postfix SMTP                                                             | `FALSE`     |
 | `PLUGIN_PPOLICY`                 | Password Policy                                                          | `FALSE`     |
+| `PLUGIN_PUBLIC_FORMS`            | Public Forms                                                             | `FALSE`     |
 | `PLUGIN_PUPPET`                  | Puppet CI                                                                | `FALSE`     |
 | `PLUGIN_PUREFTPD`                | FTP Server                                                               | `FALSE`     |
 | `PLUGIN_QUOTA`                   | Manage Quotas                                                            | `FALSE`     |
 | `PLUGIN_RENATER_PARTAGE`         | Unknown                                                                  | `FALSE`     |
 | `PLUGIN_REPOSITORY`              | Argonaut Deployment Registry                                             | `FALSE`     |
 | `PLUGIN_SAMBA`                   | File Sharing                                                             | `FALSE`     |
+| `PLUGIN_SCHAC`                   | Schema for Academia                                                      | `FALSE`     |
 | `PLUGIN_SEAFILE`                 | Seafile Server                                                           | `FALSE`     |
 | `PLUGIN_SOGO`                    | Groupware                                                                | `FALSE`     |
 | `PLUGIN_SPAMASSASSIN`            | Anti Spam                                                                | `FALSE`     |
 | `PLUGIN_SQUID`                   | Proxy                                                                    | `FALSE`     |
 | `PLUGIN_SSH`                     | Manage SSH Keys                                                          | `FALSE`     |
 | `PLUGIN_SUBCONTRACTING`          | Unknown                                                                  | `FALSE`     |
+| `PLUGIN_SUBSCRIPTIONS`           | Subscriptions                                                            | `FALSE`     |
 | `PLUGIN_SUDO`                    | Manage SUDO on Hosts                                                     | `FALSE`     |
 | `PLUGIN_SUPANN`                  | SUPANN                                                                   | `FALSE`     |
 | `PLUGIN_SYMPA`                   | Sympa Mailing List                                                       | `FALSE`     |
 | `PLUGIN_SYSTEMS`                 | Systems Management                                                       | `FALSE`     |
 | `PLUGIN_USER_REMINDER`           | Password Expiry                                                          | `FALSE`     |
+| `PLUGIN_WEBAUTHN`                | Authn Authorization                                                      | `FALSE`     |
 | `PLUGIN_WEBLINK`                 | Display Weblink                                                          | `FALSE`     |
-
+| `PLUGIN_ZIMBRA`                  | Zimbra                                                                   | `FALSE`     |
 ### Networking
 
 The following ports are exposed.
