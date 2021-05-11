@@ -1,3 +1,9 @@
+## 2.7.1 2021-05-11 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add perl-io-text as run dependency as it was failing building from CPAN as part of another package
+
+
 ## 2.7.0 2021-05-10 <dave at tiredofit dot ca>
 
    ### Added
