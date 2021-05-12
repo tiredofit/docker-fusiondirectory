@@ -1,3 +1,9 @@
+## 2.7.2 2021-05-12 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Change for /assets/plugins to /assets/custom-plugins
+
+
 ## 2.7.1 2021-05-11 <dave at tiredofit dot ca>
 
    ### Added
