@@ -1,3 +1,9 @@
+## 2.7.3 2021-05-13 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for ALIAS plugin
+
+
 ## 2.7.2 2021-05-12 <dave at tiredofit dot ca>
 
    ### Changed
