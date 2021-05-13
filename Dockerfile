@@ -140,6 +140,8 @@ RUN set -x && \
     cp -R scriptaculous-js-1.9.0/src/controls.js /usr/src/fusiondirectory/html/include && \
     cp -R scriptaculous-js-1.9.0/src/dragdrop.js /usr/src/fusiondirectory/html/include && \
     cp -R scriptaculous-js-1.9.0/src/effects.js /usr/src/fusiondirectory/html/include && \
+    cp -R scriptaculous-js-1.9.0/src/sound.js /usr/src/fusiondirectory/html/include && \
+    cp -R scriptaculous-js-1.9.0/src/slider.js /usr/src/fusiondirectory/html/include && \
     chmod 750 /usr/src/fusiondirectory/contrib/bin/* && \
     cp -R /usr/src/fusiondirectory/contrib/bin/* /usr/sbin/ && \
     cp -R /usr/src/fusiondirectory/contrib/smarty/plugins/* /usr/share/php/smarty3/plugins/ && \
@@ -152,7 +154,7 @@ RUN set -x && \
     mkdir -p /var/cache/fusiondirectory/tmp && \
     mkdir -p /etc/fusiondirectory && \
     cp -R /usr/src/fusiondirectory/contrib/fusiondirectory.conf /var/cache/fusiondirectory/template/fusiondirectory.conf && \
-    php-ext enable core && \
+    #php-ext enable core && \
     mkdir -p ${NGINX_WEBROOT} && \
     cp -R /usr/src/fusiondirectory/* ${NGINX_WEBROOT} && \
     fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --write-vars --yes && \

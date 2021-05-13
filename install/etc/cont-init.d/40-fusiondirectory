@@ -386,6 +386,7 @@ if var_false "${PLUGIN_SPAMASSASSIN}"; then rm -rf /assets/fusiondirectory-plugi
 if var_false "${PLUGIN_SQUID}"; then rm -rf /assets/fusiondirectory-plugins/squid ; fi;
 if var_false "${PLUGIN_SSH}"; then rm -rf /assets/fusiondirectory-plugins/ssh ; fi;
 if var_false "${PLUGIN_SUBCONTRACTING}"; then rm -rf /assets/fusiondirectory-plugins/subcontracting ; fi;
+if var_false "${PLUGIN_SUBSCRIPTION}"; then rm -rf /www/fusiondirectory/plugins/addons/subscription ; fi;
 if var_false "${PLUGIN_SUBSCRIPTIONS}"; then rm -rf /assets/fusiondirectory-plugins/subscriptions ; fi;
 if var_false "${PLUGIN_SUDO}"; then rm -rf /assets/fusiondirectory-plugins/sudo ; fi;
 if var_false "${PLUGIN_SUPANN}"; then rm -rf /assets/fusiondirectory-plugins/supann* ; fi;
@@ -405,17 +406,17 @@ if [ -d "/assets/custom-plugins/" ]; then
 fi
 
 find /assets/fusiondirectory-plugins -maxdepth 1 -mindepth 1 -type d | sed "/.git/d" | sed "/.tx/d" | while read plugins; do
-  print_debug "Installing plugin '$(basename $plugins)'"
-  if [ -d "${plugins}/addons" ] ; then cp -aR ${plugins}/addons ${NGINX_WEBROOT}/plugins/ ; fi;
-  if [ -d "${plugins}/admin" ] ; then cp -aR ${plugins}/admin ${NGINX_WEBROOT}/plugins/ ; fi;
-  if [ -d "${plugins}/config" ] ; then cp -aR ${plugins}/config ${NGINX_WEBROOT}/plugins/ ; fi;
-  if [ -d "${plugins}/personal" ] ; then cp -aR ${plugins}/personal ${NGINX_WEBROOT}/plugins/ ; fi;
-  if [ -d "${plugins}/html" ] ; then cp -aR ${plugins}/html ${NGINX_WEBROOT}/ ; fi;
-  if [ -d "${plugins}/ihtml" ] ; then cp -aR ${plugins}/ihtml ${NGINX_WEBROOT}/ ; fi;
-  if [ -d "${plugins}/include" ] ; then cp -aR ${plugins}/include ${NGINX_WEBROOT}/ ; fi;
-  if [ -d "${plugins}/locale" ] ; then mkdir -p ${NGINX_WEBROOT}/locale/plugins/"$(basename $plugins)" ; cp -aR ${plugins}/locale ${NGINX_WEBROOT}/locale/"$(basename $plugins)"/ ; fi;
-  if [ -d "${plugins}/contrib/openldap" ] ; then cp -aR ${plugins}/contrib/openldap ${NGINX_WEBROOT}/contrib/ ; fi;
-  if [ -d "${plugins}/contrib/etc" ] ; then cp -aR ${plugins}/contrib/etc/* /etc/fusiondirectory/ ; fi;
+  print_debug "Installing plugin '$(basename "$plugins")'"
+  if [ -d "${plugins}/addons" ] ; then cp -aR "${plugins}"/addons "${NGINX_WEBROOT}"/plugins/ ; fi;
+  if [ -d "${plugins}/admin" ] ; then cp -aR "${plugins}"/admin "${NGINX_WEBROOT}"/plugins/ ; fi;
+  if [ -d "${plugins}/config" ] ; then cp -aR "${plugins}"/config "${NGINX_WEBROOT}"/plugins/ ; fi;
+  if [ -d "${plugins}/personal" ] ; then cp -aR "${plugins}"/personal "${NGINX_WEBROOT}"/plugins/ ; fi;
+  if [ -d "${plugins}/html" ] ; then cp -aR "${plugins}"/html "${NGINX_WEBROOT}"/ ; fi;
+  if [ -d "${plugins}/ihtml" ] ; then cp -aR "${plugins}"/ihtml "${NGINX_WEBROOT}"/ ; fi;
+  if [ -d "${plugins}/include" ] ; then cp -aR "${plugins}"/include "${NGINX_WEBROOT}"/ ; fi;
+  if [ -d "${plugins}/locale" ] ; then mkdir -p "${NGINX_WEBROOT}"/locale/plugins/"$(basename "$plugins")" ; cp -aR "${plugins}"/locale "${NGINX_WEBROOT}"/locale/"$(basename "$plugins")"/ ; fi;
+  if [ -d "${plugins}/contrib/openldap" ] ; then cp -aR "${plugins}"/contrib/openldap "${NGINX_WEBROOT}"/contrib/ ; fi;
+  if [ -d "${plugins}/contrib/etc" ] ; then cp -aR "${plugins}"/contrib/etc/* /etc/fusiondirectory/ ; fi;
 done
 
 
@@ -519,8 +520,8 @@ fi
 ### Set Permissions
 chmod 640 /etc/fusiondirectory/fusiondirectory.conf
 chown root:"${NGINX_GROUP}" /etc/fusiondirectory/fusiondirectory.conf
-silent fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --check-directories --check-config --update-cache --yes
-silent fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --write-vars --check-directories --update-locales --update-cache --yes
+yes Yes | silent fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --check-directories --check-config --update-cache
+yes Yes | silent fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --write-vars --check-directories --update-locales --update-cache
 silent fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --set-fd_smarty_path="/usr/share/php/smarty3/Smarty.class.php" --write-vars
 
 ### Theme Support

@@ -1,3 +1,9 @@
+## 2.7.4 2021-05-13 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Remove Subscription Notification by variable
+
+
 ## 2.7.3 2021-05-13 <dave at tiredofit dot ca>
 
    ### Changed
