@@ -1,3 +1,9 @@
+## 2.7.5 2021-05-14 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add /assets/custom-scripts execution support
+
+
 ## 2.7.4 2021-05-13 <dave at tiredofit dot ca>
 
    ### Changed
