@@ -166,7 +166,7 @@ Enable various plugins. Please see the FusionDirectory Site for configuration op
 | `PLUGIN_INVITATIONS`             | Invitations Management                                                   | `FALSE`     |
 | `PLUGIN_IPAM`                    | IPAM Management                                                          | `FALSE`     |
 | `PLUGIN_IPMI`                    | IPMI Management                                                          | `FALSE`     |
-| `PLUGIN_KERBEROS`                | Kerberos                                                                 |
+| `PLUGIN_KERBEROS`                | Kerberos                                                                 | `FALSE`     |
 | `PLUGIN_KOPANO`                  | Kopano Core Groupware Server                                             | `FALSE`     |
 | `PLUGIN_LDAPDUMP`                | LDAP Attribute Export                                                    | `FALSE`     |
 | `PLUGIN_LDAPMANAGER`             | Import/Export CSV/LDIF                                                   | `FALSE`     |
@@ -188,6 +188,7 @@ Enable various plugins. Please see the FusionDirectory Site for configuration op
 | `PLUGIN_QUOTA`                   | Manage Quotas                                                            | `FALSE`     |
 | `PLUGIN_RENATER_PARTAGE`         | Unknown                                                                  | `FALSE`     |
 | `PLUGIN_REPOSITORY`              | Argonaut Deployment Registry                                             | `FALSE`     |
+| `PLUGIN_REST`                    | REST API                                                                 | `FALSE`     |
 | `PLUGIN_SAMBA`                   | File Sharing                                                             | `FALSE`     |
 | `PLUGIN_SCHAC`                   | Schema for Academia                                                      | `FALSE`     |
 | `PLUGIN_SEAFILE`                 | Seafile Server                                                           | `FALSE`     |

@@ -1,3 +1,14 @@
+## 2.7.6 2021-05-25 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add customizable rest prefix (/rest/)
+      - Seperate REST/Webservice logging (rest-error.log rest-access.log)
+      - Add /logout/ alias
+
+   ### Changed
+      - Fix nginx configuration to allow arguments after /rest.php
+
+
 ## 2.7.5 2021-05-14 <dave at tiredofit dot ca>
 
    ### Added

@@ -44,7 +44,9 @@ RUN set -x && \
                 perl-io-socket-ssl \
                 perl-io-tty \
                 perl-json \
+                perl-mail-sendmail \
                 perl-mime-tools \
+                perl-module-pluggable \
                 perl-net-ldap \
                 perl-path-class \
                 perl-term-readkey \
@@ -63,8 +65,8 @@ RUN set -x && \
             JSON::Any \
             JSON::RPC \
             Log::Handler \
-            Mail::Sendmail \
-            Module::Pluggable \
+            #Mail::Sendmail \
+            #Module::Pluggable \
             POE \
             POE::Component::Server::JSONRPC::Http \
             POE::Component::Schedule \

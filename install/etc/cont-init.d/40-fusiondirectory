@@ -43,9 +43,13 @@ if var_true "${PLUGIN_USER_REMINDER}"; then
 
 fi
 
-## Webservice
-if var_true "${PLUGIN_WEBSERVICE}"; then
-  :
+## Webservice / REST
+if var_true "${PLUGIN_WEBSERVICE}" || var_true "${PLUGIN_REST}" ; then
+  print_debug "Enabling REST plugin"
+  sed -i "s|<REST_PREFIX>|${REST_PREFIX}|g" /etc/nginx/conf.available/rest.template
+  sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/rest.template
+  sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/rest.template
+  sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/rest.template;" /etc/nginx/conf.available/rest.template
 fi
 
 ### Cloud
