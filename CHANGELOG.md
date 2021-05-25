@@ -1,3 +1,9 @@
+## 2.7.7 2021-05-25 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for 2.7.6
+
+
 ## 2.7.6 2021-05-25 <dave at tiredofit dot ca>
 
    ### Added
