@@ -1,3 +1,9 @@
+## 2.7.8 2021-05-25 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Changes to nginx configuration
+
+
 ## 2.7.7 2021-05-25 <dave at tiredofit dot ca>
 
    ### Changed

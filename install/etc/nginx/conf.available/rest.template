@@ -1,5 +1,4 @@
-location <REST_PREFIX> {
+location /rest.php {
         access_log  <LOG_ACCESS_LOCATION>/rest-access.log;
         error_log   <LOG_ERROR_LOCATION>/rest-error.log;
-        rewrite ^(.*) /rest.php/$1;
 }
