@@ -24,7 +24,6 @@ This will build a Docker Image for [Fusion Directory](https://www.fusiondirector
 - [Maintainer](#maintainer)
 - [Table of Contents](#table-of-contents)
 - [Prerequisites and Assumptions](#prerequisites-and-assumptions)
-- [Prerequisites and Assumptions](#prerequisites-and-assumptions-1)
 - [Installation](#installation)
   - [Build from Source](#build-from-source)
   - [Prebuilt Images](#prebuilt-images)
@@ -46,9 +45,6 @@ This will build a Docker Image for [Fusion Directory](https://www.fusiondirector
 - [License](#license)
 - [References](#references)
 
-## Prerequisites and Assumptions
-
-You must have use the accompanying  image with matching version number for the correct schema to operate!
 ## Prerequisites and Assumptions
 *  Assumes you are using some sort of SSL terminating reverse proxy such as:
    *  [Traefik](https://github.com/tiredofit/docker-traefik)
