@@ -1,5 +1,5 @@
 FROM tiredofit/nginx-php-fpm:7.4
-LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
+LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ## Set Environment Varialbes
 ENV ARGONAUT_VERSION=1.4-dev \

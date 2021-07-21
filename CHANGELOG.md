@@ -1,3 +1,9 @@
+## 2.7.9 2021-07-21 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Change the way Cron is handled
+
+
 ## 2.7.8 2021-05-25 <dave at tiredofit dot ca>
 
    ### Changed

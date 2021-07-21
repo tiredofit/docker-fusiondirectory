@@ -7,5 +7,5 @@ check_container_initialized
 check_service_initialized init
 liftoff
 
-print_info "Starting Argonaut Server ${ARGONAUT_VERSION}"
+print_start "Starting Argonaut Server ${ARGONAUT_VERSION}"
 exec argonaut-server

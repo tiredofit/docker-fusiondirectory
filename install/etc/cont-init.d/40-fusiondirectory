@@ -16,7 +16,7 @@ if var_true "${PLUGIN_AUDIT}}"; then
 
   if var_true "${ENABLE_AUDIT_CLEANUP}}"; then
     print_notice "Setting Audit Cleanup Scheduled Task"
-    echo "${AUDIT_CLEANUP_CRON_EXP}  /usr/sbin/argonaut-clean-audit >/dev/null 2>&1" >> /assets/cron/crontab.txt
+    echo "${AUDIT_CLEANUP_CRON_EXP}  TZ=${TIMEZONE} /usr/sbin/argonaut-clean-audit >/dev/null 2>&1" >> /assets/cron/argonaut-audit-cleanup
   fi
 fi
 
@@ -38,7 +38,7 @@ if var_true "${PLUGIN_USER_REMINDER}"; then
 
   if var_true "${ENABLE_USER_REMINDER}"; then
       print_notice "Setting User Reminder Scheduled Task"
-      echo "${USER_REMINDER_CRON_EXP}  /usr/sbin/argonaut-user-reminder >/dev/null 2>&1" >> /assets/cron/crontab.txt
+      echo "${USER_REMINDER_CRON_EXP}  TZ=${TIMEZONE} /usr/sbin/argonaut-user-reminder >/dev/null 2>&1" >> /assets/cron/argonaut-user-reminder
   fi
 
 fi
