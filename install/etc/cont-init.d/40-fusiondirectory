@@ -444,7 +444,7 @@ cat <<EOF > /etc/fusiondirectory/fusiondirectory.conf
     >
 EOF
 
-  NUM=$(printenv | sort | grep -c '^LDAP.*HOST')
+  NUM=$(printenv | sort | grep -c '^LDAP[0-9][0-9]*_HOST')
   for (( i = 1; i <= NUM; i++ ))
   do
 
