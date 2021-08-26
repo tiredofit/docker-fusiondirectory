@@ -1,3 +1,9 @@
+## 2.7.10 2021-08-26 <bmalynovytch@github>
+
+   ### Fixed
+      - Parsing of Multiple LDAP Hosts under Kubernetes not working correctly
+
+
 ## 2.7.9 2021-07-21 <dave at tiredofit dot ca>
 
    ### Changed
