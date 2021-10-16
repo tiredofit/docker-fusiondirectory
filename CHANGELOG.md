@@ -1,3 +1,9 @@
+## 2.7.11 2021-10-16 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add MailinBlack plugin
+
+
 ## 2.7.10 2021-08-26 <bmalynovytch@github>
 
    ### Fixed

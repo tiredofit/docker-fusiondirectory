@@ -27,7 +27,7 @@ This will build a Docker Image for [Fusion Directory](https://www.fusiondirector
 - [Installation](#installation)
   - [Build from Source](#build-from-source)
   - [Prebuilt Images](#prebuilt-images)
-    - [Multi Archictecture](#multi-archictecture)
+    - [Multi Architecture](#multi-architecture)
 - [Configuration](#configuration)
   - [Quick Start](#quick-start)
   - [Persistent Storage](#persistent-storage)
@@ -69,7 +69,7 @@ The following image tags are available along with their tagged release based on 
 | 1.3     | Alpine       | `:latest` |
 | 1.4-dev | Alpine       | `:1.4`    |
 
-#### Multi Archictecture
+#### Multi Architecture
 Images are built primarily for `amd64` architecture, and may also include builds for `arm/v6`, `arm/v7`, `arm64` and others. These variants are all unsupported. Consider [sponsoring](https://github.com/sponsors/tiredofit) my work so that I can work with various hardware. To see if this image supports multiple architecures, type `docker manifest (image):(tag)`
 
 
@@ -167,6 +167,7 @@ Enable various plugins. Please see the FusionDirectory Site for configuration op
 | `PLUGIN_LDAPDUMP`                | LDAP Attribute Export                                                    | `FALSE`     |
 | `PLUGIN_LDAPMANAGER`             | Import/Export CSV/LDIF                                                   | `FALSE`     |
 | `PLUGIN_MAIL`                    | Mail Attributes                                                          | `FALSE`     |
+| `PLUGIN_MAILINBLACK`             | Mail in Black                                                            | `FALSE`     |
 | `PLUGIN_MIGRATION_MAILROUTING`   | Mail routing                                                             | `FALSE`     |
 | `PLUGIN_MIXEDGROUPS`             | Unix/LDAP Groups                                                         | `FALSE`     |
 | `PLUGIN_NAGIOS`                  | Nagios Monitoring                                                        | `FALSE`     |

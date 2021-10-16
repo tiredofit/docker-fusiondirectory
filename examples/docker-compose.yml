@@ -21,7 +21,7 @@ services:
     - LETSENCRYPT_HOST=fusiondirectory.example.org
     - LETSENCRYPT_EMAIL=yourname@example.org
 
-    - ZABBIX_HOSTNAME=fusiondirectory-app
+    - CONTAINER_NAME=fusiondirectory-app
 
     - ENABLE_ARGONAUT=FALSE
     - PLUGIN_AUDIT=TRUE

@@ -78,6 +78,11 @@ if var_true "${PLUGIN_DOVECOT}"; then
 fi
 
 ## Kopano
+if var_true "${PLUGIN_MAILINBLACK}"; then
+  :
+fi
+
+## Kopano
 if var_true "${PLUGIN_KOPANO}"; then
   export PLUGIN_SYSTEMS=TRUE
 fi
@@ -363,6 +368,7 @@ if var_false "${PLUGIN_LDAPDUMP}"; then rm -rf /assets/fusiondirectory-plugins/l
 if var_false "${PLUGIN_LDAPMANAGER}"; then rm -rf /assets/fusiondirectory-plugins/ldapmanager ; fi;
 if var_false "${PLUGIN_KOPANO}"; then rm -rf /assets/fusiondirectory-plugins/kopano ; fi;
 if var_false "${PLUGIN_MAIL}" ; then rm -rf /assets/fusiondirectory-plugins/mail ; fi;
+if var_false "${PLUGIN_MAILINBLACK}"; then rm -rf /assets/fusiondirectory-plugins/mailinblack ; fi;
 if var_false "${PLUGIN_MIGRATION_MAILROUTING}"; then rm -rf /assets/fusiondirectory-plugins/migration-mailrouting ; fi;
 if var_false "${PLUGIN_MIXEDGROUPS}"; then rm -rf /assets/fusiondirectory-plugins/mixedgroups ; fi;
 if var_false "${PLUGIN_NAGIOS}"; then rm -rf /assets/fusiondirectory-plugins/nagios ; fi;

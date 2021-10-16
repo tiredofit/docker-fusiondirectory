@@ -1,4 +1,4 @@
-FROM tiredofit/nginx-php-fpm:7.4
+FROM docker.io/tiredofit/nginx-php-fpm:7.4
 LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ## Set Environment Varialbes
