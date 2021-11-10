@@ -1,3 +1,9 @@
+## 2.7.12 2021-11-10 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for when containers weren't compltely stopped and REST plugins enabled
+
+
 ## 2.7.11 2021-10-16 <dave at tiredofit dot ca>
 
    ### Added
