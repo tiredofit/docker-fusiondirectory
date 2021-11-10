@@ -1,3 +1,9 @@
+## 2.7.13 2021-11-10 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for 2.7.12
+
+
 ## 2.7.12 2021-11-10 <dave at tiredofit dot ca>
 
    ### Changed
