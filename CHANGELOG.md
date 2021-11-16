@@ -1,3 +1,9 @@
+## 2.7.14 2021-11-16 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Additional Fix for REST Nginx configuration
+
+
 ## 2.7.13 2021-11-10 <dave at tiredofit dot ca>
 
    ### Changed
