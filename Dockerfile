@@ -14,7 +14,9 @@ ENV ARGONAUT_VERSION=1.4-dev \
     PHP_ENABLE_GETTEXT=TRUE \
     PHP_ENABLE_IMAGICK=TRUE \
     PHP_ENABLE_IMAP=TRUE \
-    PHP_ENABLE_LDAP=TRUE
+    PHP_ENABLE_LDAP=TRUE \
+    IMAGE_NAME="tiredofit/fusiondirectory" \
+    IMAGE_REPO_URL="https://github.com/tiredofit/docker-fusiondirectory/"
 
 # Build Dependencies
 RUN set -x && \

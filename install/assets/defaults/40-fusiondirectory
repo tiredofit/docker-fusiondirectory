@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 LDAP_DEFAULT=${LDAP_DEFAULT:-${LDAP1_NAME}}
 LDAP_PORT=${LDAP_PORT:-389}
