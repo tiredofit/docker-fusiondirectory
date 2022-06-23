@@ -46,10 +46,10 @@ fi
 ## Webservice / REST
 if var_true "${PLUGIN_WEBSERVICE}" || var_true "${PLUGIN_REST}" ; then
   print_debug "Enabling REST plugin"
-  sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/rest.template
-  sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/rest.template
-  sed -i "/include \/etc\/nginx\/conf.available\/rest.template;/d" /etc/nginx/conf.d/default.conf
-  sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/rest.template;" /etc/nginx/conf.d/default.conf
+  sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/rest.template
+  sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/rest.template
+  sed -i "/include \/etc\/nginx\/sites.available\/rest.template;/d" /etc/nginx/sites.available/fusiondirectory.conf
+  sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/sites.available\/rest.template;" /etc/nginx/sites.available/fusiondirectory.conf
 fi
 
 ### Cloud

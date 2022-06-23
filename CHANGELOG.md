@@ -1,3 +1,9 @@
+## 2.7.17 2022-06-23 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Patchup for 2.7.16
+
+
 ## 2.7.16 2022-06-23 <dave at tiredofit dot ca>
 
    ### Added
