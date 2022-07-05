@@ -1,3 +1,9 @@
+## 2.6.4 2022-07-05 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Change where Schema2LDIF is loaded from
+
+
 ## 2.6.3 2022-06-23 <dave at tiredofit dot ca>
 
    ### Added

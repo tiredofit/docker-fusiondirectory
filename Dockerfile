@@ -15,7 +15,9 @@ ENV ARGONAUT_VERSION=1.3 \
     PHP_ENABLE_GETTEXT=TRUE \
     PHP_ENABLE_IMAGICK=TRUE \
     PHP_ENABLE_IMAP=TRUE \
-    PHP_ENABLE_LDAP=TRUE
+    PHP_ENABLE_LDAP=TRUE \
+    IMAGE_NAME="tiredofit/fusiondirectory" \
+    IMAGE_REPO_URL="https://github.com/tiredofit/docker-fusiondirectory"
 
 # Build Dependencies
 RUN set -x && \
@@ -87,8 +89,8 @@ RUN set -x && \
     chmod 750 /usr/sbin/tsmarty2c.php && \
     \
 ## Install Schema2LDIF
-    curl https://repos.fusiondirectory.org/sources/schema2ldif/schema2ldif-${SCHEMA2LDIF_VERSION}.tar.gz| tar xvfz - --strip 1 -C /usr && \
-    rm -rf /usr/CHANGELOG && \
+    curl https://codeload.github.com/fusiondirectory/schema2ldif/tar.gz/${SCHEMA2LDIF_VERSION} | tar xvfz - --strip 1 -C /usr && \
+    rm -rf /usr/Changelog && \
     rm -rf /usr/LICENSE && \
     \
 ## Install Communication Server
