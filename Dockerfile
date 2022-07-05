@@ -93,8 +93,8 @@ RUN set -x && \
     chmod 750 /usr/sbin/tsmarty2c.php && \
     \
 ## Install Schema2LDIF
-    curl -sSL https://repos.fusiondirectory.org/sources/schema2ldif/schema2ldif-${SCHEMA2LDIF_VERSION}.tar.gz| tar xfz - --strip 1 -C /usr && \
-    rm -rf /usr/CHANGELOG && \
+    curl https://codeload.github.com/fusiondirectory/schema2ldif/tar.gz/${SCHEMA2LDIF_VERSION} | tar xvfz - --strip 1 -C /usr && \
+    rm -rf /usr/Changelog && \
     rm -rf /usr/LICENSE && \
     \
 ## Install Communication Server

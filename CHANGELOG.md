@@ -1,3 +1,9 @@
+## 2.7.18 2022-07-05 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Change where Schema2LDIF is installed from
+
+
 ## 2.7.17 2022-06-23 <dave at tiredofit dot ca>
 
    ### Changed
