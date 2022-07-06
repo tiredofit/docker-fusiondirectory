@@ -1,3 +1,9 @@
+## 2.6.6 2022-07-06 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for 1.3 Nginx Snippets
+
+
 ## 2.6.5 2022-07-06 <dave at tiredofit dot ca>
 
    ### Changed
