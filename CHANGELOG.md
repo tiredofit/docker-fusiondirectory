@@ -1,3 +1,9 @@
+## 2.6.5 2022-07-06 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Switch Repository locations for old 1.3 release
+
+
 ## 2.6.4 2022-07-05 <dave at tiredofit dot ca>
 
    ### Changed

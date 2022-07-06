@@ -2,7 +2,7 @@ FROM tiredofit/nginx-php-fpm:7.2
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ## Set Environment Varialbes
-ENV ARGONAUT_VERSION=1.3 \
+ENV ARGONAUT_VERSION=1.3.1 \
     FUSIONDIRECTORY_VERSION=1.3 \
     FUSIONDIRECTORY_PLUGINS_VERSION=1.3 \
     SCHEMA2LDIF_VERSION=1.3 \
@@ -79,10 +79,10 @@ RUN set -x && \
     \
 ## Install Smarty3
     mkdir -p /usr/src/smarty /usr/src/smarty-gettext /usr/share/php/smarty3 && \
-    curl https://codeload.github.com/smarty-php/smarty/tar.gz/v${SMARTY_VERSION} | tar xvfz - --strip 1 -C /usr/src/smarty && \
+    curl -sSL https://codeload.github.com/smarty-php/smarty/tar.gz/v${SMARTY_VERSION} | tar xfz - --strip 1 -C /usr/src/smarty && \
     cp -r /usr/src/smarty/libs/* /usr/share/php/smarty3 && \
     ln -s /usr/share/php/smarty3/Smarty.class.php /usr/share/php/smarty3/smarty.class.php && \
-    curl https://codeload.github.com/smarty-gettext/smarty-gettext/tar.gz/${SMARTYGETTEXT_VERSION} | tar xvfz - --strip 1 -C /usr/src/smarty-gettext && \
+    curl -sSL https://codeload.github.com/smarty-gettext/smarty-gettext/tar.gz/${SMARTYGETTEXT_VERSION} | tar xfz - --strip 1 -C /usr/src/smarty-gettext && \
     mkdir -p /usr/share/php/smarty3/plugins && \
     cp -R /usr/src/smarty-gettext/block.t.php /usr/share/php/smarty3/plugins/ && \
     cp -R /usr/src/smarty-gettext/tsmarty2c.php /usr/sbin && \
@@ -95,7 +95,9 @@ RUN set -x && \
     \
 ## Install Communication Server
     mkdir -p /usr/src/argonaut /etc/argonaut /var/log/argonaut && \
-    curl https://repos.fusiondirectory.org/sources/argonaut/argonaut-${ARGONAUT_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/argonaut && \
+    git clone https://gitlab.fusiondirectory.org/fusiondirectory/argonaut /usr/src/argonaut && \
+    cd /usr/src/argonaut && \
+    git checkout argonaut-${ARGONAUT_VERSION} && \
     chmod +x /usr/src/argonaut/*/bin/* && \
     cp -R /usr/src/argonaut/argonaut-common/Argonaut /usr/share/perl5/vendor_perl/ && \
     cp -R /usr/src/argonaut/argonaut-common/XML /usr/share/perl5/vendor_perl/ && \
@@ -108,10 +110,12 @@ RUN set -x && \
     \
 ## Install FusionDirectory
     mkdir -p /usr/src/fusiondirectory /assets/fusiondirectory-plugins && \
-    curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-${FUSIONDIRECTORY_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/fusiondirectory && \
-    #git clone https://gitlab.fusiondirectory.org/fusiondirectory/fd/ /usr/src/fusiondirectory && \
+    git clone https://gitlab.fusiondirectory.org/fusiondirectory/fd/ /usr/src/fusiondirectory && \
     cd /usr/src/fusiondirectory && \
-    curl https://repos.fusiondirectory.org/sources/fusiondirectory/fusiondirectory-plugins-${FUSIONDIRECTORY_PLUGINS_VERSION}.tar.gz | tar xvfz - --strip 1 -C /assets/fusiondirectory-plugins && \
+    git checkout fusiondirectory-${FUSIONDIRECTORY_VERSION} && \
+    git clone https://gitlab.fusiondirectory.org/fusiondirectory/fd-plugins/ /assets/fusiondirectory-plugins && \
+    cd /assets/fusiondirectory-plugins/ && \
+    git checkout fusiondirectory-${FUSIONDIRECTORY_PLUGINS_VERSION} && \
     \
 ## Install Extra FusionDirectory Plugins
     git clone https://github.com/tiredofit/fusiondirectory-plugin-kopano /usr/src/fusiondirectory-plugin-kopano && \
