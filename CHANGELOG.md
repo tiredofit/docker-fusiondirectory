@@ -1,3 +1,9 @@
+## 2.7.20 2022-10-05 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Migrate legacy nginx configuration
+
+
 ## 2.7.19 2022-08-06 <dave at tiredofit dot ca>
 
    ### Added
