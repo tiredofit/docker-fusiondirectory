@@ -1,3 +1,9 @@
+## 2.7.21 2022-11-03 <dave at tiredofit dot ca>
+
+   ### Added
+      - Version bump to get new updates since last build
+
+
 ## 2.7.20 2022-10-05 <dave at tiredofit dot ca>
 
    ### Changed
