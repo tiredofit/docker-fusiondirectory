@@ -1,3 +1,13 @@
+## 1.4-2.7.22 2023-02-21 <dave at tiredofit dot ca>
+
+   ### Added
+      - Modernize Dockerfile
+      - Stop pulling from mainline 1.4-dev branches instead use
+      - Fusiondirectory b246399ff2d3dc74565c9f3897e4a3544e0c51d1
+      - Fusiondirectory Plugins b0078c722634cbd42fe2b0231eb8d40c6d87df3e
+      - Due to removal of key tools that we just aren't ready to modify quite yet (fusiondirectory-insert schema)
+
+
 ## 2.7.21 2022-11-03 <dave at tiredofit dot ca>
 
    ### Added

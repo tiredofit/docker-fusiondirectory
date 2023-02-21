@@ -1,10 +1,16 @@
-FROM docker.io/tiredofit/nginx-php-fpm:7.4
+ARG DISTRO=alpine
+ARG PHP_VERSION=7.4
+
+FROM docker.io/tiredofit/nginx-php-fpm:${PHP_VERSION}-${DISTRO}
 LABEL maintainer="Dave Conroy (github.com/tiredofit)"
+
 
 ## Set Environment Varialbes
 ENV ARGONAUT_VERSION=1.4-dev \
-    FUSIONDIRECTORY_VERSION=1.4-dev \
-    FUSIONDIRECTORY_PLUGINS_VERSION=1.4-dev \
+    FUSIONDIRECTORY_VERSION=b246399ff2d3dc74565c9f3897e4a3544e0c51d1 \
+    FUSIONDIRECTORY_REPO_URL=https://github.com/fusiondirectory/fusiondirectory \
+    FUSIONDIRECTORY_PLUGINS_VERSION=b0078c722634cbd42fe2b0231eb8d40c6d87df3e \
+    FUSIONDIRECTORY_PLUGINS_REPO_URL=https://github.com/fusiondirectory/fusiondirectory-plugins \
     SCHEMA2LDIF_VERSION=1.3 \
     SMARTY_VERSION=3.1.39 \
     SMARTYGETTEXT_VERSION=1.6.2 \
@@ -20,10 +26,11 @@ ENV ARGONAUT_VERSION=1.4-dev \
     IMAGE_REPO_URL="https://github.com/tiredofit/docker-fusiondirectory/"
 
 # Build Dependencies
-RUN set -x && \
-    apk update && \
-    apk upgrade && \
-    apk add -t .fusiondirectory-build-deps \
+RUN source /assets/functions/00-container && \
+    set -x && \
+    package update && \
+    package upgrade && \
+    package install .fusiondirectory-build-deps \
                 coreutils \
                 build-base \
                 git \
@@ -32,7 +39,7 @@ RUN set -x && \
                 && \
     \
 ## Run Dependencies Installation
-    apk add -t .fusiondirectory-run-deps \
+    package install .fusiondirectory-run-deps \
                 expect \
                 gettext \
                 gettext-lang \
@@ -56,7 +63,7 @@ RUN set -x && \
                 perl-xml-twig \
                 && \
     \
-### Install Perl Dependencies that aren't available as packages
+### Install Perl Dependencies that aren't available as package s
     ln -s /usr/bin/perl /usr/local/bin/perl && \
     curl -sSL http://cpanmin.us -o /usr/bin/cpanm && \
     chmod +x /usr/bin/cpanm && \
@@ -113,22 +120,17 @@ RUN set -x && \
     cp -R /usr/src/argonaut/*/Argonaut/ /usr/share/perl5/vendor_perl && \
     \
 ## Install FusionDirectory
-    mkdir -p /usr/src/fusiondirectory /assets/fusiondirectory-plugins && \
-    git clone https://gitlab.fusiondirectory.org/fusiondirectory/fd/ /usr/src/fusiondirectory && \
-    cd /usr/src/fusiondirectory && \
-    git checkout ${FUSIONDIRECTORY_VERSION} && \
-    git clone https://gitlab.fusiondirectory.org/fusiondirectory/fd-plugins/ /assets/fusiondirectory-plugins && \
-    cd /assets/fusiondirectory-plugins/ && \
-    git checkout ${FUSIONDIRECTORY_PLUGINS_VERSION} && \
+    clone_git_repo "${FUSIONDIRECTORY_REPO_URL}" "${FUSIONDIRECTORY_VERSION}" /usr/src/fusiondirectory && \
+    clone_git_repo "${FUSIONDIRECTORY_PLUGINS_REPO_URL}" "${FUSIONDIRECTORY_PLUGINS_VERSION}" /assets/fusiondirectory-plugins && \
     \
 ## Install Extra FusionDirectory Plugins
-    git clone https://github.com/tiredofit/fusiondirectory-plugin-kopano /usr/src/fusiondirectory-plugin-kopano && \
+    clone_git_repo https://github.com/tiredofit/fusiondirectory-plugin-kopano main /usr/src/fusiondirectory-plugin-kopano && \
     cp -R /usr/src/fusiondirectory-plugin-kopano/kopano /assets/fusiondirectory-plugins/ && \
-    git clone https://github.com/slangdaddy/fusiondirectory-plugin-nextcloud /usr/src/fusiondirectory-plugin-nextcloud && \
+    clone_git_repo https://github.com/slangdaddy/fusiondirectory-plugin-nextcloud master /usr/src/fusiondirectory-plugin-nextcloud && \
     rm -rf /usr/src/fusiondirectory-plugin-nextcloud/src/DEBIAN && \
     mkdir -p /assets/fusiondirectory-plugins/nextcloud && \
     cp -R /usr/src/fusiondirectory-plugin-nextcloud/src/* /assets/fusiondirectory-plugins/nextcloud/ && \
-    git clone https://github.com/gallak/fusiondirectory-plugins-seafile /usr/src/fusiondirectory-plugins-seafile && \
+    clone_git_repo https://github.com/gallak/fusiondirectory-plugins-seafile master /usr/src/fusiondirectory-plugins-seafile && \
     rm -rf /usr/src/fusiondirectory-plugins-seafile/README.md && \
     mkdir -p /assets/fusiondirectory-plugins/seafile && \
     cp -R /usr/src/fusiondirectory-plugins-seafile/* /assets/fusiondirectory-plugins/seafile/ && \
@@ -169,12 +171,12 @@ RUN set -x && \
     fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --update-locales --update-cache --yes && \
 #    sed -i -e "s#= \$_SERVER\\['PHP_SELF'\\];#= '/recovery.php';#g" ${NGINX_WEBROOT}/html/class_passwordRecovery.inc && \
     \
-### Cleanup
-    apk del .fusiondirectory-build-deps && \
-    rm -rf /root/.cpanm && \
-    rm -rf /tmp/* && \
-    rm -ff /var/cache/apk/* && \
-    rm -rf /usr/src/*
+    ### Cleanup
+    package remove .fusiondirectory-build-deps && \
+    package cleanup && \
+    rm -rf \
+           /usr/src/* \
+           /root.cpanm \
+           /tmp/*
 
-### Add Files
-   ADD install /
+COPY install /
