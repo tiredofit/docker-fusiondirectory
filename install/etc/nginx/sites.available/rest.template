@@ -1,4 +1,4 @@
 location /rest.php {
-        access_log  <LOG_ACCESS_LOCATION>/rest-access.log;
-        error_log   <LOG_ERROR_LOCATION>/rest-error.log;
+        access_log  {{NGINX_LOG_ACCESS_LOCATION}}/rest-access.log;
+        error_log   {{NGINX_LOG_ERROR_LOCATION}}/rest-error.log;
 }

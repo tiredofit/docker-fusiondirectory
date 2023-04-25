@@ -10,51 +10,51 @@ check_service_initialized init 30-argonaut
 ### Admin Plugins
 ## Audit
 if var_true "${PLUGIN_AUDIT}}"; then
-  export PLUGIN_ARGONAUT=TRUE
-  ENABLE_AUDIT_CLEANUP=${ENABLE_AUDIT_CLEANUP:-"TRUE"}
-  AUDIT_CLEANUP_CRON_EXP=${AUDIT_CLEANUP_CRON_EXP:-"0 0 * * *"}
+    export PLUGIN_ARGONAUT=TRUE
+    ENABLE_AUDIT_CLEANUP=${ENABLE_AUDIT_CLEANUP:-"TRUE"}
+    AUDIT_CLEANUP_CRON_EXP=${AUDIT_CLEANUP_CRON_EXP:-"0 0 * * *"}
 
-  if var_true "${ENABLE_AUDIT_CLEANUP}}"; then
-    print_notice "Setting Audit Cleanup Scheduled Task"
-    echo "${AUDIT_CLEANUP_CRON_EXP}  TZ=${TIMEZONE} /usr/sbin/argonaut-clean-audit >/dev/null 2>&1" >> /assets/cron/argonaut-audit-cleanup
-  fi
+    if var_true "${ENABLE_AUDIT_CLEANUP}}"; then
+        print_notice "Setting Audit Cleanup Scheduled Task"
+        echo "${AUDIT_CLEANUP_CRON_EXP}  TZ=${TIMEZONE} /usr/sbin/argonaut-clean-audit >/dev/null 2>&1" >>/assets/cron/argonaut-audit-cleanup
+    fi
 fi
 
 ## LDAP Dump
 if var_true "${PLUGIN_LDAPDUMP}"; then
-  :
+    :
 fi
 
 ## LDAP Manager
 if var_true "${PLUGIN_LDAPMANAGER}"; then
-  :
+    :
 fi
 
 ## User Reminder
 if var_true "${PLUGIN_USER_REMINDER}"; then
-  export PLUGIN_ARGONAUT=TRUE
-  ENABLE_USER_REMINDER=${ENABLE_USER_REMINDER:-"TRUE"}
-  USER_REMINDER_CRON_EXP=${USER_REMINDER_CRON_EXP:-"0 0 * * *"}
+    export PLUGIN_ARGONAUT=TRUE
+    ENABLE_USER_REMINDER=${ENABLE_USER_REMINDER:-"TRUE"}
+    USER_REMINDER_CRON_EXP=${USER_REMINDER_CRON_EXP:-"0 0 * * *"}
 
-  if var_true "${ENABLE_USER_REMINDER}"; then
-      print_notice "Setting User Reminder Scheduled Task"
-      echo "${USER_REMINDER_CRON_EXP}  TZ=${TIMEZONE} /usr/sbin/argonaut-user-reminder >/dev/null 2>&1" >> /assets/cron/argonaut-user-reminder
-  fi
+    if var_true "${ENABLE_USER_REMINDER}"; then
+        print_notice "Setting User Reminder Scheduled Task"
+        echo "${USER_REMINDER_CRON_EXP}  TZ=${TIMEZONE} /usr/sbin/argonaut-user-reminder >/dev/null 2>&1" >>/assets/cron/argonaut-user-reminder
+    fi
 
 fi
 
 ## Webservice / REST
-if var_true "${PLUGIN_WEBSERVICE}" || var_true "${PLUGIN_REST}" ; then
-  print_debug "Enabling REST plugin"
-  sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/rest.template
-  sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/rest.template
-  sed -i "/include \/etc\/nginx\/sites.available\/rest.template;/d" /etc/nginx/sites.available/fusiondirectory.conf
-  sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/sites.available\/rest.template;" /etc/nginx/sites.available/fusiondirectory.conf
+if var_true "${PLUGIN_WEBSERVICE}" || var_true "${PLUGIN_REST}"; then
+    print_debug "Enabling REST plugin"
+    sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/rest.template
+    sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/rest.template
+    sed -i "/include \/etc\/nginx\/sites.available\/rest.template;/d" /etc/nginx/sites.available/fusiondirectory.conf
+    sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/sites.available\/rest.template;" /etc/nginx/sites.available/fusiondirectory.conf
 fi
 
 ### Cloud
 if var_true "${PLUGIN_NEXTCLOUD}"; then
-  cat <<EOF > /assets/fusiondirectory-plugins/nextcloud/personal/nextcloud/main.inc
+    cat <<EOF >/assets/fusiondirectory-plugins/nextcloud/personal/nextcloud/main.inc
   <?php
 nextcloudAccount::mainInc('nextcloudAccount', \$ui->dn);
 ?>
@@ -62,373 +62,375 @@ EOF
 fi
 
 if var_true "${PLUGIN_SEAFILE}"; then
-  :
+    :
 fi
 
 ### Mail Plugins
 ## Cyrus
 if var_true "${PLUGIN_CYRUS}"; then
-  export PLUGIN_MAIL=TRUE
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Dovecot
 if var_true "${PLUGIN_DOVECOT}"; then
-  export PLUGIN_MAIL=TRUE
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Kopano
 if var_true "${PLUGIN_MAILINBLACK}"; then
-  :
+    :
 fi
 
 ## Kopano
 if var_true "${PLUGIN_KOPANO}"; then
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Postfix
 if var_true "${PLUGIN_POSTFIX}"; then
-  export PLUGIN_MAIL=TRUE
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Sogo
 if var_true "${PLUGIN_SOGO}"; then
-  export PLUGIN_MAIL=TRUE
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Sympa
 if var_true "${PLUGIN_SYMPA}"; then
-  export PLUGIN_ALIAS=TRUE
+    export PLUGIN_ALIAS=TRUE
 fi
 
 ## SpamAssassin
 if var_true "${PLUGIN_SPAMASSASSIN}"; then
-  export PLUGIN_MAIL=TRUE
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Zimbra
 if var_true "${PLUGIN_ZIMBRA}"; then
-  :
+    :
 fi
 
 ### Services Plugins
 ## AutoFS
 if var_true "${PLUGIN_AUTOFS}"; then
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## AutoFS5
 if var_true "${PLUGIN_AUTOFS5}"; then
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## DSA
 if var_true "${PLUGIN_DSA}"; then
-  :
+    :
 fi
 
 ## DHCP
 if var_true "${PLUGIN_DHCP}"; then
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## DNS
 if var_true "${PLUGIN_DNS}"; then
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Ejbca
 if var_true "${PLUGIN_EJBCA}"; then
-  :
+    :
 fi
 
 ## FusionInventory
 if var_true "${PLUGIN_FUSIONINVENTORY}"; then
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## GPG
 if var_true "${PLUGIN_GPG}"; then
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## IPAM
 if var_true "${PLUGIN_IPAM}"; then
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## IPMI
 if var_true "${PLUGIN_IPMI}"; then
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Kerberos
 if var_true "${PLUGIN_KERBEROS}"; then
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## NetGroups
 if var_true "${PLUGIN_NETGROUPS}"; then
-  :
+    :
 fi
 
 ## IPMI
 if var_true "${PLUGIN_MIGRATION_MAILROUTING}"; then
-  export PLUGIN_SYSTEMS=TRUE
-  export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_MAIL=TRUE
 fi
 
 ## PPolicy
 if var_true "${PLUGIN_PPOLICY}"; then
-  :
+    :
 fi
 
 ## Quota
 if var_true "${PLUGIN_QUOTA}"; then
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Repository
 if var_true "${PLUGIN_REPOSITORY}"; then
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Squid
 if var_true "${PLUGIN_SQUID}"; then
-  :
+    :
 fi
 
 ## Sudo
 if var_true "${PLUGIN_SUDO}"; then
-  :
+    :
 fi
 
 ## Weblink
 if var_true "${PLUGIN_WEBLINK}"; then
-  :
+    :
 fi
 
 ### Deployment Plugins
 ## Debconf
 if var_true "${PLUGIN_DEBCONF}"; then
-  :
+    :
 fi
 
 ## FAI
 if var_true "${PLUGIN_FAI}"; then
-  export PLUGIN_ARGONAUT=TRUE
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_ARGONAUT=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## OPSI
 if var_true "${PLUGIN_OPSI}"; then
-  export PLUGIN_ARGONAUT=TRUE
-  export PLUGIN_DNS=TRUE
-  export PLUGIN_SAMBA=TRUE
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_ARGONAUT=TRUE
+    export PLUGIN_DNS=TRUE
+    export PLUGIN_SAMBA=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Puppet
 if var_true "${PLUGIN_PUPPET}"; then
-  :
+    :
 fi
 
 ### System Management Plugins
 ## Argonaut
-if var_true $PLUGIN_ARGONAUT ; then
-  export PLUGIN_SYSTEMS=TRUE
+if var_true $PLUGIN_ARGONAUT; then
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Systems
-if var_true $PLUGIN_SYSTEMS ; then
-  export PLUGIN_ARGONAUT=TRUE
-  export PLUGIN_DNS=TRUE
+if var_true $PLUGIN_SYSTEMS; then
+    export PLUGIN_ARGONAUT=TRUE
+    export PLUGIN_DNS=TRUE
 fi
 
 ## Samba
-if var_true $PLUGIN_SAMBA ; then
-  export PLUGIN_SYSTEMS=TRUE
+if var_true $PLUGIN_SAMBA; then
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## WebAuthn
 if var_true "${PLUGIN_WEBAUTHN}"; then
-  :
+    :
 fi
 
 ### User Management Plugins
 ## Archive
 if var_true "${PLUGIN_ARCHIVE}"; then
-  :
+    :
 fi
 
 ## Certificates
 if var_true "${PLUGIN_CERTIFICATES}"; then
-  :
+    :
 fi
 
 ## Mixed Groups
 if var_true "${PLUGIN_DYNGROUPS}"; then
-  :
+    :
 fi
 
 ## FreeRadius
 if var_true "${PLUGIN_FREERADIUS}"; then
-  :
+    :
 fi
 
 ## Invitations
 if var_true "${PLUGIN_INVITATIONS}"; then
-  :
+    :
 fi
 
 ## Mixed Groups
 if var_true "${PLUGIN_MIXEDGROUPS}"; then
-  :
+    :
 fi
 
 ## Nagios
 if var_true "${PLUGIN_NAGIOS}"; then
-  :
+    :
 fi
 
 ## Newsletter
 if var_true "${PLUGIN_NEWSLETTER}"; then
-  :
+    :
 fi
 
 ## Personal
 if var_true "${PLUGIN_PERSONAL}"; then
-  :
+    :
 fi
 
 ## PureFTPd
 if var_true "${PLUGIN_PUREFTPD}"; then
-  :
+    :
 fi
 
 ## Quota
 if var_true "${PLUGIN_QUOTA}"; then
-  export PLUGIN_SYSTEMS=TRUE
+    export PLUGIN_SYSTEMS=TRUE
 fi
 
 ## Schac
 if var_true "${PLUGIN_SCHAC}"; then
-  :
+    :
 fi
 
 ## Subcontracting
 if var_true "${PLUGIN_SUBCONTRACTING}"; then
-  :
+    :
 fi
 
 ## Subscriptions
 if var_true "${PLUGIN_SUBSCRIPTIONS}"; then
-  :
+    :
 fi
 
 ## Supann
 if var_true "${PLUGIN_SUPANN}"; then
-  :
+    :
 fi
 
-PLUGINS_ENABLED=$(printenv | sort | grep PLUGIN | grep TRUE |sed -e 's/PLUGIN_//g' | sed -e 's/=TRUE//g' | awk -vRS="" -vOFS=', ' '$1=$1' | tr A-Z a-z)
+PLUGINS_ENABLED=$(printenv | sort | grep PLUGIN | grep TRUE | sed -e 's/PLUGIN_//g' | sed -e 's/=TRUE//g' | awk -vRS="" -vOFS=', ' '$1=$1' | tr A-Z a-z)
 
 ### Create Plugins Archive
-if var_false "${PLUGIN_ALIAS}" ; then rm -rf /assets/fusiondirectory-plugins/alias ; fi;
-if var_false "${PLUGIN_APPLICATIONS}"; then rm -rf /assets/fusiondirectory-plugins/applications ; fi;
-if var_false "${PLUGIN_ARCHIVE}"; then rm -rf /assets/fusiondirectory-plugins/archive ; fi;
-if var_false "${PLUGIN_ARGONAUT}" ; then rm -rf /assets/fusiondirectory-plugins/argonaut ; fi;
-if var_false "${PLUGIN_AUDIT}"; then rm -rf /assets/fusiondirectory-plugins/audit ; fi;
-if var_false "${PLUGIN_AUTOFS}"; then rm -rf /assets/fusiondirectory-plugins/autofs ; fi;
-if var_false "${PLUGIN_AUTOFS5}"; then rm -rf /assets/fusiondirectory-plugins/autofs5 ; fi;
-if var_false "${PLUGIN_CERTIFICATES}"; then rm -rf /assets/fusiondirectory-plugins/certificates ; fi;
-if var_false "${PLUGIN_COMMUNITY}"; then rm -rf /assets/fusiondirectory-plugins/community ; fi;
-if var_false "${PLUGIN_CYRUS}"; then rm -rf /assets/fusiondirectory-plugins/cyrus ; fi;
-if var_false "${PLUGIN_DEBCONF}"; then rm -rf /assets/fusiondirectory-plugins/debconf ; fi;
-if var_false "${PLUGIN_DYNGROUPS}"; then rm -rf /assets/fusiondirectory-plugins/dyngroups ; fi;
-if var_false "${PLUGIN_DEVELOPERS}"; then rm -rf /assets/fusiondirectory-plugins/developers ; fi;
-if var_false "${PLUGIN_DHCP}"; then rm -rf /assets/fusiondirectory-plugins/dhcp ; fi;
-if var_false "${PLUGIN_DNS}" ; then rm -rf /assets/fusiondirectory-plugins/dns ; fi;
-if var_false "${PLUGIN_DOVECOT}"; then rm -rf /assets/fusiondirectory-plugins/dovecot ; fi;
-if var_false "${PLUGIN_DSA}"; then rm -rf /assets/fusiondirectory-plugins/dsa ; fi;
-if var_false "${PLUGIN_EJBCA}"; then rm -rf /assets/fusiondirectory-plugins/ejbca ; fi;
-if var_false "${PLUGIN_FAI}"; then rm -rf /assets/fusiondirectory-plugins/fai ; fi;
-if var_false "${PLUGIN_FREERADIUS}"; then rm -rf /assets/fusiondirectory-plugins/freeradius ; fi;
-if var_false "${PLUGIN_FUSIONINVENTORY}"; then rm -rf /assets/fusiondirectory-plugins/fusioninventory ; fi;
-if var_false "${PLUGIN_GPG}"; then rm -rf /assets/fusiondirectory-plugins/gpg ; fi;
-if var_false "${PLUGIN_INVITATIONS}"; then rm -rf /assets/fusiondirectory-plugins/invitations ; fi;
-if var_false "${PLUGIN_IPAM}"; then rm -rf /assets/fusiondirectory-plugins/ipam ; fi;
-if var_false "${PLUGIN_IPMI}"; then rm -rf /assets/fusiondirectory-plugins/ipmi ; fi;
-if var_false "${PLUGIN_KERBEROS}"; then rm -rf /assets/fusiondirectory-plugins/kerberos ; fi;
-if var_false "${PLUGIN_LDAPDUMP}"; then rm -rf /assets/fusiondirectory-plugins/ldapdump ; fi;
-if var_false "${PLUGIN_LDAPMANAGER}"; then rm -rf /assets/fusiondirectory-plugins/ldapmanager ; fi;
-if var_false "${PLUGIN_KOPANO}"; then rm -rf /assets/fusiondirectory-plugins/kopano ; fi;
-if var_false "${PLUGIN_MAIL}" ; then rm -rf /assets/fusiondirectory-plugins/mail ; fi;
-if var_false "${PLUGIN_MAILINBLACK}"; then rm -rf /assets/fusiondirectory-plugins/mailinblack ; fi;
-if var_false "${PLUGIN_MIGRATION_MAILROUTING}"; then rm -rf /assets/fusiondirectory-plugins/migration-mailrouting ; fi;
-if var_false "${PLUGIN_MIXEDGROUPS}"; then rm -rf /assets/fusiondirectory-plugins/mixedgroups ; fi;
-if var_false "${PLUGIN_NAGIOS}"; then rm -rf /assets/fusiondirectory-plugins/nagios ; fi;
-if var_false "${PLUGIN_NETGROUPS}"; then rm -rf /assets/fusiondirectory-plugins/netgroups ; fi;
-if var_false "${PLUGIN_NEWSLETTER}"; then rm -rf /assets/fusiondirectory-plugins/newsletter ; fi;
-if var_false "${PLUGIN_NEXTCLOUD}"; then rm -rf /assets/fusiondirectory-plugins/nextcloud ; fi;
-if var_false "${PLUGIN_OPSI}"; then rm -rf /assets/fusiondirectory-plugins/opsi ; fi;
-if var_false "${PLUGIN_PERSONAL}"; then rm -rf /assets/fusiondirectory-plugins/personal ; fi;
-if var_false "${PLUGIN_POSIX}"; then rm -rf /assets/fusiondirectory-plugins/posix ; fi;
-if var_false "${PLUGIN_POSTFIX}"; then rm -rf /assets/fusiondirectory-plugins/postfix ; fi;
-if var_false "${PLUGIN_PPOLICY}"; then rm -rf /assets/fusiondirectory-plugins/ppolicy ; fi;
-if var_false "${PLUGIN_PUBLIC_FORMS}"; then rm -rf /assets/fusiondirectory-plugins/public-forms ; fi;
-if var_false "${PLUGIN_PUPPET}"; then rm -rf /assets/fusiondirectory-plugins/puppet ; fi;
-if var_false "${PLUGIN_PUREFTPD}"; then rm -rf /assets/fusiondirectory-plugins/pureftpd ; fi;
-if var_false "${PLUGIN_QUOTA}"; then rm -rf /assets/fusiondirectory-plugins/quota ; fi;
-if var_false "${PLUGIN_RENATER_PARTAGE}"; then rm -rf /assets/fusiondirectory-plugins/renater-partage ; fi;
-if var_false "${PLUGIN_REPOSITORY}"; then rm -rf /assets/fusiondirectory-plugins/repository ; fi;
-if var_false "${PLUGIN_SAMBA}" ; then rm -rf /assets/fusiondirectory-plugins/samba ; fi;
-if var_false "${PLUGIN_SCHAC}"; then rm -rf /assets/fusiondirectory-plugins/schac ; fi;
-if var_false "${PLUGIN_SEAFILE}"; then rm -rf /assets/fusiondirectory-plugins/seafile ; fi;
-if var_false "${PLUGIN_SINAPS}"; then rm -rf /assets/fusiondirectory-plugins/sinaps ; fi;
-if var_false "${PLUGIN_SOGO}"; then rm -rf /assets/fusiondirectory-plugins/sogo ; fi;
-if var_false "${PLUGIN_SPAMASSASSIN}"; then rm -rf /assets/fusiondirectory-plugins/spamassassin ; fi;
-if var_false "${PLUGIN_SQUID}"; then rm -rf /assets/fusiondirectory-plugins/squid ; fi;
-if var_false "${PLUGIN_SSH}"; then rm -rf /assets/fusiondirectory-plugins/ssh ; fi;
-if var_false "${PLUGIN_SUBCONTRACTING}"; then rm -rf /assets/fusiondirectory-plugins/subcontracting ; fi;
-if var_false "${PLUGIN_SUBSCRIPTION}"; then rm -rf /www/fusiondirectory/plugins/addons/subscription ; fi;
-if var_false "${PLUGIN_SUBSCRIPTIONS}"; then rm -rf /assets/fusiondirectory-plugins/subscriptions ; fi;
-if var_false "${PLUGIN_SUDO}"; then rm -rf /assets/fusiondirectory-plugins/sudo ; fi;
-if var_false "${PLUGIN_SUPANN}"; then rm -rf /assets/fusiondirectory-plugins/supann* ; fi;
-if var_false "${PLUGIN_SYMPA}"; then rm -rf /assets/fusiondirectory-plugins/sympa ; fi;
-if var_false "${PLUGIN_SYSTEMS}" ; then rm -rf /assets/fusiondirectory-plugins/systems ; fi;
-if var_false "${PLUGIN_USER_REMINDER}"; then rm -rf /assets/fusiondirectory-plugins/user-reminder ; fi;
-if var_false "${PLUGIN_WEBAUTHN}"; then rm -rf /assets/fusiondirectory-plugins/webauthn ; fi;
-if var_false "${PLUGIN_WEBLINK}"; then rm -rf /assets/fusiondirectory-plugins/weblink ; fi;
-if var_false "${PLUGIN_WEBSERVICE}"; then rm -rf /assets/fusiondirectory-plugins/webservice ; fi;
-if var_false "${PLUGIN_ZIMBRA}"; then rm -rf /assets/fusiondirectory-plugins/zimbra ; fi;
+if var_false "${PLUGIN_ALIAS}"; then rm -rf /assets/fusiondirectory-plugins/alias; fi
+if var_false "${PLUGIN_APPLICATIONS}"; then rm -rf /assets/fusiondirectory-plugins/applications; fi
+if var_false "${PLUGIN_ARCHIVE}"; then rm -rf /assets/fusiondirectory-plugins/archive; fi
+if var_false "${PLUGIN_ARGONAUT}"; then rm -rf /assets/fusiondirectory-plugins/argonaut; fi
+if var_false "${PLUGIN_AUDIT}"; then rm -rf /assets/fusiondirectory-plugins/audit; fi
+if var_false "${PLUGIN_AUTOFS}"; then rm -rf /assets/fusiondirectory-plugins/autofs; fi
+if var_false "${PLUGIN_AUTOFS5}"; then rm -rf /assets/fusiondirectory-plugins/autofs5; fi
+if var_false "${PLUGIN_CERTIFICATES}"; then rm -rf /assets/fusiondirectory-plugins/certificates; fi
+if var_false "${PLUGIN_COMMUNITY}"; then rm -rf /assets/fusiondirectory-plugins/community; fi
+if var_false "${PLUGIN_CYRUS}"; then rm -rf /assets/fusiondirectory-plugins/cyrus; fi
+if var_false "${PLUGIN_DEBCONF}"; then rm -rf /assets/fusiondirectory-plugins/debconf; fi
+if var_false "${PLUGIN_DYNGROUPS}"; then rm -rf /assets/fusiondirectory-plugins/dyngroups; fi
+if var_false "${PLUGIN_DEVELOPERS}"; then rm -rf /assets/fusiondirectory-plugins/developers; fi
+if var_false "${PLUGIN_DHCP}"; then rm -rf /assets/fusiondirectory-plugins/dhcp; fi
+if var_false "${PLUGIN_DNS}"; then rm -rf /assets/fusiondirectory-plugins/dns; fi
+if var_false "${PLUGIN_DOVECOT}"; then rm -rf /assets/fusiondirectory-plugins/dovecot; fi
+if var_false "${PLUGIN_DSA}"; then rm -rf /assets/fusiondirectory-plugins/dsa; fi
+if var_false "${PLUGIN_EJBCA}"; then rm -rf /assets/fusiondirectory-plugins/ejbca; fi
+if var_false "${PLUGIN_FAI}"; then rm -rf /assets/fusiondirectory-plugins/fai; fi
+if var_false "${PLUGIN_FREERADIUS}"; then rm -rf /assets/fusiondirectory-plugins/freeradius; fi
+if var_false "${PLUGIN_FUSIONINVENTORY}"; then rm -rf /assets/fusiondirectory-plugins/fusioninventory; fi
+if var_false "${PLUGIN_GPG}"; then rm -rf /assets/fusiondirectory-plugins/gpg; fi
+if var_false "${PLUGIN_INVITATIONS}"; then rm -rf /assets/fusiondirectory-plugins/invitations; fi
+if var_false "${PLUGIN_IPAM}"; then rm -rf /assets/fusiondirectory-plugins/ipam; fi
+if var_false "${PLUGIN_IPMI}"; then rm -rf /assets/fusiondirectory-plugins/ipmi; fi
+if var_false "${PLUGIN_KERBEROS}"; then rm -rf /assets/fusiondirectory-plugins/kerberos; fi
+if var_false "${PLUGIN_LDAPDUMP}"; then rm -rf /assets/fusiondirectory-plugins/ldapdump; fi
+if var_false "${PLUGIN_LDAPMANAGER}"; then rm -rf /assets/fusiondirectory-plugins/ldapmanager; fi
+if var_false "${PLUGIN_KOPANO}"; then rm -rf /assets/fusiondirectory-plugins/kopano; fi
+if var_false "${PLUGIN_MAIL}"; then rm -rf /assets/fusiondirectory-plugins/mail; fi
+if var_false "${PLUGIN_MAILINBLACK}"; then rm -rf /assets/fusiondirectory-plugins/mailinblack; fi
+if var_false "${PLUGIN_MIGRATION_MAILROUTING}"; then rm -rf /assets/fusiondirectory-plugins/migration-mailrouting; fi
+if var_false "${PLUGIN_MIXEDGROUPS}"; then rm -rf /assets/fusiondirectory-plugins/mixedgroups; fi
+if var_false "${PLUGIN_NAGIOS}"; then rm -rf /assets/fusiondirectory-plugins/nagios; fi
+if var_false "${PLUGIN_NETGROUPS}"; then rm -rf /assets/fusiondirectory-plugins/netgroups; fi
+if var_false "${PLUGIN_NEWSLETTER}"; then rm -rf /assets/fusiondirectory-plugins/newsletter; fi
+if var_false "${PLUGIN_NEXTCLOUD}"; then rm -rf /assets/fusiondirectory-plugins/nextcloud; fi
+if var_false "${PLUGIN_OPSI}"; then rm -rf /assets/fusiondirectory-plugins/opsi; fi
+if var_false "${PLUGIN_PERSONAL}"; then rm -rf /assets/fusiondirectory-plugins/personal; fi
+if var_false "${PLUGIN_POSIX}"; then rm -rf /assets/fusiondirectory-plugins/posix; fi
+if var_false "${PLUGIN_POSTFIX}"; then rm -rf /assets/fusiondirectory-plugins/postfix; fi
+if var_false "${PLUGIN_PPOLICY}"; then rm -rf /assets/fusiondirectory-plugins/ppolicy; fi
+if var_false "${PLUGIN_PUBLIC_FORMS}"; then rm -rf /assets/fusiondirectory-plugins/public-forms; fi
+if var_false "${PLUGIN_PUPPET}"; then rm -rf /assets/fusiondirectory-plugins/puppet; fi
+if var_false "${PLUGIN_PUREFTPD}"; then rm -rf /assets/fusiondirectory-plugins/pureftpd; fi
+if var_false "${PLUGIN_QUOTA}"; then rm -rf /assets/fusiondirectory-plugins/quota; fi
+if var_false "${PLUGIN_RENATER_PARTAGE}"; then rm -rf /assets/fusiondirectory-plugins/renater-partage; fi
+if var_false "${PLUGIN_REPOSITORY}"; then rm -rf /assets/fusiondirectory-plugins/repository; fi
+if var_false "${PLUGIN_SAMBA}"; then rm -rf /assets/fusiondirectory-plugins/samba; fi
+if var_false "${PLUGIN_SCHAC}"; then rm -rf /assets/fusiondirectory-plugins/schac; fi
+if var_false "${PLUGIN_SEAFILE}"; then rm -rf /assets/fusiondirectory-plugins/seafile; fi
+if var_false "${PLUGIN_SINAPS}"; then rm -rf /assets/fusiondirectory-plugins/sinaps; fi
+if var_false "${PLUGIN_SOGO}"; then rm -rf /assets/fusiondirectory-plugins/sogo; fi
+if var_false "${PLUGIN_SPAMASSASSIN}"; then rm -rf /assets/fusiondirectory-plugins/spamassassin; fi
+if var_false "${PLUGIN_SQUID}"; then rm -rf /assets/fusiondirectory-plugins/squid; fi
+if var_false "${PLUGIN_SSH}"; then rm -rf /assets/fusiondirectory-plugins/ssh; fi
+if var_false "${PLUGIN_SUBCONTRACTING}"; then rm -rf /assets/fusiondirectory-plugins/subcontracting; fi
+if var_false "${PLUGIN_SUBSCRIPTION}"; then rm -rf /www/fusiondirectory/plugins/addons/subscription; fi
+if var_false "${PLUGIN_SUBSCRIPTIONS}"; then rm -rf /assets/fusiondirectory-plugins/subscriptions; fi
+if var_false "${PLUGIN_SUDO}"; then rm -rf /assets/fusiondirectory-plugins/sudo; fi
+if var_false "${PLUGIN_SUPANN}"; then rm -rf /assets/fusiondirectory-plugins/supann*; fi
+if var_false "${PLUGIN_SYMPA}"; then rm -rf /assets/fusiondirectory-plugins/sympa; fi
+if var_false "${PLUGIN_SYSTEMS}"; then rm -rf /assets/fusiondirectory-plugins/systems; fi
+if var_false "${PLUGIN_USER_REMINDER}"; then rm -rf /assets/fusiondirectory-plugins/user-reminder; fi
+if var_false "${PLUGIN_WEBAUTHN}"; then rm -rf /assets/fusiondirectory-plugins/webauthn; fi
+if var_false "${PLUGIN_WEBLINK}"; then rm -rf /assets/fusiondirectory-plugins/weblink; fi
+if var_false "${PLUGIN_WEBSERVICE}"; then rm -rf /assets/fusiondirectory-plugins/webservice; fi
+if var_false "${PLUGIN_ZIMBRA}"; then rm -rf /assets/fusiondirectory-plugins/zimbra; fi
 
 print_notice "Enabling the following plugins: ${PLUGINS_ENABLED}"
 
 if [ -d "/assets/custom-plugins/" ]; then
-  cp -R /assets/custom-plugins/* /assets/fusiondirectory-plugins/
-  print_warn "Detected Custom Plugins"
+    cp -R /assets/custom-plugins/* /assets/fusiondirectory-plugins/
+    print_warn "Detected Custom Plugins"
 fi
 
 find /assets/fusiondirectory-plugins -maxdepth 1 -mindepth 1 -type d | sed "/.git/d" | sed "/.tx/d" | while read plugins; do
-  print_debug "Installing plugin '$(basename "$plugins")'"
-  if [ -d "${plugins}/addons" ] ; then cp -aR "${plugins}"/addons "${NGINX_WEBROOT}"/plugins/ ; fi;
-  if [ -d "${plugins}/admin" ] ; then cp -aR "${plugins}"/admin "${NGINX_WEBROOT}"/plugins/ ; fi;
-  if [ -d "${plugins}/config" ] ; then cp -aR "${plugins}"/config "${NGINX_WEBROOT}"/plugins/ ; fi;
-  if [ -d "${plugins}/personal" ] ; then cp -aR "${plugins}"/personal "${NGINX_WEBROOT}"/plugins/ ; fi;
-  if [ -d "${plugins}/html" ] ; then cp -aR "${plugins}"/html "${NGINX_WEBROOT}"/ ; fi;
-  if [ -d "${plugins}/ihtml" ] ; then cp -aR "${plugins}"/ihtml "${NGINX_WEBROOT}"/ ; fi;
-  if [ -d "${plugins}/include" ] ; then cp -aR "${plugins}"/include "${NGINX_WEBROOT}"/ ; fi;
-  if [ -d "${plugins}/locale" ] ; then mkdir -p "${NGINX_WEBROOT}"/locale/plugins/"$(basename "$plugins")" ; cp -aR "${plugins}"/locale "${NGINX_WEBROOT}"/locale/"$(basename "$plugins")"/ ; fi;
-  if [ -d "${plugins}/contrib/openldap" ] ; then cp -aR "${plugins}"/contrib/openldap "${NGINX_WEBROOT}"/contrib/ ; fi;
-  if [ -d "${plugins}/contrib/etc" ] ; then cp -aR "${plugins}"/contrib/etc/* /etc/fusiondirectory/ ; fi;
+    print_debug "Installing plugin '$(basename "$plugins")'"
+    if [ -d "${plugins}/addons" ]; then cp -aR "${plugins}"/addons "${NGINX_WEBROOT}"/plugins/; fi
+    if [ -d "${plugins}/admin" ]; then cp -aR "${plugins}"/admin "${NGINX_WEBROOT}"/plugins/; fi
+    if [ -d "${plugins}/config" ]; then cp -aR "${plugins}"/config "${NGINX_WEBROOT}"/plugins/; fi
+    if [ -d "${plugins}/personal" ]; then cp -aR "${plugins}"/personal "${NGINX_WEBROOT}"/plugins/; fi
+    if [ -d "${plugins}/html" ]; then cp -aR "${plugins}"/html "${NGINX_WEBROOT}"/; fi
+    if [ -d "${plugins}/ihtml" ]; then cp -aR "${plugins}"/ihtml "${NGINX_WEBROOT}"/; fi
+    if [ -d "${plugins}/include" ]; then cp -aR "${plugins}"/include "${NGINX_WEBROOT}"/; fi
+    if [ -d "${plugins}/locale" ]; then
+        mkdir -p "${NGINX_WEBROOT}"/locale/plugins/"$(basename "$plugins")"
+        cp -aR "${plugins}"/locale "${NGINX_WEBROOT}"/locale/"$(basename "$plugins")"/
+    fi
+    if [ -d "${plugins}/contrib/openldap" ]; then cp -aR "${plugins}"/contrib/openldap "${NGINX_WEBROOT}"/contrib/; fi
+    if [ -d "${plugins}/contrib/etc" ]; then cp -aR "${plugins}"/contrib/etc/* /etc/fusiondirectory/; fi
 done
-
 
 file_env 'LDAP1_ADMIN_PASS'
 ### Configuration File Building
@@ -439,7 +441,7 @@ sanity_var LDAP1_ADMIN_PASS "Admin Password"
 sanity_var LDAP1_NAME "Server Name"
 
 ### Write Fusiondirectory Configuration
-cat <<EOF > /etc/fusiondirectory/fusiondirectory.conf
+cat <<EOF >/etc/fusiondirectory/fusiondirectory.conf
 <?xml version="1.0"?>
 <conf>
   <main default="${LDAP_DEFAULT}"
@@ -451,38 +453,37 @@ cat <<EOF > /etc/fusiondirectory/fusiondirectory.conf
     >
 EOF
 
-  NUM=$(printenv | sort | grep -c '^LDAP[0-9][0-9]*_HOST')
-  for (( i = 1; i <= NUM; i++ ))
-  do
+NUM=$(printenv | sort | grep -c '^LDAP[0-9][0-9]*_HOST')
+for ((i = 1; i <= NUM; i++)); do
 
-      LDAP_HOST=LDAP${i}_HOST
-      file_env "LDAP${i}_ADMIN_PASS"
-      LDAP_ADMIN_PASS=LDAP${i}_ADMIN_PASS
-      LDAP_ADMIN_DN=LDAP${i}_ADMIN_DN
-      LDAP_BASE_DN=LDAP${i}_BASE_DN
-      LDAP_NAME=LDAP${i}_NAME
-      LDAP_SSL=LDAP${i}_SSL
-      LDAP_PORT=LDAP${i}_PORT
-      LDAP_TLS=LDAP${i}_TLS
+    LDAP_HOST=LDAP${i}_HOST
+    file_env "LDAP${i}_ADMIN_PASS"
+    LDAP_ADMIN_PASS=LDAP${i}_ADMIN_PASS
+    LDAP_ADMIN_DN=LDAP${i}_ADMIN_DN
+    LDAP_BASE_DN=LDAP${i}_BASE_DN
+    LDAP_NAME=LDAP${i}_NAME
+    LDAP_SSL=LDAP${i}_SSL
+    LDAP_PORT=LDAP${i}_PORT
+    LDAP_TLS=LDAP${i}_TLS
 
-      if [ "${!LDAP_SSL}" = "TRUE" ] ; then
-          LDAP_SCHEME="ldaps"
-      fi
+    if [ "${!LDAP_SSL}" = "TRUE" ]; then
+        LDAP_SCHEME="ldaps"
+    fi
 
-      if [ "${!LDAP_PORT}" = "" ] ; then
-        if [ "${!LDAP_SSL}" = "TRUE" ] ; then
-          LDAP_PORT=636
+    if [ "${!LDAP_PORT}" = "" ]; then
+        if [ "${!LDAP_SSL}" = "TRUE" ]; then
+            LDAP_PORT=636
         else
-          LDAP_PORT=389
+            LDAP_PORT=389
         fi
-      fi
+    fi
 
-      if [ "${!LDAP_TLS}" = "" ] ; then
+    if [ "${!LDAP_TLS}" = "" ]; then
         LDAP_TLS=FALSE
-      fi
+    fi
 
-      if [ "${!LDAP_HOST}" != "" ] ; then
-        cat <<EOF >> /etc/fusiondirectory/fusiondirectory.conf
+    if [ "${!LDAP_HOST}" != "" ]; then
+        cat <<EOF >>/etc/fusiondirectory/fusiondirectory.conf
 
   <location name="${!LDAP_NAME}" ldapTLS="${!LDAP_TLS}">
       <referral URI='${LDAP_SCHEME}://${!LDAP_HOST}:${!LDAP_PORT}/${!LDAP_BASE_DN}'
@@ -490,16 +491,16 @@ EOF
                       adminPassword="${!LDAP_ADMIN_PASS}" />
   </location>
 EOF
-        fi
-        done
+    fi
+done
 
-cat <<EOF >> /etc/fusiondirectory/fusiondirectory.conf
+cat <<EOF >>/etc/fusiondirectory/fusiondirectory.conf
   </main>
 </conf>
 EOF
 
 ### Set some LDAP and Argonaut Configuration Files regardless if Argonaut Server Started for Cleaning Audit Dir
-cat <<EOF > /etc/openldap/ldap.conf
+cat <<EOF >/etc/openldap/ldap.conf
 # LDAP Settings
 
 BASE ${LDAP1_BASE_DN}
@@ -510,7 +511,7 @@ EOF
 chmod 0600 /etc/openldap/ldap.conf
 ln -s /etc/openldap /etc/ldap
 
-cat <<EOF > /etc/argonaut/argonaut.conf
+cat <<EOF >/etc/argonaut/argonaut.conf
 [server]
 server_ip   = 127.0.0.1
 
@@ -523,8 +524,8 @@ dn       = ${LDAP1_ADMIN_DN}
 password = ${LDAP1_ADMIN_PASS}
 EOF
 
-if [ "$LDAP_SCHEME" = "ldaps" ];  then
-  echo 'tls      = on' >> /etc/argonaut/argonaut.conf
+if [ "$LDAP_SCHEME" = "ldaps" ]; then
+    echo 'tls      = on' >>/etc/argonaut/argonaut.conf
 fi
 
 ### Set Permissions
@@ -535,15 +536,15 @@ yes Yes | silent fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --write-
 silent fusiondirectory-setup --set-fd_home="${NGINX_WEBROOT}" --set-fd_smarty_path="/usr/share/php/smarty3/Smarty.class.php" --write-vars
 
 ### Theme Support
-if [ -d /assets/custom ] ; then
-   print_warn "Custom Assets Found, Copying over top of Master"
-   if [ -d "/assets/custom/plugins" ] ; then
-    silent mv /assets/custom/plugins /tmp/custom-plugins
-   fi
+if [ -d /assets/custom ]; then
+    print_warn "Custom Assets Found, Copying over top of Master"
+    if [ -d "/assets/custom/plugins" ]; then
+        silent mv /assets/custom/plugins /tmp/custom-plugins
+    fi
     silent cp -R /assets/custom/* "${NGINX_WEBROOT}"
-   if [ -d "/tmp/custom-plugins" ] ; then
-    silent mv /tmp/custom-plugins /assets/custom/plugins
-   fi
+    if [ -d "/tmp/custom-plugins" ]; then
+        silent mv /tmp/custom-plugins /assets/custom/plugins
+    fi
 fi
 
 custom_files "${CONTAINER_CUSTOM_PATH}" "${NGINX_WEBROOT}" "${NGINX_USER}" "${NGINX_GROUP}"
