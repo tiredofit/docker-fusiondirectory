@@ -46,8 +46,9 @@ fi
 ## Webservice / REST
 if var_true "${PLUGIN_WEBSERVICE}" || var_true "${PLUGIN_REST}"; then
     print_debug "Enabling REST plugin"
-    sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/rest.template
-    sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/rest.template
+    update_template /etc/nginx/sites.available/rest.template \
+                                                                NGINX_LOG_ACCES_LOCATION \
+                                                                NGINX_LOG_ERROR_LOCATION
     sed -i "/include \/etc\/nginx\/sites.available\/rest.template;/d" /etc/nginx/sites.available/fusiondirectory.conf
     sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/sites.available\/rest.template;" /etc/nginx/sites.available/fusiondirectory.conf
 fi
@@ -432,13 +433,27 @@ find /assets/fusiondirectory-plugins -maxdepth 1 -mindepth 1 -type d | sed "/.gi
     if [ -d "${plugins}/contrib/etc" ]; then cp -aR "${plugins}"/contrib/etc/* /etc/fusiondirectory/; fi
 done
 
-file_env 'LDAP1_ADMIN_PASS'
+transform_var \
+                LDAP_ADMIN_DN \
+                LDAP_ADMIN_PASS \
+                LDAP_BASE_DN \
+                LDAP_HOST \
+                LDAP_PORT \
+                LDAP01_ADMIN_DN \
+                LDAP01_ADMIN_PASS \
+                LDAP01_BASE_DN \
+                LDAP01_HOST \
+                LDAP01_PORT
+
+if [ -n "${LDAP_ADMIN_DN}" ] && [ -z "${LDAP01_ADMIN_DN}" ] ; then export LDAP01_ADMIN_DN="${LDAP_ADMIN_DN}" ; unset LDAP_ADMIN_DN ; fi
+if [ -n "${LDAP_ADMIN_PASS}" ] && [ -z "${LDAP01_ADMIN_PASS}" ] ; then export LDAP01_ADMIN_PASS="${LDAP_ADMIN_PASS}" ; unset LDAP_ADMIN_PASS ; fi
+if [ -n "${LDAP_BASE_DN}" ] && [ -z "${LDAP01_BASE_DN}" ] ; then export LDAP01_BASE_DN="${LDAP_BASE_DN}" ; unset LDAP_BASE_DN ; fi
+if [ -n "${LDAP_HOST}" ] && [ -z "${LDAP01_HOST}" ] ; then export LDAP01_HOST="${LDAP_HOST}" ; unset LDAP_HOST ; fi
+if [ -n "${LDAP_PORT}" ] && [ -z "${LDAP01_PORT}" ] ; then export LDAP01_PORT="${LDAP_PORT}" ; unset LDAP_PORT ; fi
+
+
 ### Configuration File Building
-sanity_var LDAP1_BASE_DN "BaseDN not defined"
-sanity_var LDAP1_HOST "LDAP Hostname"
-sanity_var LDAP1_ADMIN_DN "Admin Distinguished Name"
-sanity_var LDAP1_ADMIN_PASS "Admin Password"
-sanity_var LDAP1_NAME "Server Name"
+sanity_var LDAP01_NAME "Server Name"
 
 ### Write Fusiondirectory Configuration
 cat <<EOF >/etc/fusiondirectory/fusiondirectory.conf
@@ -446,32 +461,42 @@ cat <<EOF >/etc/fusiondirectory/fusiondirectory.conf
 <conf>
   <main default="${LDAP_DEFAULT}"
         logging="TRUE"
-        displayErrors="$DEBUG_MODE"
+        displayErrors="${DEBUG_MODE,,}"
         forceSSL="FALSE"
         templateCompileDirectory="/var/spool/fusiondirectory/"
         debugLevel="0"
     >
 EOF
 
-NUM=$(printenv | sort | grep -c '^LDAP[0-9][0-9]*_HOST')
-for ((i = 1; i <= NUM; i++)); do
+ldapnum=$(printenv | sort | grep -c '^LDAP[0-9][0-9]*_NAME')
+for (( i = 01; i <= ldapnum; i++ )) ; do
+    transform_var \
+                    LDAP${i}_ADMIN_DN \
+                    LDAP${i}_ADMIN_PASS \
+                    LDAP${i}_BIND_DN \
+                    LDAP${i}_PORT
+                    LDAP${i}_HOST
+    sanity_var LDAP${i}_ADMIN_DN "Admin Distinguished Name"
+    sanity_var LDAP${i}_ADMIN_PASS "Admin Password"
+    sanity_var LDAP${i}_BASE_DN "BaseDN not defined"
+    sanity_var LDAP${i}_HOST "LDAP Hostname"
+    sanity_var LDAP${i}_NAME "Server Name"
 
-    LDAP_HOST=LDAP${i}_HOST
-    file_env "LDAP${i}_ADMIN_PASS"
     LDAP_ADMIN_PASS=LDAP${i}_ADMIN_PASS
     LDAP_ADMIN_DN=LDAP${i}_ADMIN_DN
     LDAP_BASE_DN=LDAP${i}_BASE_DN
+    LDAP_HOST=LDAP${i}_HOST
     LDAP_NAME=LDAP${i}_NAME
-    LDAP_SSL=LDAP${i}_SSL
     LDAP_PORT=LDAP${i}_PORT
+    LDAP_SSL=LDAP${i}_SSL
     LDAP_TLS=LDAP${i}_TLS
 
-    if [ "${!LDAP_SSL}" = "TRUE" ]; then
+    if [ "${!LDAP_SSL,,}" = "true" ]; then
         LDAP_SCHEME="ldaps"
     fi
 
     if [ "${!LDAP_PORT}" = "" ]; then
-        if [ "${!LDAP_SSL}" = "TRUE" ]; then
+        if [ "${!LDAP_SSL,,}" = "true" ]; then
             LDAP_PORT=636
         else
             LDAP_PORT=389
@@ -479,14 +504,14 @@ for ((i = 1; i <= NUM; i++)); do
     fi
 
     if [ "${!LDAP_TLS}" = "" ]; then
-        LDAP_TLS=FALSE
+        LDAP_TLS=true
     fi
 
     if [ "${!LDAP_HOST}" != "" ]; then
         cat <<EOF >>/etc/fusiondirectory/fusiondirectory.conf
 
-  <location name="${!LDAP_NAME}" ldapTLS="${!LDAP_TLS}">
-      <referral URI='${LDAP_SCHEME}://${!LDAP_HOST}:${!LDAP_PORT}/${!LDAP_BASE_DN}'
+  <location name="${!LDAP_NAME}" ldapTLS="${!LDAP_TLS,,}">
+      <referral URI='${LDAP_SCHEME,,}://${!LDAP_HOST}:${!LDAP_PORT}/${!LDAP_BASE_DN}'
                       adminDn="${!LDAP_ADMIN_DN}"
                       adminPassword="${!LDAP_ADMIN_PASS}" />
   </location>
@@ -503,10 +528,10 @@ EOF
 cat <<EOF >/etc/openldap/ldap.conf
 # LDAP Settings
 
-BASE ${LDAP1_BASE_DN}
-URI ${LDAP_SCHEME}://${LDAP1_HOST}:${LDAP1_PORT}
-BINDDN ${LDAP1_ADMIN_DN}
-BINDPW ${LDAP1_ADMIN_PASS}
+BASE ${LDAP01_BASE_DN}
+URI ${LDAP_SCHEME,,}://${LDAP01_HOST}:${LDAP01_PORT}
+BINDDN ${LDAP01_ADMIN_DN}
+BINDPW ${LDAP01_ADMIN_PASS}
 EOF
 chmod 0600 /etc/openldap/ldap.conf
 ln -s /etc/openldap /etc/ldap
@@ -520,8 +545,8 @@ client_ip  = 127.0.0.1
 
 [ldap]
 config   = /etc/openldap/ldap.conf
-dn       = ${LDAP1_ADMIN_DN}
-password = ${LDAP1_ADMIN_PASS}
+dn       = ${LDAP01_ADMIN_DN}
+password = ${LDAP01_ADMIN_PASS}
 EOF
 
 if [ "$LDAP_SCHEME" = "ldaps" ]; then

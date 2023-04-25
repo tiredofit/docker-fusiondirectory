@@ -93,7 +93,7 @@ If you have custom plugins, map a folder to `/assets/plugins-custom/` and they w
 ### Environment Variables
 #### Base Images used
 
-This image relies on an [Alpine Linux](https://hub.docker.com/r/tiredofit/alpine) or [Debian Linux](https://hub.docker.com/r/tiredofit/debian) base image that relies on an [init system](https://github.com/just-containers/s6-overlay) for added capabilities. Outgoing SMTP capabilities are handlded via `msmtp`. Individual container performance monitoring is performed by [zabbix-agent](https://zabbix.org). Additional tools include: `bash`,`curl`,`less`,`logrotate`,`nano`,`vim`.
+This image relies on an [Alpine Linux](https://hub.docker.com/r/tiredofit/alpine) or [Debian Linux](https://hub.docker.com/r/tiredofit/debian) base image that relies on an [init system](https://github.com/just-containers/s6-overlay) for added capabilities. Outgoing SMTP capabilities are handlded via `msmtp`. Individual container performance monitoring is performed by [zabbix-agent](https://zabbix.org). Additional tools include: `bash`,`curl`,`less`,`logrotate`,`nano`.
 
 Be sure to view the following repositories to understand all the customizable options:
 
@@ -104,27 +104,27 @@ Be sure to view the following repositories to understand all the customizable op
 | [PHP-FPM](https://github.com/tiredofit/docker-nginx-php-fpm/) | PHP Interpreter                        |
 
 
-You can connect to multiple LDAP servers by setting the following environment variables. Simply Add as many LDAP(x) Variables for the amount of servers you wish to manage.
+You can connect to multiple LDAP servers by setting the following environment variables. Simply Add as many LDAP(xx) Variables for the amount of servers you wish to manage.
 
-| Parameter          | Description                                                                                                    | Default                     |
-| ------------------ | -------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| `LDAP1_NAME`       | The instance Name e.g. `production`                                                                            |                             |
-| `LDAP1_HOST`       | Hostname with the openldap-fusiondirectory service running e.g. `openldap-fusiondirectory`                     |                             |
-| `LDAP1_TLS`        | (optional) Use TLS `TRUE` or `FALSE`                                                                           | `FALSE`                     |
-| `LDAP1_SSL`        | (optional) Use SSL (LDAPS) `TRUE` or `FALSE`                                                                   | `FALSE`                     |
-| `LDAP1_PORT`       | (optional) Port number                                                                                         | `389` unless SSL=TRUE `636` |
-| `LDAP1_ADMIN_PASS` | cn=admin,dc=example,dc=org Password e.g. `password`                                                            |                             |
-| `LDAP1_ADMIN_DN`   | The Primary DN to Manage e.g. `cn=admin,dc=example,dc=org`                                                     |                             |
-| `LDAP1_BASE_DN`    | The Primary Base DN to Manage e.g. `dc=example,dc=org`                                                         |                             |
-| `LDAP2_NAME`       | The Instance Name (e.g. `development`)                                                                         |                             |
-| `LDAP2_HOST`       | The Second Domain Hostname with the openldap-fusiondirectory service running (e.g. `openldap-fusiondirectory`) |                             |
-| `LDAP2_SSL`        | Use SSL (LDAPS) `TRUE` or `FALSE`                                                                              | `false`                     |
-| `LDAP2_TLS`        | (optional) Use TLS `TRUE` or `FALSE`                                                                           | `false`                     |
-| `LDAP2_PORT`       | (optional) Port number                                                                                         | `389` unless TLS=TRUE `636` |
-| `LDAP2_ADMIN_PASS` | cn=admin,dc=example,dc=org Password e.g. `password`                                                            |                             |
-| `LDAP2_ADMIN_DN`   | The second Admin DN e.g. `cn=admin,dc=example,dc=org`                                                          |                             |
-| `LDAP2_BASE_DN`    | The second BASE DN e.g. `dc=example,dc=org`                                                                    |                             |
-| `LDAP_DEFAULT`     | The Default Instance to show on Login Page e.g. `production` - Default `LDAP1_NAME`                            |                             |
+| Parameter           | Description                                                                                                    | Default                     | `_FILE` |
+| ------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------- | ------- |
+| `LDAP01_NAME`       | The instance Name e.g. `production`                                                                            |                             |         |
+| `LDAP01_HOST`       | Hostname with the openldap-fusiondirectory service running e.g. `openldap-fusiondirectory`                     |                             | x       |
+| `LDAP01_TLS`        | (optional) Use TLS `TRUE` or `FALSE`                                                                           | `FALSE`                     |         |
+| `LDAP01_SSL`        | (optional) Use SSL (LDAPS) `TRUE` or `FALSE`                                                                   | `FALSE`                     |         |
+| `LDAP01_PORT`       | (optional) Port number                                                                                         | `389` unless SSL=TRUE `636` | x       |
+| `LDAP01_ADMIN_PASS` | cn=admin,dc=example,dc=org Password e.g. `password`                                                            |                             | x       |
+| `LDAP01_ADMIN_DN`   | The Primary DN to Manage e.g. `cn=admin,dc=example,dc=org`                                                     |                             | x       |
+| `LDAP01_BASE_DN`    | The Primary Base DN to Manage e.g. `dc=example,dc=org`                                                         |                             | x       |
+| `LDAP02_NAME`       | The Instance Name (e.g. `development`)                                                                         |                             |         |
+| `LDAP02_HOST`       | The Second Domain Hostname with the openldap-fusiondirectory service running (e.g. `openldap-fusiondirectory`) |                             | x       |
+| `LDAP02_SSL`        | Use SSL (LDAPS) `TRUE` or `FALSE`                                                                              | `false`                     |         |
+| `LDAP02_TLS`        | (optional) Use TLS `TRUE` or `FALSE`                                                                           | `false`                     |         |
+| `LDAP02_PORT`       | (optional) Port number                                                                                         | `389` unless TLS=TRUE `636` |         |
+| `LDAP02_ADMIN_PASS` | cn=admin,dc=example,dc=org Password e.g. `password`                                                            |                             | x       |
+| `LDAP02_ADMIN_DN`   | The second Admin DN e.g. `cn=admin,dc=example,dc=org`                                                          |                             | x       |
+| `LDAP02_BASE_DN`    | The second BASE DN e.g. `dc=example,dc=org`                                                                    |                             | x       |
+| `LDAP_DEFAULT`      | The Default Instance to show on Login Page e.g. `production` - Default `LDAP01_NAME`                           |                             |         |
 
 #### Plugins
 

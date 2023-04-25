@@ -1,3 +1,15 @@
+## 1.4-2.8 2023-04-25 <dave at tiredofit dot ca>
+
+This version has breaking changes on how one references their LDAP Servers. Pad all LDAP?_* variables with an extra zero.
+e.g LDAP1_HOST -> LDAP01_HOST
+
+   ### Added
+      - Add _FILE capabilities to 5 environment variables
+
+   ### Changed
+      - Require double digits when referencing LDAP??_* variables
+
+
 ## 1.4-2.7.22 2023-02-21 <dave at tiredofit dot ca>
 
    ### Added
