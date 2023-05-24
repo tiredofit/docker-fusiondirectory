@@ -433,7 +433,7 @@ find /assets/fusiondirectory-plugins -maxdepth 1 -mindepth 1 -type d | sed "/.gi
     if [ -d "${plugins}/contrib/etc" ]; then cp -aR "${plugins}"/contrib/etc/* /etc/fusiondirectory/; fi
 done
 
-transform_var \
+transform_file_var \
                 LDAP_ADMIN_DN \
                 LDAP_ADMIN_PASS \
                 LDAP_BASE_DN \
@@ -472,7 +472,7 @@ ldapnum=$(printenv | sort | grep -c '^LDAP[0-9][0-9]*_NAME')
 for (( i = 01; i <= ldapnum; i++ )) ; do
 
     i=$(printf "%02d" $i)
-    transform_var \
+    transform_file_var \
                     LDAP${i}_ADMIN_DN \
                     LDAP${i}_ADMIN_PASS \
                     LDAP${i}_BIND_DN \
