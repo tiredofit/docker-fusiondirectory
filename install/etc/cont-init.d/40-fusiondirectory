@@ -451,10 +451,6 @@ if [ -n "${LDAP_BASE_DN}" ] && [ -z "${LDAP01_BASE_DN}" ] ; then export LDAP01_B
 if [ -n "${LDAP_HOST}" ] && [ -z "${LDAP01_HOST}" ] ; then export LDAP01_HOST="${LDAP_HOST}" ; unset LDAP_HOST ; fi
 if [ -n "${LDAP_PORT}" ] && [ -z "${LDAP01_PORT}" ] ; then export LDAP01_PORT="${LDAP_PORT}" ; unset LDAP_PORT ; fi
 
-
-### Configuration File Building
-sanity_var LDAP01_NAME "Server Name"
-
 ### Write Fusiondirectory Configuration
 cat <<EOF >/etc/fusiondirectory/fusiondirectory.conf
 <?xml version="1.0"?>
@@ -476,7 +472,7 @@ for (( i = 01; i <= ldapnum; i++ )) ; do
                     LDAP${i}_ADMIN_DN \
                     LDAP${i}_ADMIN_PASS \
                     LDAP${i}_BIND_DN \
-                    LDAP${i}_PORT
+                    LDAP${i}_PORT \
                     LDAP${i}_HOST
     sanity_var LDAP${i}_ADMIN_DN "Admin Distinguished Name"
     sanity_var LDAP${i}_ADMIN_PASS "Admin Password"
