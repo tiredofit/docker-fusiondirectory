@@ -1,4 +1,4 @@
-## 1.4-2.8 2023-04-25 <dave at tiredofit dot ca>
+## 1.4-2.8.0 2023-04-25 <dave at tiredofit dot ca>
 
 This version has breaking changes on how one references their LDAP Servers. Pad all LDAP?_* variables with an extra zero.
 e.g LDAP1_HOST -> LDAP01_HOST
