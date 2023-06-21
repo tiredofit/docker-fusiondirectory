@@ -47,7 +47,7 @@ fi
 if var_true "${PLUGIN_WEBSERVICE}" || var_true "${PLUGIN_REST}"; then
     print_debug "Enabling REST plugin"
     update_template /etc/nginx/sites.available/rest.template \
-                                                                NGINX_LOG_ACCES_LOCATION \
+                                                                NGINX_LOG_ACCESS_LOCATION \
                                                                 NGINX_LOG_ERROR_LOCATION
     sed -i "/include \/etc\/nginx\/sites.available\/rest.template;/d" /etc/nginx/sites.available/fusiondirectory.conf
     sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/sites.available\/rest.template;" /etc/nginx/sites.available/fusiondirectory.conf

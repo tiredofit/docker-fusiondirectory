@@ -1,3 +1,9 @@
+## 1.4-2.8.2 2023-06-21 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for Nginx Access Logs when REST API enabled
+
+
 ## 1.4-2.8.1 2023-06-21 <dave at tiredofit dot ca>
 
    ### Changed
