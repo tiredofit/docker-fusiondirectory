@@ -1,3 +1,9 @@
+## 1.4-2.8.1 2023-06-21 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for malformed LDAPXX_HOST parsing
+
+
 ## 1.4-2.8.0 2023-04-25 <dave at tiredofit dot ca>
 
 This version has breaking changes on how one references their LDAP Servers. Pad all LDAP?_* variables with an extra zero.

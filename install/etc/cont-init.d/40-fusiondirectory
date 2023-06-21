@@ -476,7 +476,7 @@ for (( i = 01; i <= ldapnum; i++ )) ; do
                     LDAP${i}_ADMIN_DN \
                     LDAP${i}_ADMIN_PASS \
                     LDAP${i}_BIND_DN \
-                    LDAP${i}_PORT
+                    LDAP${i}_PORT \
                     LDAP${i}_HOST
     sanity_var LDAP${i}_ADMIN_DN "Admin Distinguished Name"
     sanity_var LDAP${i}_ADMIN_PASS "Admin Password"
