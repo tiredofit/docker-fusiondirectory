@@ -454,6 +454,7 @@ if [ -n "${LDAP_PORT}" ] && [ -z "${LDAP01_PORT}" ] ; then export LDAP01_PORT="$
 
 ### Configuration File Building
 sanity_var LDAP01_NAME "Server Name"
+LDAP_DEFAULT=${LDAP_DEFAULT:-${LDAP01_NAME}}
 
 ### Write Fusiondirectory Configuration
 cat <<EOF >/etc/fusiondirectory/fusiondirectory.conf

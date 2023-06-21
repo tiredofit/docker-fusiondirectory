@@ -1,3 +1,9 @@
+## 1.4-2.8.3 2023-06-21 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Move "LDAP_DEFAULT" variable definitions to be able to survive transform_file_var situations
+
+
 ## 1.4-2.8.2 2023-06-21 <dave at tiredofit dot ca>
 
    ### Changed
