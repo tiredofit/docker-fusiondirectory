@@ -1,3 +1,10 @@
+## 1.4-2.8.4 2023-12-05 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix an issue related to LDAP_DEFAULT using old LDAP1 variables
+      - Rebuild to support tiredofit/nginx-php-fpm:7.7.2
+
+
 ## 1.4-2.8.3 2023-06-21 <dave at tiredofit dot ca>
 
    ### Changed
