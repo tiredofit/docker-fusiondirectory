@@ -1,56 +1,48 @@
-version: '3.7'
 services:
   
   fusiondirectory-app:
     container_name: fusiondirectory-app
     image: fusiondirectory
     labels:
-    - traefik.enable=true
-    - traefik.frontend.rule=Host:fusiondirectory.example.org
-    - traefik.port=80
-    - traefik.docker.network=proxy
-    - traefik.backend=fusiondirectory-app
+      - traefik.enable=true
+      - traefik.http.routers.fusiondirectory-app.rule=Host(`fusiondirectory.example.com`)
+      - traefik.http.services.fusiondirectory-app.loadbalancer.server.port=80
     volumes:
-    - ./logs:/www/logs
-    #- ./custom:/assets/fusiondirectory
-    #- ./plugins-custom:/assets/plugins-custom
+      - ./logs:/www/logs
+      #- ./custom:/assets/fusiondirectory
+      #- ./plugins-custom:/assets/plugins-custom
     environment:
-    - VIRTUAL_HOST=fusiondirectory.example.org
-    - VIRTUAL_NETWORK=proxy
-    - VIRTUAL_PORT=80
-    - LETSENCRYPT_HOST=fusiondirectory.example.org
-    - LETSENCRYPT_EMAIL=yourname@example.org
+      - TIMEZONE=America/Vancouver
+      - CONTAINER_NAME=fusiondirectory-app
 
-    - CONTAINER_NAME=fusiondirectory-app
+      - ENABLE_ARGONAUT=FALSE
+      - PLUGIN_AUDIT=TRUE
+      - PLUGIN_DSA=TRUE
+      - PLUGIN_LDAPDUMP=TRUE
+      - PLUGIN_LDAPMANAGER=TRUE
+      - PLUGIN_MAIL=TRUE
+      - PLUGIN_PERSONAL=TRUE
+      - PLUGIN_PPOLICY=TRUE
+      - PLUGIN_SSH=TRUE
+      - PLUGIN_SUDO=TRUE
+      - PLUGIN_WEBSERVICE=TRUE
 
-    - ENABLE_ARGONAUT=FALSE
-    - PLUGIN_AUDIT=TRUE
-    - PLUGIN_DSA=TRUE
-    - PLUGIN_LDAPDUMP=TRUE
-    - PLUGIN_LDAPMANAGER=TRUE
-    - PLUGIN_MAIL=TRUE
-    - PLUGIN_PERSONAL=TRUE
-    - PLUGIN_PPOLICY=TRUE
-    - PLUGIN_SSH=TRUE
-    - PLUGIN_SUDO=TRUE
-    - PLUGIN_WEBSERVICE=TRUE
+      - LDAP01_HOST=openldap-fusiondirectory
+      - LDAP01_BASE_DN=dc=example,dc=org
+      - LDAP01_ADMIN_DN=cn=admin,dc=example,dc=org
+      - LDAP01_ADMIN_PASS=admin
+      - LDAP01_PORT=389
+      - LDAP01_NAME=Production
 
-    - LDAP1_HOST=openldap-fusiondirectory
-    - LDAP1_BASE_DN=dc=example,dc=org
-    - LDAP1_ADMIN_DN=cn=admin,dc=example,dc=org
-    - LDAP1_ADMIN_PASS=admin
-    - LDAP1_PORT=389
-    - LDAP1_NAME=Production
-
-    #- LDAP2_BASE_DN=dc=example,dc=org
-    #- LDAP2_ADMIN_DN=cn=admin,dc=example,dc=org
-    #- LDAP2_HOST=openldap-fusiondirectory2
-    #- LDAP2_ADMIN_PASS=password2
-    #- LDAP2_NAME=Development
-    #- LDAP2_TLS=TRUE
+     #- LDAP02_BASE_DN=dc=example,dc=org
+     #- LDAP02_ADMIN_DN=cn=admin,dc=example,dc=org
+     #- LDAP02_HOST=openldap-fusiondirectory2
+     #- LDAP02_ADMIN_PASS=password2
+     #- LDAP02_NAME=Development
+     #- LDAP02_TLS=TRUE
     networks:
-    - proxy
-    - services
+      - proxy
+      - services
     restart: always
 
 networks:
